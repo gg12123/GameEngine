@@ -2,40 +2,34 @@
 
 GameObject::GameObject()
 {
-   AddComponent( &m_Transform );
+   AddComponent( m_Transform );
 }
 
-Transform* GameObject::GetTransfrom()
+Transform& GameObject::GetTransfrom()
 {
-   return &m_Transform;
+   return m_Transform;
 }
 
-void GameObject::Update()
+void GameObject::UpdateComponents( EUpdaterFunction updateFunction )
 {
-   CallUpdaterFunctions( eUpdateFunction );
-}
+   std::list<UpdaterFunctionPtr> *functions = &m_UpdaterFunctions[ updateFunction ];
 
-void GameObject::FixedUpdate()
-{
-   CallUpdaterFunctions( eFixedUpdateFunction );
-}
-
-void GameObject::CallUpdaterFunctions( EUpdaterFunction eUpdater )
-{
-   for (std::list<UpdaterFunctionPtr>::iterator it = m_UpdaterFunctions[ eUpdater ].begin; it != m_UpdaterFunctions[ eUpdater ].end; it++)
+   for (std::list<UpdaterFunctionPtr>::iterator it = functions->begin; it != functions->end; it++)
    {
       // call it
    }
 }
 
-void GameObject::AwakeComponents( World *world )
+void GameObject::AwakeComponents( World &world )
 {
-   m_World = world;
+   m_World = &world;
 
    for (std::list<Component*>::iterator it = m_Components.begin; it != m_Components.end; it++)
    {
-      (*it)->Awake( world, this );
+      (*it)->Awake( world, *this );
    }
+
+   m_World->RegisterForStart( *this );
 }
 
 void GameObject::StartComponents()
@@ -46,17 +40,17 @@ void GameObject::StartComponents()
    }
 }
 
-void GameObject::AddComponent( Component *component )
+void GameObject::AddComponent( Component &component )
 {
-   m_Components.push_back( component );
+   m_Components.push_back( &component );
 }
 
-void GameObject::RegisterUpdaterFunction( EUpdaterFunction eUpdater, UpdaterFunctionPtr updaterPtr )
+void GameObject::RegisterUpdaterFunction( EUpdaterFunction updateFunc, UpdaterFunctionPtr updaterPtr )
 {
-   if (m_UpdaterFunctions[ eUpdater ].size == 0)
+   if (m_UpdaterFunctions[ updateFunc ].size == 0)
    {
-      // tell world to add this GO to the updater list
+      m_World->RegisterToUpdateFunction( updateFunc, *this );
    }
 
-   m_UpdaterFunctions[ eUpdater ].push_back( updaterPtr );
+   m_UpdaterFunctions[ updateFunc ].push_back( updaterPtr );
 }

@@ -1,21 +1,21 @@
 #include "Component.h"
 
-void Component::Awake( World *world, GameObject *gameObject )
+void Component::Awake( World &world, GameObject &gameObject )
 {
-   m_World = world;
-   m_GameObject = gameObject;
+   m_World = &world;
+   m_GameObject = &gameObject;
 
    Awake();
 }
 
-World* Component::GetWorld()
+World& Component::GetWorld()
 {
-   return m_World;
+   return *m_World;
 }
 
-GameObject* Component::GetGameObject()
+GameObject& Component::GetGameObject()
 {
-   return m_GameObject;
+   return *m_GameObject;
 }
 
 void Component::RegisterUpdaterFunction( EUpdaterFunction eFunction, UpdaterFunctionPtr functionPtr )

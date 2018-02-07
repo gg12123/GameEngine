@@ -12,19 +12,19 @@ public:
 
    GameObject();
 
-   void AwakeComponents( World *world );
+   void AwakeComponents( World &world );
    void StartComponents();
-   void AddComponent( Component *component );
-   void RegisterUpdaterFunction( EUpdaterFunction eUpdater, UpdaterFunctionPtr updaterPtr );
+   void UpdateComponents( EUpdaterFunction updateFunction );
+
+   void AddComponent( Component &component );
+   void RegisterUpdaterFunction( EUpdaterFunction updateFunction, UpdaterFunctionPtr updaterPtr );
 
    void Update();
    void FixedUpdate();
 
-   Transform *GetTransfrom();
+   Transform& GetTransfrom();
 
 private:
-
-   void CallUpdaterFunctions( EUpdaterFunction eUpdater );
 
    std::map<EUpdaterFunction, std::list<UpdaterFunctionPtr>> m_UpdaterFunctions;
    std::list<Component*> m_Components;
