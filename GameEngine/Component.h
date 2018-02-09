@@ -15,10 +15,12 @@ protected:
 
    virtual void Awake();
 
-   World& GetWorld();
    GameObject& GetGameObject();
 
    void RegisterUpdaterFunction( EUpdaterFunction eFunction, UpdaterFunctionPtr functionPtr );
+
+   TransformUpdater& GetTransformUpdater();
+   Transform& GetRootTransform();
 
 private:
 

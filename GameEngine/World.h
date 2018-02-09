@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "TransformUpdater.h"
 
 class World
 {
@@ -13,6 +14,7 @@ public:
    // call start on GOs to be started at the beginning of each update
    void Update();
    void FixedUpdate();
+   void EditUpdate();
 
    // for when a new GO gets instantiated
    void AddNewGameObject( GameObject &gameObject );
@@ -20,7 +22,8 @@ public:
    void RegisterForStart( GameObject &toRegister );
    void RegisterToUpdateFunction( EUpdaterFunction updateFunction, GameObject& gameObject );
 
-   Transform& RootTrnasform();
+   Transform& GetRootTransform();
+   TransformUpdater& GetTransformUpdater();
 
 private:
 
@@ -31,4 +34,7 @@ private:
 
    std::list<GameObject*>* m_GameObjects;
    std::list<GameObject*> m_GameObjectsToBeStarted;
+
+   TransformUpdater m_TransformUpdater;
+   Transform *m_Root;
 };

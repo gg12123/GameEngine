@@ -2,12 +2,12 @@
 
 GameObject::GameObject()
 {
-   AddComponent( m_Transform );
+   m_Transform = nullptr;
 }
 
 Transform& GameObject::GetTransfrom()
 {
-   return m_Transform;
+   return *m_Transform;
 }
 
 void GameObject::UpdateComponents( EUpdaterFunction updateFunction )
@@ -29,6 +29,7 @@ void GameObject::AwakeComponents( World &world )
       (*it)->Awake( world, *this );
    }
 
+   // this will make the world call start
    m_World->RegisterForStart( *this );
 }
 

@@ -8,11 +8,6 @@ void Component::Awake( World &world, GameObject &gameObject )
    Awake();
 }
 
-World& Component::GetWorld()
-{
-   return *m_World;
-}
-
 GameObject& Component::GetGameObject()
 {
    return *m_GameObject;
@@ -29,4 +24,14 @@ void Component::Start()
 
 void Component::Awake()
 {
+}
+
+TransformUpdater& Component::GetTransformUpdater()
+{
+   return m_World->GetTransformUpdater();
+}
+
+Transform& Component::GetRootTransform()
+{
+   return m_World->GetRootTransform();
 }

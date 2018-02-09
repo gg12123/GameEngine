@@ -3,6 +3,7 @@
 World::World( GameObject& rootGameObject, std::list<GameObject*>& gameObjects )
 {
    m_GameObjects = &gameObjects;
+   m_Root = &rootGameObject.GetTransfrom();
 }
 
 void World::Awake()
@@ -19,7 +20,17 @@ void World::Update()
    StartGameObjects();
    UpdateGameObjects( eUpdateFunction );
 
-   // update dirty transforms
+   m_TransformUpdater.UpdateTransforms();
+
+   // render
+}
+
+void World::EditUpdate()
+{
+   StartGameObjects(); // may not need to call start here
+   UpdateGameObjects( eUpdateInEditMode );
+
+   m_TransformUpdater.UpdateTransforms();
 
    // render
 }
@@ -66,4 +77,14 @@ void World::StartGameObjects()
    }
 
    m_GameObjectsToBeStarted.clear();
+}
+
+Transform& World::GetRootTransform()
+{
+   return *m_Root;
+}
+
+TransformUpdater& World::GetTransformUpdater()
+{
+   return m_TransformUpdater;
 }

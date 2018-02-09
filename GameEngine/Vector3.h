@@ -6,3 +6,5 @@ struct Vector3
    float y;
    float z;
 };
+
+Vector3 Vector3Zero();

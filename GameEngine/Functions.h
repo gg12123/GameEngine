@@ -5,5 +5,6 @@ typedef UpdaterFunctionPtr;
 enum EUpdaterFunction
 {
    eUpdateFunction,
-   eFixedUpdateFunction
+   eFixedUpdateFunction,
+   eUpdateInEditMode
 };

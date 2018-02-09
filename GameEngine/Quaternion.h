@@ -7,3 +7,7 @@ struct Quaternion
    float y;
    float z;
 };
+
+Quaternion QuaternionIdentity();
+
+Quaternion QuaternionConj( Quaternion q );

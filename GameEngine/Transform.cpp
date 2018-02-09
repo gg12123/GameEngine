@@ -1,6 +1,19 @@
 #include "Transform.h"
 #include "Debug.h"
 
+Transform::Transform()
+{
+   m_Parent = nullptr;
+}
+
+void Transform::Awake()
+{
+   m_TransformUpdater = &GetTransformUpdater();
+   m_Root = &GetRootTransform();
+
+   SetDirty();
+}
+
 std::list<Transform*>::iterator Transform::ChildrenBegin()
 {
    return m_Childern.begin;
@@ -22,11 +35,14 @@ void Transform::UnRegisterChild( std::list<Transform*>::iterator toChild )
    m_Childern.erase( toChild );
 }
 
+// will need to implment a world position stays version too.
 void Transform::SetParent( Transform& parent )
 {
    m_Parent->UnRegisterChild( m_ToThisInParentsChildList );
    m_Parent = &parent;
    m_ToThisInParentsChildList = m_Parent->RegisterChild( *this );
+
+   SetDirty();
 }
 
 void Transform::ClearParent()
@@ -36,16 +52,12 @@ void Transform::ClearParent()
 
 void Transform::InitParent( Transform& parent )
 {
+   // this is called before awake
    m_Parent = &parent;
    m_ToThisInParentsChildList = m_Parent->RegisterChild( *this );
 }
 
-Matrix4 Transform::GetLocalTransformMatrix()
-{
-   // calculate it
-}
-
-Matrix4 Transform::GetGlobalTransformMatrix()
+Matrix4 Transform::GetTransformMatrix()
 {
    if (m_Dirty)
    {
@@ -53,4 +65,154 @@ Matrix4 Transform::GetGlobalTransformMatrix()
    }
 
    return m_TransformMatrix;
+}
+
+void Transform::SetDirty()
+{
+   if (!m_Dirty)
+   {
+      m_Dirty = true;
+      m_TransformUpdater->AddDirtyTransform( *this );
+   }
+}
+
+void Transform::Clean()
+{
+   if (m_Parent->IsDirty())
+      Debug::Instance().LogError( "Cleaning when parent is dirty" );
+
+   m_Position = m_Parent->GetPositionUnconditional() + m_LocalPosition.Value();
+   m_Rotation = m_LocalRotation.Value() * m_Parent->GetRotationUnconditional();
+
+   m_TransformMatrix = ConstructMatrix( m_Position, m_Rotation );
+
+   m_Dirty = false;
+
+   for (std::list<Transform*>::iterator it = m_Childern.begin; it != m_Childern.end; it++)
+   {
+      (*it)->Clean();
+   }
+}
+
+Transform& Transform::FindCleanHierarchy()
+{
+   Transform* clean = this;
+   Transform* current = this;
+
+   do
+   {
+      if (clean)
+      {
+         if (current->IsDirty())
+         {
+            clean = nullptr;
+         }
+      }
+      else
+      {
+         if (!current->IsDirty())
+         {
+            clean = current;
+         }
+      }
+
+      current = &(current->GetParent());
+
+   } while (current != nullptr);
+
+   if (!clean)
+   {
+      Debug::Instance().LogError( "Unable to find clean hierarchy" );
+   }
+
+   return *clean;
+}
+
+Vector3 Transform::GetLocalPosition()
+{
+   return m_LocalPosition.Value();
+}
+
+Vector3 Transform::GetPosition()
+{
+   Transform *clean = &FindCleanHierarchy();
+   Transform *current = this;
+   Vector3 pos = Vector3Zero();
+
+   while (current != clean)
+   {
+      pos += current->GetLocalPosition();
+      current = &(current->GetParent());
+   }
+
+   pos += clean->GetPositionUnconditional();
+
+   return pos;
+}
+
+Vector3 Transform::GetPositionUnconditional()
+{
+   return m_Position;
+}
+
+Quaternion Transform::GetRotation()
+{
+   Transform *clean = &FindCleanHierarchy();
+   Transform *current = this;
+   Quaternion rot = QuaternionIdentity();
+
+   while (current != clean)
+   {
+      rot = rot * current->GetLocalRotation();
+      current = &(current->GetParent());
+   }
+
+   rot = rot * clean->GetPositionUnconditional();
+
+   return rot;
+}
+
+Quaternion Transform::GetLocalRotation()
+{
+   return m_LocalRotation.Value();
+}
+
+Quaternion Transform::GetRotationUnconditional()
+{
+   return m_Rotation;
+}
+
+
+Vector3 Transform::SetLocalPosition( Vector3 pos )
+{
+   m_LocalPosition.SetValue( pos );
+   SetDirty();
+}
+
+Vector3 Transform::SetPosition( Vector3 pos )
+{
+   m_LocalPosition.SetValue( pos - m_Parent->GetPosition() );
+   SetDirty();
+}
+
+Quaternion Transform::SetRotation( Quaternion rot )
+{
+   m_LocalRotation.SetValue( rot * QuaternionConj( m_Parent->GetRotation() ) );
+   SetDirty();
+}
+
+Quaternion Transform::SetLocalRotation( Quaternion rot )
+{
+   m_LocalRotation.SetValue( rot );
+   SetDirty();
+}
+
+Transform& Transform::GetParent()
+{
+   return *m_Parent;
+}
+
+bool Transform::IsDirty()
+{
+   return m_Dirty;
 }

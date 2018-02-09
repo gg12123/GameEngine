@@ -12,17 +12,22 @@ public:
 
    GameObject();
 
+   // called by the world if this object starts in the scene. If the object is instantiated, awake
+   // must be called by the instantitor.
    void AwakeComponents( World &world );
+
+   // called by the world before the next update
    void StartComponents();
+
+   // called by the world
    void UpdateComponents( EUpdaterFunction updateFunction );
 
    void AddComponent( Component &component );
    void RegisterUpdaterFunction( EUpdaterFunction updateFunction, UpdaterFunctionPtr updaterPtr );
 
-   void Update();
-   void FixedUpdate();
-
    Transform& GetTransfrom();
+
+   void CacheTransform();
 
 private:
 
@@ -30,5 +35,5 @@ private:
    std::list<Component*> m_Components;
 
    World *m_World;
-   Transform m_Transform;
+   Transform *m_Transform;
 };
