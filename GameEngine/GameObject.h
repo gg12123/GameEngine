@@ -1,6 +1,6 @@
 #pragma once
 #include <map>
-#include <list>
+#include <vector>
 #include "Functions.h"
 #include "World.h"
 #include "Component.h"
@@ -31,8 +31,8 @@ public:
 
 private:
 
-   std::map<EUpdaterFunction, std::list<UpdaterFunctionPtr>> m_UpdaterFunctions;
-   std::list<Component*> m_Components;
+   std::map<EUpdaterFunction, std::vector<UpdaterFunctionPtr>> m_UpdaterFunctions;
+   std::vector<Component*> m_Components;
 
    World *m_World;
    Transform *m_Transform;

@@ -115,6 +115,7 @@
     <ClInclude Include="Functions.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Matrix4.h" />
+    <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="SerializedFields.h" />
     <ClInclude Include="Transform.h" />
@@ -125,6 +126,7 @@
   <ItemGroup>
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TransformUpdater.cpp" />
     <ClCompile Include="World.cpp" />

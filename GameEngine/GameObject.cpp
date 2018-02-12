@@ -12,9 +12,9 @@ Transform& GameObject::GetTransfrom()
 
 void GameObject::UpdateComponents( EUpdaterFunction updateFunction )
 {
-   std::list<UpdaterFunctionPtr> *functions = &m_UpdaterFunctions[ updateFunction ];
+   std::vector<UpdaterFunctionPtr> *functions = &m_UpdaterFunctions[ updateFunction ];
 
-   for (std::list<UpdaterFunctionPtr>::iterator it = functions->begin; it != functions->end; it++)
+   for (std::vector<UpdaterFunctionPtr>::iterator it = functions->begin; it != functions->end; it++)
    {
       // call it
    }
@@ -24,7 +24,7 @@ void GameObject::AwakeComponents( World &world )
 {
    m_World = &world;
 
-   for (std::list<Component*>::iterator it = m_Components.begin; it != m_Components.end; it++)
+   for (std::vector<Component*>::iterator it = m_Components.begin; it != m_Components.end; it++)
    {
       (*it)->Awake( world, *this );
    }
@@ -35,7 +35,7 @@ void GameObject::AwakeComponents( World &world )
 
 void GameObject::StartComponents()
 {
-   for (std::list<Component*>::iterator it = m_Components.begin; it != m_Components.end; it++)
+   for (std::vector<Component*>::iterator it = m_Components.begin; it != m_Components.end; it++)
    {
       (*it)->Start();
    }

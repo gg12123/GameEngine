@@ -1,5 +1,5 @@
 #pragma once
-#include <list>
+#include <vector>
 #include "Transform.h"
 
 class TransformUpdater
@@ -15,5 +15,5 @@ private:
 
    Transform& FindRootDirtyParent(Transform& child);
 
-   std::list<Transform*> m_DirtyTransforms;
+   std::vector<Transform*> m_DirtyTransforms;
 };
