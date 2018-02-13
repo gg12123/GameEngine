@@ -8,6 +8,9 @@ public:
 
    void GetSerializedFields( std::map<std::string, SerializedField*>& fields );
 
+   std::string GetMeshName();
+   std::string GetShaderName();
+
 protected:
 
    void Awake();
