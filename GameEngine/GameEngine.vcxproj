@@ -124,6 +124,7 @@
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="RenderingSlot.h" />
     <ClInclude Include="SerializedFields.h" />
+    <ClInclude Include="ShaderProgramStorage.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TransformUpdater.h" />
     <ClInclude Include="Vector3.h" />
@@ -134,6 +135,8 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GeometryRenderer.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="MeshStorage.cpp" />
+    <ClCompile Include="ShaderProgramStorage.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TransformUpdater.cpp" />
     <ClCompile Include="World.cpp" />

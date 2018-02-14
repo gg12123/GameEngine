@@ -1,5 +1,5 @@
 #pragma once
-#include <map>
+#include <unordered_map>
 #include <vector>
 #include "Functions.h"
 #include "World.h"
@@ -31,7 +31,7 @@ public:
 
 private:
 
-   std::map<EUpdaterFunction, std::vector<UpdaterFunctionPtr>> m_UpdaterFunctions;
+   std::unordered_map<EUpdaterFunction, std::vector<UpdaterFunctionPtr>> m_UpdaterFunctions;
    std::vector<Component*> m_Components;
 
    World *m_World;

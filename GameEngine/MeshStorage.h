@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include <map>
+#include <unordered_map>
 #include "Mesh.h"
 
 class MeshStorage
@@ -12,5 +12,5 @@ public:
 
 private:
 
-   std::map<std::string, Mesh*> m_Meshes;
+   std::unordered_map<std::string, Mesh*> m_Meshes;
 };
