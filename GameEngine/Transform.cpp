@@ -57,7 +57,7 @@ void Transform::InitParent( Transform& parent )
    m_ToThisInParentsChildList = m_Parent->RegisterChild( *this );
 }
 
-Matrix4 Transform::GetTransformMatrix()
+mat4 Transform::GetTransformMatrix()
 {
    if (m_Dirty)
    {
@@ -84,7 +84,8 @@ void Transform::Clean()
    m_Position = m_Parent->GetPositionUnconditional() + m_LocalPosition.Value();
    m_Rotation = m_LocalRotation.Value() * m_Parent->GetRotationUnconditional();
 
-   m_TransformMatrix = ConstructMatrix( m_Position, m_Rotation );
+   // TODO - construct the matrix
+  // m_TransformMatrix = ConstructMatrix( m_Position, m_Rotation );
 
    m_Dirty = false;
 
@@ -128,16 +129,16 @@ Transform& Transform::FindCleanHierarchy()
    return *clean;
 }
 
-Vector3 Transform::GetLocalPosition()
+vec3 Transform::GetLocalPosition()
 {
    return m_LocalPosition.Value();
 }
 
-Vector3 Transform::GetPosition()
+vec3 Transform::GetPosition()
 {
    Transform *clean = &FindCleanHierarchy();
    Transform *current = this;
-   Vector3 pos = Vector3Zero();
+   vec3 pos = vec3( 0.0f, 0.0f, 0.0f );
 
    while (current != clean)
    {
@@ -150,7 +151,7 @@ Vector3 Transform::GetPosition()
    return pos;
 }
 
-Vector3 Transform::GetPositionUnconditional()
+vec3 Transform::GetPositionUnconditional()
 {
    return m_Position;
 }
@@ -183,13 +184,13 @@ Quaternion Transform::GetRotationUnconditional()
 }
 
 
-Vector3 Transform::SetLocalPosition( Vector3 pos )
+vec3 Transform::SetLocalPosition( vec3 pos )
 {
    m_LocalPosition.SetValue( pos );
    SetDirty();
 }
 
-Vector3 Transform::SetPosition( Vector3 pos )
+vec3 Transform::SetPosition( vec3 pos )
 {
    m_LocalPosition.SetValue( pos - m_Parent->GetPosition() );
    SetDirty();

@@ -1,9 +1,10 @@
 #pragma once
+#include "MyVmath.h"
 #include "Component.h"
-#include "Vector3.h"
 #include "Quaternion.h"
 #include "SerializedFields.h"
-#include "Matrix4.h"
+
+using namespace vmath;
 
 class Transform : public Component
 {
@@ -11,20 +12,20 @@ public:
 
    Transform();
 
-   Vector3 GetLocalPosition();
-   Vector3 GetPosition();
-   Vector3 GetPositionUnconditional(); // used when you know that the hierarchy above is clean
+   vec3 GetLocalPosition();
+   vec3 GetPosition();
+   vec3 GetPositionUnconditional(); // used when you know that the hierarchy above is clean
 
    Quaternion GetRotation();
    Quaternion GetLocalRotation();
    Quaternion GetRotationUnconditional(); // used when you know that the hierarchy above is clean
 
-   Vector3 SetLocalPosition( Vector3 pos );
-   Vector3 SetPosition( Vector3 pos );
+   vec3 SetLocalPosition( vec3 pos );
+   vec3 SetPosition( vec3 pos );
    Quaternion SetRotation( Quaternion rot );
    Quaternion SetLocalRotation( Quaternion rot );
 
-   Matrix4 GetTransformMatrix();
+   mat4 GetTransformMatrix();
 
    void SetParent( Transform& parent );
    void InitParent( Transform& parent );
@@ -54,9 +55,9 @@ private:
    bool m_Dirty;
 
    // invalid when dirty
-   Vector3 m_Position;
+   vec3 m_Position;
    Quaternion m_Rotation;
-   Matrix4 m_TransformMatrix;
+   mat4 m_TransformMatrix;
 
    // always valid
    SerializedVector3 m_LocalPosition;

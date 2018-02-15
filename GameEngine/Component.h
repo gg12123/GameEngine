@@ -10,7 +10,7 @@ public:
    void Awake( World &world, GameObject &gameObject );
 
    virtual void Start();
-   virtual void GetSerializedFields( std::map<std::string, SerializedField*>& fields );
+   virtual void GetSerializedFields( std::unordered_map<std::string, SerializedField*>& fields );
 
 protected:
 

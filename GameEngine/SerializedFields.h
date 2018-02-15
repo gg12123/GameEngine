@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "Vector3.h"
+#include "vmath.h"
 #include "Quaternion.h"
 
 class SerializedField
@@ -10,10 +10,10 @@ class SerializedField
 class SerializedVector3 : public SerializedField
 {
 public:
-   Vector3 Value();
-   void SetValue( Vector3 value );
+   vec3 Value();
+   void SetValue( vec3 value );
 private:
-   Vector3 m_Value;
+   vec3 m_Value;
 };
 
 class SerializedQuaternion : public SerializedField
@@ -32,4 +32,13 @@ public:
    void SetValue( std::string value );
 private:
    std::string m_Value;
+};
+
+class SerializedFloat : public SerializedField
+{
+public:
+   float Value();
+   void SetValue( float value );
+private:
+   float m_Value;
 };

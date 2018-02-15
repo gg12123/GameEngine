@@ -1,5 +1,6 @@
 #include "MeshStorage.h"
 #include "Debug.h"
+#include "Path.h"
 
 void MeshStorage::LoadMeshIfNotAlreadyLoaded( std::string name )
 {
@@ -8,7 +9,7 @@ void MeshStorage::LoadMeshIfNotAlreadyLoaded( std::string name )
       Mesh *m = new Mesh();
 
       m_Meshes[ name ] = m;
-      m->Load( name );
+      m->Load( Path::Instance().GetMeshPath( name ) );
    }
 }
 

@@ -6,14 +6,17 @@ class MeshRenderer : public Component
 {
 public:
 
-   void GetSerializedFields( std::map<std::string, SerializedField*>& fields );
+   void GetSerializedFields( std::unordered_map<std::string, SerializedField*>& fields ) override;
+
+   // this will need to be virtual
+   void Render(const int count);
 
    std::string GetMeshName();
    std::string GetShaderName();
 
 protected:
 
-   void Awake();
+   void Awake() override;
 
 private:
 

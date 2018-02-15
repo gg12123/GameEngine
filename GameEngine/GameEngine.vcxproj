@@ -112,30 +112,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GeometryRenderer.h" />
-    <ClInclude Include="Matrix4.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="MeshStorage.h" />
+    <ClInclude Include="MyVmath.h" />
+    <ClInclude Include="Path.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="RenderingSlot.h" />
     <ClInclude Include="SerializedFields.h" />
+    <ClInclude Include="ShaderLocations.h" />
     <ClInclude Include="ShaderProgramStorage.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TransformUpdater.h" />
-    <ClInclude Include="Vector3.h" />
+    <ClInclude Include="Vertex.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GeometryRenderer.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="MeshStorage.cpp" />
+    <ClCompile Include="RenderingSlot.cpp" />
     <ClCompile Include="ShaderProgramStorage.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TransformUpdater.cpp" />

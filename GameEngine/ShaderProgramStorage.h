@@ -7,7 +7,6 @@ class ShaderProgramStorage
 {
 public:
 
-   void InitPathToShaders( std::string path );
    void CompileIfNotAlready( std::string name );
    GLuint GetProgram( std::string name );
 

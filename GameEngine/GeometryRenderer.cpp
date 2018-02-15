@@ -1,21 +1,54 @@
 #include "GeometryRenderer.h"
 #include "GL/gl3w.h"
 #include "Debug.h"
+#include "Vertex.h"
+#include "ShaderLocations.h"
+
+GeometryRenderer::GeometryRenderer()
+{
+   m_Camera = nullptr;
+}
 
 // maybe pass a config object
-void GeometryRenderer::Awake( std::string shaderLocation, std::string meshLocation )
+void GeometryRenderer::Awake()
 {
    glGenVertexArrays( 1,
                       &m_Vao );
 
    glBindVertexArray( m_Vao );
 
-   // setup vertex attributes
+   // Position
+   glVertexAttribBinding( POS_VERT_ATTRIBUTE,
+                          0 );
+   glVertexAttribFormat( POS_VERT_ATTRIBUTE,
+                         4,
+                         GL_FLOAT,
+                         GL_FALSE,
+                         offsetof( Vertex, Position ) );
+   glEnableVertexAttribArray( POS_VERT_ATTRIBUTE );
 
-   m_ProgramStore.InitPathToShaders( shaderLocation );
+   // Normal
+   glVertexAttribBinding( NORMAL_VERT_ATTRIBUTE,
+                          0 );
+   glVertexAttribFormat( NORMAL_VERT_ATTRIBUTE,
+                         4,
+                         GL_FLOAT,
+                         GL_FALSE,
+                         offsetof( Vertex, Normal ) );
+   glEnableVertexAttribArray( NORMAL_VERT_ATTRIBUTE );
+
+   // Tex cords
+   glVertexAttribBinding( TC_VERT_ATTRIBUTE,
+                          0 );
+   glVertexAttribFormat( TC_VERT_ATTRIBUTE,
+                         2,
+                         GL_FLOAT,
+                         GL_FALSE,
+                         offsetof( Vertex, TexCords ) );
+   glEnableVertexAttribArray( TC_VERT_ATTRIBUTE );
 }
 
-std::list<MeshRenderer*>::iterator GeometryRenderer::Register( MeshRenderer& toReg )
+std::list<MeshRenderer*>::iterator GeometryRenderer::Register( MeshRenderer& const toReg )
 {
    // load the mesh
    m_MeshStore.LoadMeshIfNotAlreadyLoaded( toReg.GetMeshName() );
@@ -61,13 +94,26 @@ void GeometryRenderer::UnRegister( MeshRenderer& toUnReg, std::list<MeshRenderer
    }
 }
 
+void GeometryRenderer::SetCamera( Camera& const cam )
+{
+   if (m_Camera)
+   {
+      Debug::Instance().LogError( "Camera set twice" );
+   }
+
+   m_Camera = &cam;
+}
+
 void GeometryRenderer::Render()
 {
    for (MeshNameToShaderNameToRenderSlot::iterator it = m_RenderingSlots.begin; it != m_RenderingSlots.end; it++)
    {
       glUseProgram( m_ProgramStore.GetProgram( it->first ) );
 
-      // set light and camera pos uniforms
+      // camera pos and world to view to proj matrix uniforms
+      m_Camera->ApplyUniformsToShader();
+
+      // set light,  (maybe the camera can do the matrix)
 
       MeshNameToRenderSlot &meshNameToSlot = *(it->second);
 
@@ -78,11 +124,11 @@ void GeometryRenderer::Render()
          glBindVertexBuffer( 0,
                              m.GetVertexBuffer(),
                              0,
-                             0 ); // TODO: change this zero to stride
+                             sizeof(Vertex) ); // TODO: change this zero to stride
 
          glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m.GetIndicesBuffer() );
 
-         it2->second->Render();
+         it2->second->Render( m.GetNumIndices() ); // the number of vertices to draw is equal to the number of indices
       }
    }
 }
