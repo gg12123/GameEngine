@@ -21,6 +21,7 @@ protected:
    void RegisterUpdaterFunction( EUpdaterFunction eFunction, UpdaterFunctionPtr functionPtr );
 
    TransformUpdater& GetTransformUpdater();
+   GeometryRenderer& GetGeometryRenderer();
    Transform& GetRootTransform();
 
 private:

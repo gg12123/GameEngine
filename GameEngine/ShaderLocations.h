@@ -8,3 +8,4 @@
 // uniform locations
 #define OW_MATRIX_LOCATION 0
 #define WVP_MATRIX_LOCATION 1
+#define CAMERA_DIRECTION_LOCATION 2

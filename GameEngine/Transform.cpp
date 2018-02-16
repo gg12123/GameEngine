@@ -11,6 +11,7 @@ void Transform::Awake()
    m_TransformUpdater = &GetTransformUpdater();
    m_Root = &GetRootTransform();
 
+   ConstructLocalTransformMatrix();
    SetDirty();
 }
 
@@ -57,10 +58,11 @@ void Transform::InitParent( Transform& parent )
    m_ToThisInParentsChildList = m_Parent->RegisterChild( *this );
 }
 
-mat4 Transform::GetTransformMatrix()
+mat4 Transform::GetTransformMatrixAssumingClean()
 {
    if (m_Dirty)
    {
+      // note: not checking parents because it is too inefficient.
       Debug::Instance().LogError( "Attempt to get global matrix when dirty" );
    }
 
@@ -81,11 +83,7 @@ void Transform::Clean()
    if (m_Parent->IsDirty())
       Debug::Instance().LogError( "Cleaning when parent is dirty" );
 
-   m_Position = m_Parent->GetPositionUnconditional() + m_LocalPosition.Value();
-   m_Rotation = m_LocalRotation.Value() * m_Parent->GetRotationUnconditional();
-
-   // TODO - construct the matrix
-  // m_TransformMatrix = ConstructMatrix( m_Position, m_Rotation );
+   m_TransformMatrix = m_Parent->GetTransformMatrixAssumingClean() * m_LocalTransformMatrix;
 
    m_Dirty = false;
 
@@ -134,77 +132,73 @@ vec3 Transform::GetLocalPosition()
    return m_LocalPosition.Value();
 }
 
+void Transform::ConstructTransformMatrix()
+{
+   Transform *clean = &FindCleanHierarchy();
+   Transform *current = this;
+
+   // dont modify the member transform matrix until the end because
+   // its original value maybe required in the final equation.
+   mat4 transformMatrix = mat4().identity();
+
+   while (current != clean)
+   {
+      transformMatrix = current->GetLocalTransformMatrix() * transformMatrix;
+      current = &(current->GetParent());
+   }
+
+   m_TransformMatrix = current->GetTransformMatrixAssumingClean() * transformMatrix;
+}
+
+void Transform::ConstructLocalTransformMatrix()
+{
+   m_LocalTransformMatrix = m_LocalRotation.Value();
+
+   m_LocalTransformMatrix[ 3 ] = vec4( m_LocalPosition.Value[ 0 ],
+                                       m_LocalPosition.Value[ 1 ],
+                                       m_LocalPosition.Value[ 2 ],
+                                       1.0f );
+}
+
 vec3 Transform::GetPosition()
 {
-   Transform *clean = &FindCleanHierarchy();
-   Transform *current = this;
-   vec3 pos = vec3( 0.0f, 0.0f, 0.0f );
-
-   while (current != clean)
-   {
-      pos += current->GetLocalPosition();
-      current = &(current->GetParent());
-   }
-
-   pos += clean->GetPositionUnconditional();
-
-   return pos;
+   ConstructTransformMatrix();
+   
+   return vec3( m_TransformMatrix[ 3 ][ 0 ], m_TransformMatrix[ 3 ][ 1 ], m_TransformMatrix[ 3 ][ 2 ] );
 }
 
-vec3 Transform::GetPositionUnconditional()
+mat4 Transform::GetRotation()
 {
-   return m_Position;
+   ConstructTransformMatrix();
+   
+   mat4 rot = m_TransformMatrix;
+
+   rot[ 3 ][ 0 ] = 0.0f;
+   rot[ 3 ][ 1 ] = 0.0f;
+   rot[ 3 ][ 2 ] = 0.0f;
 }
 
-Quaternion Transform::GetRotation()
+mat4 Transform::GetLocalTransformMatrix()
 {
-   Transform *clean = &FindCleanHierarchy();
-   Transform *current = this;
-   Quaternion rot = QuaternionIdentity();
-
-   while (current != clean)
-   {
-      rot = rot * current->GetLocalRotation();
-      current = &(current->GetParent());
-   }
-
-   rot = rot * clean->GetPositionUnconditional();
-
-   return rot;
+   return m_LocalTransformMatrix;
 }
 
-Quaternion Transform::GetLocalRotation()
+mat4 Transform::GetLocalRotation()
 {
    return m_LocalRotation.Value();
 }
 
-Quaternion Transform::GetRotationUnconditional()
-{
-   return m_Rotation;
-}
-
-
-vec3 Transform::SetLocalPosition( vec3 pos )
+void Transform::SetLocalPosition( vec3 pos )
 {
    m_LocalPosition.SetValue( pos );
+   ConstructLocalTransformMatrix();
    SetDirty();
 }
 
-vec3 Transform::SetPosition( vec3 pos )
-{
-   m_LocalPosition.SetValue( pos - m_Parent->GetPosition() );
-   SetDirty();
-}
-
-Quaternion Transform::SetRotation( Quaternion rot )
-{
-   m_LocalRotation.SetValue( rot * QuaternionConj( m_Parent->GetRotation() ) );
-   SetDirty();
-}
-
-Quaternion Transform::SetLocalRotation( Quaternion rot )
+void Transform::SetLocalRotation( mat4 rot )
 {
    m_LocalRotation.SetValue( rot );
+   ConstructLocalTransformMatrix();
    SetDirty();
 }
 

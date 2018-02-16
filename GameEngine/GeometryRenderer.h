@@ -6,6 +6,7 @@
 #include "MeshStorage.h"
 #include "ShaderProgramStorage.h"
 #include "Camera.h"
+#include "WindowConfiguration.h"
 
 typedef std::unordered_map<std::string, RenderingSlot*> MeshNameToRenderSlot;
 typedef std::unordered_map<std::string, MeshNameToRenderSlot*> MeshNameToShaderNameToRenderSlot;
@@ -17,14 +18,14 @@ public:
    GeometryRenderer();
 
    // must be called before components are awake
-   void Awake();
+   void Awake( WindowConfiguration& windowConfig );
 
    void Render();
 
    std::list<MeshRenderer*>::iterator Register(MeshRenderer& const toReg);
    void UnRegister( MeshRenderer& toUnReg,  std::list<MeshRenderer*>::iterator toUnRegIter );
 
-   void SetCamera( Camera& const cam );
+   WindowConfiguration& SetCamera( Camera& const cam );
 
 private:
 
@@ -36,4 +37,5 @@ private:
    ShaderProgramStorage m_ProgramStore;
 
    Camera *m_Camera;
+   WindowConfiguration *m_WindowConfig;
 };

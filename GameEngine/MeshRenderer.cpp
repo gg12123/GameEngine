@@ -2,9 +2,13 @@
 #include "GL/gl3w.h"
 #include "ShaderLocations.h"
 
+MeshRenderer::MeshRenderer()
+{
+}
+
 void MeshRenderer::Awake()
 {
-   // register with the geometry renderer
+   m_ThisInRenderersList = GetGeometryRenderer().Register( *this );
 }
 
 void MeshRenderer::GetSerializedFields( std::unordered_map<std::string, SerializedField*> &fields )
@@ -13,12 +17,17 @@ void MeshRenderer::GetSerializedFields( std::unordered_map<std::string, Serializ
    fields[ "meshName" ] = &m_MeshName;
 }
 
+void MeshRenderer::ApplyUniforms()
+{
+
+}
+
 void MeshRenderer::Render(const int count)
 {
    glUniformMatrix4fv( OW_MATRIX_LOCATION,
                        1,
                        GL_FALSE,
-                       GetGameObject().GetTransfrom().GetTransformMatrix() );
+                       GetGameObject().GetTransfrom().GetTransformMatrixAssumingClean() );
 
    glDrawElements( GL_TRIANGLES, count, GL_UNSIGNED_SHORT, 0 );
 }

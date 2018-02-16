@@ -10,8 +10,10 @@ GeometryRenderer::GeometryRenderer()
 }
 
 // maybe pass a config object
-void GeometryRenderer::Awake()
+void GeometryRenderer::Awake( WindowConfiguration& windowConfig )
 {
+   m_WindowConfig = &windowConfig;
+
    glGenVertexArrays( 1,
                       &m_Vao );
 
@@ -94,7 +96,7 @@ void GeometryRenderer::UnRegister( MeshRenderer& toUnReg, std::list<MeshRenderer
    }
 }
 
-void GeometryRenderer::SetCamera( Camera& const cam )
+WindowConfiguration& GeometryRenderer::SetCamera( Camera& const cam )
 {
    if (m_Camera)
    {
@@ -102,6 +104,8 @@ void GeometryRenderer::SetCamera( Camera& const cam )
    }
 
    m_Camera = &cam;
+
+   return *m_WindowConfig;
 }
 
 void GeometryRenderer::Render()
@@ -111,7 +115,7 @@ void GeometryRenderer::Render()
       glUseProgram( m_ProgramStore.GetProgram( it->first ) );
 
       // camera pos and world to view to proj matrix uniforms
-      m_Camera->ApplyUniformsToShader();
+      m_Camera->ApplyCameraUniforms();
 
       // set light,  (maybe the camera can do the matrix)
 

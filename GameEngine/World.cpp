@@ -1,13 +1,18 @@
 #include "World.h"
 
-World::World( GameObject& rootGameObject, std::list<GameObject*>& gameObjects )
+World::World()
+{
+   m_Root = nullptr;
+   m_GameObjects = nullptr;
+}
+
+void World::Awake( GameObject& rootGameObject, std::list<GameObject*>& gameObjects, WindowConfiguration& windowConfig )
 {
    m_GameObjects = &gameObjects;
    m_Root = &rootGameObject.GetTransfrom();
-}
 
-void World::Awake()
-{
+   m_GeometryRenderer.Awake( windowConfig );
+
    for (std::list<GameObject*>::iterator it = m_GameObjects->begin; it != m_GameObjects->end; it++)
    {
       (*it)->AwakeComponents( *this );
@@ -22,7 +27,7 @@ void World::Update()
 
    m_TransformUpdater.UpdateTransforms();
 
-   // render
+   m_GeometryRenderer.Render();
 }
 
 void World::EditUpdate()
@@ -32,7 +37,7 @@ void World::EditUpdate()
 
    m_TransformUpdater.UpdateTransforms();
 
-   // render
+   m_GeometryRenderer.Render();
 }
 
 void World::FixedUpdate()
@@ -87,4 +92,9 @@ Transform& World::GetRootTransform()
 TransformUpdater& World::GetTransformUpdater()
 {
    return m_TransformUpdater;
+}
+
+GeometryRenderer& World::GetGeometryRenderer()
+{
+   return m_GeometryRenderer;
 }

@@ -2,15 +2,16 @@
 #include <list>
 #include "GameObject.h"
 #include "TransformUpdater.h"
+#include "GeometryRenderer.h"
 
 class World
 {
 public:
 
-   // When the world is created, all GOs in scene are instantiated and serialized fields good to go
-   World( GameObject& rootGameObject, std::list<GameObject*>& gameObjects );
+   World();
 
-   void Awake();
+   // When the world is awoken, all GOs in scene are instantiated and serialized fields good to go
+   void Awake( GameObject& rootGameObject, std::list<GameObject*>& gameObjects, WindowConfiguration& windowConfig );
 
    // call start on GOs to be started at the beginning of each update
    void Update();
@@ -25,17 +26,19 @@ public:
 
    Transform& GetRootTransform();
    TransformUpdater& GetTransformUpdater();
+   GeometryRenderer& GetGeometryRenderer();
 
 private:
 
    void UpdateGameObjects( EUpdaterFunction updateFunction );
    void StartGameObjects();
 
-   std::map<EUpdaterFunction, std::list<GameObject*>> m_UpdatableGameObjects;
+   std::unordered_map<EUpdaterFunction, std::list<GameObject*>> m_UpdatableGameObjects;
 
    std::list<GameObject*>* m_GameObjects;
    std::list<GameObject*> m_GameObjectsToBeStarted;
 
    TransformUpdater m_TransformUpdater;
+   GeometryRenderer m_GeometryRenderer;
    Transform *m_Root;
 };

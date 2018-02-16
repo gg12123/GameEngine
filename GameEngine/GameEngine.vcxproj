@@ -123,7 +123,6 @@
     <ClInclude Include="MeshStorage.h" />
     <ClInclude Include="MyVmath.h" />
     <ClInclude Include="Path.h" />
-    <ClInclude Include="Quaternion.h" />
     <ClInclude Include="RenderingSlot.h" />
     <ClInclude Include="SerializedFields.h" />
     <ClInclude Include="ShaderLocations.h" />
@@ -131,6 +130,7 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TransformUpdater.h" />
     <ClInclude Include="Vertex.h" />
+    <ClInclude Include="WindowConfiguration.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>

@@ -16,13 +16,13 @@ private:
    vec3 m_Value;
 };
 
-class SerializedQuaternion : public SerializedField
+class SerializedRotation : public SerializedField
 {
 public:
-   Quaternion Value();
-   void SetValue( Quaternion value );
+   mat4 Value();
+   void SetValue( mat4 value );
 private:
-   Quaternion m_Value;
+   mat4 m_Value;
 };
 
 class SerializedString : public SerializedField

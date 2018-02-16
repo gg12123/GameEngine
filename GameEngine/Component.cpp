@@ -35,3 +35,8 @@ Transform& Component::GetRootTransform()
 {
    return m_World->GetRootTransform();
 }
+
+GeometryRenderer& Component::GetGeometryRenderer()
+{
+   return m_World->GetGeometryRenderer();
+}
