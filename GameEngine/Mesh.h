@@ -1,12 +1,15 @@
 #pragma once
 #include <string>
 #include "GL/gl3w.h"
+#include "Asset.h"
 
-class Mesh
+class Mesh : public Asset
 {
 public:
 
-   void Load( std::string path );
+   static Asset* CreateInstance();
+
+   void Load( std::string name ) override;
 
    int GetNumVertices();
    int GetNumIndices();

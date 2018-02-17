@@ -3,16 +3,22 @@
 #include "Debug.h"
 #include "Vertex.h"
 #include "ShaderLocations.h"
+#include "Mesh.h"
+#include "ShaderProgram.h"
 
 GeometryRenderer::GeometryRenderer()
 {
    m_Camera = nullptr;
+   m_WindowConfig = nullptr;
+   m_AssetLoader = nullptr;
+   m_Light = nullptr;
 }
 
 // maybe pass a config object
-void GeometryRenderer::Awake( WindowConfiguration& windowConfig )
+void GeometryRenderer::Awake( WindowConfiguration& const windowConfig, AssetLoader& const assetLoader )
 {
    m_WindowConfig = &windowConfig;
+   m_AssetLoader = &assetLoader;
 
    glGenVertexArrays( 1,
                       &m_Vao );
@@ -52,12 +58,6 @@ void GeometryRenderer::Awake( WindowConfiguration& windowConfig )
 
 std::list<MeshRenderer*>::iterator GeometryRenderer::Register( MeshRenderer& const toReg )
 {
-   // load the mesh
-   m_MeshStore.LoadMeshIfNotAlreadyLoaded( toReg.GetMeshName() );
-
-   // load the shader
-   m_ProgramStore.CompileIfNotAlready( toReg.GetShaderName() );
-
    // if this is a new shader name
    if (m_RenderingSlots.count( toReg.GetShaderName() ) == 0)
    {
@@ -69,7 +69,10 @@ std::list<MeshRenderer*>::iterator GeometryRenderer::Register( MeshRenderer& con
    // if this is a new shader mesh combo
    if (meshNameToSlot.count( toReg.GetMeshName() ) == 0)
    {
-      meshNameToSlot[ toReg.GetMeshName() ] = new RenderingSlot();
+      Mesh* mesh = m_AssetLoader->LoadIfNotAlreadyLoaded( toReg.GetMeshName(), Mesh::CreateInstance ).MeshValue();
+      GLuint shader = m_AssetLoader->LoadIfNotAlreadyLoaded( toReg.GetShaderName(), ShaderProgram::CreateInstance ).ShaderValue();
+
+      meshNameToSlot[ toReg.GetMeshName() ] = new RenderingSlot( *mesh, shader );
    }
 
    return meshNameToSlot[ toReg.GetMeshName() ]->Add( toReg );
@@ -108,31 +111,31 @@ WindowConfiguration& GeometryRenderer::SetCamera( Camera& const cam )
    return *m_WindowConfig;
 }
 
+void GeometryRenderer::SetLight( Light& const light )
+{
+   if (m_Light)
+   {
+      Debug::Instance().LogError( "Light set twice" );
+   }
+
+   m_Light = &light;
+}
+
 void GeometryRenderer::Render()
 {
    for (MeshNameToShaderNameToRenderSlot::iterator it = m_RenderingSlots.begin; it != m_RenderingSlots.end; it++)
    {
-      glUseProgram( m_ProgramStore.GetProgram( it->first ) );
-
-      // camera pos and world to view to proj matrix uniforms
-      m_Camera->ApplyCameraUniforms();
-
-      // set light,  (maybe the camera can do the matrix)
-
       MeshNameToRenderSlot &meshNameToSlot = *(it->second);
 
-      for (MeshNameToRenderSlot::iterator it2 = meshNameToSlot.begin; it2 != meshNameToSlot.end; it2++)
+      meshNameToSlot.begin()->second->UseProgram();
+
+      m_Camera->ApplyCameraUniforms();
+      m_Light->ApplyLightUniforms();
+
+      for (MeshNameToRenderSlot::iterator it2 = meshNameToSlot.begin(); it2 != meshNameToSlot.end(); it2++)
       {
-         Mesh& m = m_MeshStore.GetMesh( it2->first );
-
-         glBindVertexBuffer( 0,
-                             m.GetVertexBuffer(),
-                             0,
-                             sizeof(Vertex) ); // TODO: change this zero to stride
-
-         glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m.GetIndicesBuffer() );
-
-         it2->second->Render( m.GetNumIndices() ); // the number of vertices to draw is equal to the number of indices
+         it2->second->BindMesh();
+         it2->second->Render(); // the number of vertices to draw is equal to the number of indices
       }
    }
 }

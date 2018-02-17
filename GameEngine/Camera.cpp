@@ -6,6 +6,13 @@ Camera::Camera()
    m_WindowConfig = nullptr;
 }
 
+void Camera::GetSerializedFields( std::unordered_map<std::string, SerializedField*>& fields )
+{
+   fields[ "fov" ] = &m_FOVAngle;
+   fields[ "nearClip" ] = &m_NearClip;
+   fields[ "farClip" ] = &m_FarClip;
+}
+
 void Camera::Awake()
 {
    m_WindowConfig = &GetGeometryRenderer().SetCamera( *this );
@@ -28,14 +35,19 @@ void Camera::ApplyCameraUniforms()
    worldToView[ 2 ] = vec4( cameraRight[ 2 ], cameraUp[ 2 ], cameraForward[ 2 ], 0.0f );
    worldToView[ 3 ] = vec4( -dot( cameraPos, cameraRight ), -dot( cameraPos, cameraUp ), -dot( cameraPos, cameraForward ), 1.0f );
 
-   // do perspective 
+   mat4 persp = perspective2( m_FOVAngle.Value(),
+                              m_WindowConfig->GetWidth() / m_WindowConfig->GetHeight(),
+                              m_NearClip.Value(),
+                              m_FarClip.Value() );
+
+   mat4 wvp = persp * worldToView;
 
    glUniform3fv( CAMERA_DIRECTION_LOCATION,
                  1,
                  cameraForward );
 
-  // glUniformMatrix4fv( WVP_MATRIX_LOCATION,
-  //                     1,
-  //                     GL_FALSE,
-  //                     GetGameObject().GetTransfrom().GetTransformMatrixAssumingClean() );
+   glUniformMatrix4fv( WVP_MATRIX_LOCATION,
+                       1,
+                       GL_FALSE,
+                       wvp );
 }

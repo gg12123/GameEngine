@@ -11,7 +11,7 @@ void World::Awake( GameObject& rootGameObject, std::list<GameObject*>& gameObjec
    m_GameObjects = &gameObjects;
    m_Root = &rootGameObject.GetTransfrom();
 
-   m_GeometryRenderer.Awake( windowConfig );
+   m_GeometryRenderer.Awake( windowConfig, m_AssetLoader );
 
    for (std::list<GameObject*>::iterator it = m_GameObjects->begin; it != m_GameObjects->end; it++)
    {

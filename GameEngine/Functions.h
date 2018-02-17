@@ -1,6 +1,6 @@
 #pragma once
 
-typedef UpdaterFunctionPtr;
+typedef void(*UpdaterFunctionPtr)();
 
 enum EUpdaterFunction
 {

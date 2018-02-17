@@ -16,7 +16,7 @@ void GameObject::UpdateComponents( EUpdaterFunction updateFunction )
 
    for (std::vector<UpdaterFunctionPtr>::iterator it = functions->begin; it != functions->end; it++)
    {
-      // call it
+      (*it)();
    }
 }
 

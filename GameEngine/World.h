@@ -40,5 +40,6 @@ private:
 
    TransformUpdater m_TransformUpdater;
    GeometryRenderer m_GeometryRenderer;
+   AssetLoader m_AssetLoader;
    Transform *m_Root;
 };
