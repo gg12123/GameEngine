@@ -17,12 +17,12 @@ void Transform::Awake()
 
 std::list<Transform*>::iterator Transform::ChildrenBegin()
 {
-   return m_Childern.begin;
+   return m_Childern.begin();
 }
 
 std::list<Transform*>::iterator Transform::ChildrenEnd()
 {
-   return m_Childern.end;
+   return m_Childern.end();
 }
 
 std::list<Transform*>::iterator Transform::RegisterChild( Transform& child )

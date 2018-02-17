@@ -12,11 +12,11 @@ public:
    virtual void Start();
    virtual void GetSerializedFields( std::unordered_map<std::string, SerializedField*>& fields );
 
+   GameObject& GetGameObject();
+
 protected:
 
    virtual void Awake();
-
-   GameObject& GetGameObject();
 
    void RegisterUpdaterFunction( EUpdaterFunction eFunction, UpdaterFunctionPtr functionPtr );
 

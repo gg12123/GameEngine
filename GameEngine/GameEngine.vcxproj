@@ -117,6 +117,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="Utils.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GeometryRenderer.h" />
@@ -140,6 +141,7 @@
     <ClCompile Include="AssetLoader.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Utils.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GeometryRenderer.cpp" />
     <ClCompile Include="Light.cpp" />

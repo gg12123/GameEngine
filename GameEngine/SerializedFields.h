@@ -1,10 +1,14 @@
 #pragma once
 #include <string>
+#include <iostream>
+#include <fstream>
 #include "vmath.h"
-#include "Quaternion.h"
 
 class SerializedField
 {
+public:
+   virtual void Serialize( std::ofstream& stream ) = 0;
+   virtual void DeSerialize( std::ifstream& stream ) = 0;
 };
 
 class SerializedVector3 : public SerializedField
@@ -41,4 +45,15 @@ public:
    void SetValue( float value );
 private:
    float m_Value;
+};
+
+class SerializedInt32 : public SerializedField
+{
+public:
+   int32_t Value();
+   void SetValue( int32_t value );
+   void Serialize( std::ofstream& stream ) override;
+   void DeSerialize( std::ifstream& stream ) override;
+private:
+   int32_t m_Value;
 };

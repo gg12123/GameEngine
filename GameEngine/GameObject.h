@@ -5,6 +5,7 @@
 #include "World.h"
 #include "Component.h"
 #include "Transform.h"
+#include "SerializedFields.h"
 
 class GameObject
 {
@@ -27,9 +28,13 @@ public:
 
    Transform& GetTransfrom();
 
-   void CacheTransform();
+   void DeSerialize( std::ifstream& stream );
+   void Serialize( std::ofstream& stream );
 
 private:
+
+   // do this inside DeSerialize()
+   void CacheTransform();
 
    std::unordered_map<EUpdaterFunction, std::vector<UpdaterFunctionPtr>> m_UpdaterFunctions;
    std::vector<Component*> m_Components;
