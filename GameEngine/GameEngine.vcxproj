@@ -116,6 +116,7 @@
     <ClInclude Include="AssetLoader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentCreator.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Functions.h" />

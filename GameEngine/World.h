@@ -11,7 +11,7 @@ public:
    World();
 
    // When the world is awoken, all GOs in scene are instantiated and serialized fields good to go
-   void Awake( GameObject& rootGameObject, std::list<GameObject*>& gameObjects, WindowConfiguration& windowConfig );
+   void Awake( GameObject& rootGameObject, WindowConfiguration& windowConfig );
 
    // call start on GOs to be started at the beginning of each update
    void Update();
@@ -34,8 +34,6 @@ private:
    void StartGameObjects();
 
    std::unordered_map<EUpdaterFunction, std::list<GameObject*>> m_UpdatableGameObjects;
-
-   std::list<GameObject*>* m_GameObjects;
    std::list<GameObject*> m_GameObjectsToBeStarted;
 
    TransformUpdater m_TransformUpdater;

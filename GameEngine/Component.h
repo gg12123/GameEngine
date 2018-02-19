@@ -10,9 +10,14 @@ public:
    void Awake( World &world, GameObject &gameObject );
 
    virtual void Start();
+
    virtual void GetSerializedFields( std::unordered_map<std::string, SerializedField*>& fields );
+   void DeSerialize( std::ifstream& stream );
+   void Serialize( std::ofstream& stream );
 
    GameObject& GetGameObject();
+
+   virtual int32_t GetType() = 0;
 
 protected:
 

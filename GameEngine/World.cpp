@@ -1,21 +1,24 @@
 #include "World.h"
+#include "Utils.h"
 
 World::World()
 {
    m_Root = nullptr;
-   m_GameObjects = nullptr;
 }
 
-void World::Awake( GameObject& rootGameObject, std::list<GameObject*>& gameObjects, WindowConfiguration& windowConfig )
+void World::Awake( GameObject& rootGameObject, WindowConfiguration& windowConfig )
 {
-   m_GameObjects = &gameObjects;
    m_Root = &rootGameObject.GetTransfrom();
 
    m_GeometryRenderer.Awake( windowConfig, m_AssetLoader );
 
-   for (std::list<GameObject*>::iterator it = m_GameObjects->begin; it != m_GameObjects->end; it++)
+   EnumerableHierarchy enumerator( m_Root->GetGameObject() );
+   GameObject *next = enumerator.Next();
+
+   while (next != nullptr)
    {
-      (*it)->AwakeComponents( *this );
+      next->AwakeComponents( *this );
+      next = enumerator.Next();
    }
 }
 
@@ -46,12 +49,6 @@ void World::FixedUpdate()
    UpdateGameObjects( eFixedUpdateFunction );
 
    // do some physics stuff
-}
-
-// for when a new GO gets instantiated
-void World::AddNewGameObject( GameObject &gameObject )
-{
-   m_GameObjects->push_back( &gameObject );
 }
 
 void World::RegisterForStart( GameObject &toRegister )

@@ -1,4 +1,5 @@
 #include "GameObject.h"
+#include "ComponentCreator.h"
 
 GameObject::GameObject()
 {
@@ -54,4 +55,37 @@ void GameObject::RegisterUpdaterFunction( EUpdaterFunction updateFunc, UpdaterFu
    }
 
    m_UpdaterFunctions[ updateFunc ].push_back( updaterPtr );
+}
+
+void GameObject::Serialize( std::ofstream& stream )
+{
+   SerializedInt32 number;
+
+   number.SetValue( m_Components.size() );
+   number.Serialize( stream );
+
+   for (std::vector<Component*>::iterator it = m_Components.begin(); it != m_Components.end(); it++)
+   {
+      number.SetValue( (*it)->GetType() );
+      number.Serialize( stream );
+
+      (*it)->Serialize( stream );
+   }
+}
+
+void GameObject::DeSerialize( std::ifstream& stream )
+{
+   SerializedInt32 number;
+   number.DeSerialize( stream );
+   int32_t count = number.Value();
+
+   for (int i = 0; i < count; i++)
+   {
+      number.DeSerialize( stream );
+
+      Component* comp = ComponentCreator::Instance().Create( number.Value() );
+      comp->DeSerialize( stream );
+
+      AddComponent( *comp );
+   }
 }
