@@ -15,7 +15,7 @@ GeometryRenderer::GeometryRenderer()
 }
 
 // maybe pass a config object
-void GeometryRenderer::Awake( WindowConfiguration& const windowConfig, AssetLoader& const assetLoader )
+void GeometryRenderer::Awake( IWindowConfiguration& const windowConfig, AssetLoader& const assetLoader )
 {
    m_WindowConfig = &windowConfig;
    m_AssetLoader = &assetLoader;
@@ -99,7 +99,7 @@ void GeometryRenderer::UnRegister( MeshRenderer& toUnReg, std::list<MeshRenderer
    }
 }
 
-WindowConfiguration& GeometryRenderer::SetCamera( Camera& const cam )
+IWindowConfiguration& GeometryRenderer::SetCamera( Camera& const cam )
 {
    if (m_Camera)
    {

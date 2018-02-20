@@ -21,5 +21,5 @@ private:
    SerializedFloat m_NearClip;
    SerializedFloat m_FarClip;
    SerializedFloat m_FOVAngle;
-   WindowConfiguration *m_WindowConfig;
+   IWindowConfiguration *m_WindowConfig;
 };

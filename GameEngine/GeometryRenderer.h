@@ -18,14 +18,14 @@ public:
    GeometryRenderer();
 
    // must be called before components are awake
-   void Awake( WindowConfiguration& const windowConfig, AssetLoader& const assetLoader );
+   void Awake( IWindowConfiguration& const windowConfig, AssetLoader& const assetLoader );
 
    void Render();
 
    std::list<MeshRenderer*>::iterator Register(MeshRenderer& const toReg);
    void UnRegister( MeshRenderer& toUnReg,  std::list<MeshRenderer*>::iterator toUnRegIter );
 
-   WindowConfiguration& SetCamera( Camera& const cam );
+   IWindowConfiguration& SetCamera( Camera& const cam );
    void SetLight( Light& const light );
 
 private:
@@ -36,7 +36,7 @@ private:
    MeshNameToShaderNameToRenderSlot m_RenderingSlots;
 
    Camera *m_Camera;
-   WindowConfiguration *m_WindowConfig;
+   IWindowConfiguration *m_WindowConfig;
    AssetLoader *m_AssetLoader;
    Light *m_Light;
 };

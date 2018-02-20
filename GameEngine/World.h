@@ -11,15 +11,12 @@ public:
    World();
 
    // When the world is awoken, all GOs in scene are instantiated and serialized fields good to go
-   void Awake( GameObject& rootGameObject, WindowConfiguration& windowConfig );
+   void Awake( GameObject& rootGameObject, IWindowConfiguration& windowConfig );
 
    // call start on GOs to be started at the beginning of each update
    void Update();
    void FixedUpdate();
    void EditUpdate();
-
-   // for when a new GO gets instantiated
-   void AddNewGameObject( GameObject &gameObject );
 
    void RegisterForStart( GameObject &toRegister );
    void RegisterToUpdateFunction( EUpdaterFunction updateFunction, GameObject& gameObject );

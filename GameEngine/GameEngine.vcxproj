@@ -142,6 +142,8 @@
     <ClCompile Include="AssetLoader.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="SerializedFields.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GeometryRenderer.cpp" />
@@ -152,6 +154,7 @@
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TransformUpdater.cpp" />
+    <ClCompile Include="WindowConfiguration.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

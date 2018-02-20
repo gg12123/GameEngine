@@ -2,7 +2,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include "vmath.h"
+#include "MyVmath.h"
 
 class SerializedField
 {
@@ -21,27 +21,27 @@ protected:
 class SerializedVector3 : public SerializedField
 {
 public:
-   vec3 Value();
-   void SetValue( vec3 value );
+   vmath::vec3 Value();
+   void SetValue( vmath::vec3 value );
 protected:
    void LocalSerialize( std::ofstream& stream ) override;
    void LocalDeSerialize( std::ifstream& stream ) override;
    int32_t GetSize() override;
 private:
-   vec3 m_Value;
+   vmath::vec3 m_Value;
 };
 
 class SerializedRotation : public SerializedField
 {
 public:
-   mat4 Value();
-   void SetValue( mat4 value );
+   vmath::mat4 Value();
+   void SetValue( vmath::mat4 value );
 protected:
    void LocalSerialize( std::ofstream& stream ) override;
    void LocalDeSerialize( std::ifstream& stream ) override;
    int32_t GetSize() override;
 private:
-   mat4 m_Value;
+   vmath::mat4 m_Value;
 };
 
 class SerializedString : public SerializedField

@@ -6,7 +6,7 @@ World::World()
    m_Root = nullptr;
 }
 
-void World::Awake( GameObject& rootGameObject, WindowConfiguration& windowConfig )
+void World::Awake( GameObject& rootGameObject, IWindowConfiguration& windowConfig )
 {
    m_Root = &rootGameObject.GetTransfrom();
 
