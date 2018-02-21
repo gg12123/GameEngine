@@ -7,7 +7,7 @@ public:
    virtual float GetHeight() = 0;
 };
 
-class WindowConfiguration : IWindowConfiguration
+class WindowConfiguration : public IWindowConfiguration
 {
 public:
    void Set( float width, float height );

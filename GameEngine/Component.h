@@ -18,6 +18,7 @@ public:
    GameObject& GetGameObject();
 
    virtual int32_t GetType() = 0;
+   virtual std::string GetName() = 0;
 
 protected:
 

@@ -88,4 +88,6 @@ void GameObject::DeSerialize( std::ifstream& stream )
 
       AddComponent( *comp );
    }
+
+   CacheTransform();
 }

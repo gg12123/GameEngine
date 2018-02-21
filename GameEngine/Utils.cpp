@@ -1,6 +1,7 @@
 #include <unordered_map>
 #include "Utils.h"
 #include "Component.h"
+#include "ComponentCreator.h"
 
 EnumerableHierarchy::EnumerableHierarchy( GameObject& const root )
 {
@@ -132,4 +133,45 @@ GameObject& DeSerializeHierarchy( std::string path )
    }
 
    return *root;
+}
+
+GameObject& HierarchyForNewProject()
+{
+   std::unordered_map<std::string, SerializedField*> fields;
+
+   // root
+   GameObject* root = new GameObject();
+
+   root->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
+   root->CacheTransform();
+
+   // cube
+   GameObject* cube = new GameObject();
+
+   cube->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
+   cube->CacheTransform();
+   cube->GetTransfrom().InitParent( root->GetTransfrom() );
+   cube->GetTransfrom().SetLocalPosition( vmath::vec3( 0.0f, 0.0f, 0.0f ) );
+
+   cube->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_MESHRENDERER )) );
+
+   // camera
+   GameObject* cam = new GameObject();
+
+   cam->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
+   cam->CacheTransform();
+   cam->GetTransfrom().InitParent( root->GetTransfrom() );
+   cam->GetTransfrom().SetLocalPosition( vmath::vec3( 10.0f, 0.0f, 0.0f ) );
+
+   cam->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_CAMERA )) );
+
+   // light
+   GameObject* light = new GameObject();
+
+   light->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
+   light->CacheTransform();
+   light->GetTransfrom().InitParent( root->GetTransfrom() );
+   light->GetTransfrom().SetLocalPosition( vmath::vec3( 10.0f, 10.0f, 10.0f ) );
+
+   light->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_LIGHT )) );
 }

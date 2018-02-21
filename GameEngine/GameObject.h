@@ -31,10 +31,10 @@ public:
    void DeSerialize( std::ifstream& stream );
    void Serialize( std::ofstream& stream );
 
-private:
-
    // do this inside DeSerialize()
    void CacheTransform();
+
+private:
 
    std::unordered_map<EUpdaterFunction, std::vector<UpdaterFunctionPtr>> m_UpdaterFunctions;
    std::vector<Component*> m_Components;

@@ -92,3 +92,8 @@ void Component::DeSerialize( std::ifstream& stream )
       }
    }
 }
+
+void Component::GetSerializedFields( std::unordered_map<std::string, SerializedField*>& fields )
+{
+
+}
