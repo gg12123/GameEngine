@@ -57,6 +57,11 @@ void GameObject::RegisterUpdaterFunction( EUpdaterFunction updateFunc, UpdaterFu
    m_UpdaterFunctions[ updateFunc ].push_back( updaterPtr );
 }
 
+void GameObject::CacheTransform()
+{
+   
+}
+
 void GameObject::Serialize( std::ofstream& stream )
 {
    SerializedInt32 number;

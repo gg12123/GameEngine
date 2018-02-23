@@ -1,4 +1,5 @@
 #include "SerializedFields.h"
+#include "Debug.h"
 
 // ################ BASE #######################
 
@@ -21,10 +22,17 @@ void SerializedField::SerializeWithSize( std::ofstream& stream )
    LocalSerialize( stream );
 }
 
-void SerializedField::DeSerializeWithSize( std::ifstream& stream )
+// ################### FIXED SIZE ####################################
+
+void FixedSizeSerializedField::DeSerializeWithSize( std::ifstream& stream )
 {
    SerializedInt32 size;
-   size.DeSerialize( stream ); // the size is not actually used
+   size.DeSerialize( stream );
+
+   if (size.Value() != GetSize())
+   {
+      Debug::Instance().LogError( "Size inconsistency in serialized field" );
+   }
 
    LocalDeSerialize( stream );
 }
@@ -161,6 +169,25 @@ void SerializedString::LocalSerialize( std::ofstream& stream )
    stream.write( m_Value.c_str(), m_Value.size() );
 }
 
+void SerializedString::DeSerializeWithSize( std::ifstream& stream )
+{
+   SerializedInt32 x;
+
+   x.DeSerialize( stream );
+   int32_t fullSize = x.Value();
+
+   x.DeSerialize( stream );
+   int32_t numChars = x.Value();
+
+   if (fullSize != (numChars * sizeof( char ) + sizeof( int32_t )))
+   {
+      Debug::Instance().LogError( "String size incorect" );
+   }
+
+   m_Value.resize( numChars );
+   stream.read( &m_Value[ 0 ], numChars );
+}
+
 void SerializedString::LocalDeSerialize( std::ifstream& stream )
 {
    SerializedInt32 numChars;
@@ -173,7 +200,7 @@ void SerializedString::LocalDeSerialize( std::ifstream& stream )
 
 int32_t SerializedString::GetSize()
 {
-   return m_Value.length() * sizeof(char) + sizeof(int32_t);
+   return m_Value.length() * sizeof( char ) + sizeof( int32_t );
 }
 
 // ####################### INT32 ########################### 

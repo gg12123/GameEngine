@@ -34,6 +34,9 @@ public:
    // do this inside DeSerialize()
    void CacheTransform();
 
+   template <class T>
+   T* GetComponent();
+
 private:
 
    std::unordered_map<EUpdaterFunction, std::vector<UpdaterFunctionPtr>> m_UpdaterFunctions;
@@ -42,3 +45,20 @@ private:
    World *m_World;
    Transform *m_Transform;
 };
+
+template <class T>
+T* GameObject::GetComponent()
+{
+   T* comp = nullptr;
+
+   for (std::vector<Component*>::iterator it = m_Components.begin(); it != m_Components.end(); it++)
+   {
+      comp = dynamic_cast<T*>(*it);
+
+      if (comp)
+         break;
+   }
+
+   return comp;
+}
+

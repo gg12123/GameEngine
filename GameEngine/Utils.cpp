@@ -152,8 +152,14 @@ GameObject& HierarchyForNewProject()
    cube->CacheTransform();
    cube->GetTransfrom().InitParent( root->GetTransfrom() );
    cube->GetTransfrom().SetLocalPosition( vmath::vec3( 0.0f, 0.0f, 0.0f ) );
+   cube->GetTransfrom().SetLocalRotation( vmath::mat4().identity() );
 
    cube->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_MESHRENDERER )) );
+   cube->GetComponent<MeshRenderer>()->GetSerializedFields( fields );
+   dynamic_cast<SerializedString*>(fields[ "meshName" ])->SetValue( "square.mesh" );
+   dynamic_cast<SerializedString*>(fields[ "shaderName" ])->SetValue( "diffuse.txt" );
+
+   fields.clear();
 
    // camera
    GameObject* cam = new GameObject();
@@ -161,9 +167,16 @@ GameObject& HierarchyForNewProject()
    cam->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
    cam->CacheTransform();
    cam->GetTransfrom().InitParent( root->GetTransfrom() );
-   cam->GetTransfrom().SetLocalPosition( vmath::vec3( 10.0f, 0.0f, 0.0f ) );
+   cam->GetTransfrom().SetLocalPosition( vmath::vec3( 0.0f, 0.0f, 10.0f ) );
+   cam->GetTransfrom().SetLocalRotation( vmath::rotate( 0.0f, (float)M_PI, 0.0f ) );
 
    cam->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_CAMERA )) );
+   cam->GetComponent<Camera>()->GetSerializedFields( fields );
+   dynamic_cast<SerializedFloat*>(fields[ "fov" ])->SetValue( (float)M_PI / 4.0f );
+   dynamic_cast<SerializedFloat*>(fields[ "nearClip" ])->SetValue( 0.3f );
+   dynamic_cast<SerializedFloat*>(fields[ "farClip" ])->SetValue( 1000.0f );
+
+   fields.clear();
 
    // light
    GameObject* light = new GameObject();
@@ -171,7 +184,8 @@ GameObject& HierarchyForNewProject()
    light->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
    light->CacheTransform();
    light->GetTransfrom().InitParent( root->GetTransfrom() );
-   light->GetTransfrom().SetLocalPosition( vmath::vec3( 10.0f, 10.0f, 10.0f ) );
+   light->GetTransfrom().SetLocalPosition( vmath::vec3( 0.0f, 0.0f, 10.0f ) );
+   light->GetTransfrom().SetLocalRotation( vmath::rotate( 0.0f, (float)M_PI, 0.0f ) );
 
    light->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_LIGHT )) );
 }
