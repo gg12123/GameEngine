@@ -16,7 +16,6 @@ GeometryRenderer::GeometryRenderer()
    m_Light = nullptr;
 }
 
-// maybe pass a config object
 void GeometryRenderer::Awake( IWindowConfiguration& windowConfig, AssetLoader& assetLoader )
 {
    m_WindowConfig = &windowConfig;

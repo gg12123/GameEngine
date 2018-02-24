@@ -4,6 +4,8 @@
 #include "Path.h"
 #include "Debug.h"
 
+#define END_OF_SHADER '~'
+
 using namespace std;
 
 static GLchar* LoadShaderSource(ifstream &file)
@@ -11,13 +13,13 @@ static GLchar* LoadShaderSource(ifstream &file)
    std::string source;
    char nextChar = file.get();
 
-   while ((nextChar != '#') && !file.eof());
+   while ((nextChar != END_OF_SHADER) && !file.eof());
    {
       source.append( 1, nextChar );
       nextChar = file.get();
    }
 
-   if (nextChar != '#')
+   if (nextChar != END_OF_SHADER)
    {
       Debug::Instance().LogError( "Error loading shader source" );
    }

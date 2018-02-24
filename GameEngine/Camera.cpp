@@ -68,3 +68,18 @@ std::string Camera::GetName()
 {
    return "Camera";
 }
+
+void Camera::SetNearClip( float val )
+{
+   m_NearClip.SetValue( val );
+}
+
+void Camera::SetFarClip( float val )
+{
+   m_FarClip.SetValue( val );
+}
+
+void Camera::SetFOV( float val )
+{
+   m_FOVAngle.SetValue( val );
+}

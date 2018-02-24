@@ -1,0 +1,42 @@
+#version 430 core
+
+layout (location = 0) in vec4 position;
+layout (location = 1) in vec4 normal;
+layout (location = 2) in vec2 tc;
+
+layout (location = 0) uniform mat4 owMatrix;
+layout (location = 1) uniform mat4 wvpMatrix;
+layout (location = 2) uniform vec3 viewDir;
+layout (location = 3) uniform vec3 lightDir;
+layout (location = 4) uniform vec4 colour1;
+
+out VS_OUT
+{
+	float diffuse;
+	vec4 colour;
+} vs_out;
+
+void main(void)
+{
+	vs_out.colour = colour1;
+	gl_Position = wvpMatrix * owMatrix * position;
+}
+
+~
+
+#version 430 core
+
+layout (location = 0) out vec4 colour;
+
+in VS_OUT
+{
+	float diffuse;
+	vec4 colour;
+} fs_in;
+
+void main(void)
+{
+	colour = fs_in.colour;
+}
+
+~

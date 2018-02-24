@@ -14,6 +14,10 @@ public:
    int32_t GetType() override;
    std::string GetName() override;
 
+   void SetNearClip( float val );
+   void SetFarClip( float val );
+   void SetFOV( float val );
+
 protected:
 
    void Awake() override;

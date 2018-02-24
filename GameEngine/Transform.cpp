@@ -225,3 +225,9 @@ std::string Transform::GetName()
 {
    return "Transform";
 }
+
+void Transform::GetSerializedFields( std::unordered_map<std::string, SerializedField*>& fields )
+{
+   fields[ "position" ] = &m_LocalPosition;
+   fields[ "rotation" ] = &m_LocalRotation;
+}

@@ -55,3 +55,13 @@ std::string MeshRenderer::GetName()
 {
    return "Mesh Renderer";
 }
+
+void MeshRenderer::SetMeshName( std::string name )
+{
+   m_MeshName.SetValue( name );
+}
+
+void MeshRenderer::SetShaderName( std::string name )
+{
+   m_ShaderName.SetValue( name );
+}

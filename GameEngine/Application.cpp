@@ -25,7 +25,11 @@ bool Application::InitWindow()
                                    NULL );
 
       if (m_Window)
+      {
          ok = true;
+         glfwMakeContextCurrent( m_Window );
+         gl3wInit();
+      }
    }
 
    return ok;
@@ -53,9 +57,11 @@ void Application::InitWorld()
 {
    // DeSerialize here if there is a start up secene available
 
-   GameObject& root = HierarchyForNewProject();
+   std::vector<GameObject*> objects;
 
-   m_World.Awake( root, m_WindowConfig );
+   GameObject& root = HierarchyForNewProject( objects );
+
+   m_World.Awake( root, objects, m_WindowConfig );
 }
 
 void Application::RunLoop()

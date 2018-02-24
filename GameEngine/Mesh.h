@@ -10,6 +10,7 @@ public:
    static Asset* CreateInstance();
 
    void Load( std::string name ) override;
+   Mesh* MeshValue() override;
 
    int GetNumVertices();
    int GetNumIndices();

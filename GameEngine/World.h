@@ -12,8 +12,10 @@ public:
 
    World();
 
-   // When the world is awoken, all GOs in scene are instantiated and serialized fields good to go
-   void Awake( GameObject& rootGameObject, IWindowConfiguration& windowConfig );
+   // When the world is awoken, all GOs in scene are instantiated and serialized fields good to go.
+   // The vector of game objects is required becasue references between transforms and game objects is not
+   // yet setup so the hierarchy cannot be iterated by the EnumerableHierarchy object.
+   void Awake( GameObject& rootGameObject, std::vector<GameObject*>& gameObjects, IWindowConfiguration& windowConfig );
 
    // call start on GOs to be started at the beginning of each update
    void Update();

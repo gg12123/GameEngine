@@ -19,4 +19,4 @@ GameObject& DeSerializeHierarchy( std::string path );
 
 void SerializeHierarchy( GameObject& root, std::string path );
 
-GameObject& HierarchyForNewProject();
+GameObject& HierarchyForNewProject( std::vector<GameObject*>& gameObjects );

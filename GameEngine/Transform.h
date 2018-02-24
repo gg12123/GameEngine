@@ -40,6 +40,7 @@ public:
 
    int32_t GetType() override;
    std::string GetName() override;
+   void GetSerializedFields( std::unordered_map<std::string, SerializedField*>& fields ) override;
 
 protected:
 

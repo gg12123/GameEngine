@@ -6,6 +6,11 @@ Asset* Mesh::CreateInstance()
    return new Mesh();
 }
 
+Mesh* Mesh::MeshValue()
+{
+   return this;
+}
+
 void Mesh::Load( std::string name )
 {
    std::string path = Path::Instance().GetMeshPath( name );

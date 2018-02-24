@@ -8,19 +8,15 @@ World::World()
    m_Root = nullptr;
 }
 
-void World::Awake( GameObject& rootGameObject, IWindowConfiguration& windowConfig )
+void World::Awake( GameObject& rootGameObject, std::vector<GameObject*>& gameObjects, IWindowConfiguration& windowConfig )
 {
    m_Root = &rootGameObject.GetTransform();
 
    m_GeometryRenderer.Awake( windowConfig, m_AssetLoader );
 
-   EnumerableHierarchy enumerator( m_Root->GetGameObject() );
-   GameObject *next = enumerator.Next();
-
-   while (next != nullptr)
+   for (std::vector<GameObject*>::iterator it = gameObjects.begin(); it != gameObjects.end(); it++)
    {
-      next->AwakeComponents( *this );
-      next = enumerator.Next();
+      (*it)->AwakeComponents( *this );
    }
 }
 

@@ -140,15 +140,26 @@ GameObject& DeSerializeHierarchy( std::string path )
    return *root;
 }
 
-GameObject& HierarchyForNewProject()
+static void InitTransformState( Transform& tran, vmath::vec3 pos, vmath::mat4 rot )
 {
    std::unordered_map<std::string, SerializedField*> fields;
+   tran.GetSerializedFields( fields );
 
+   dynamic_cast<SerializedRotation*>(fields[ "rotation" ])->SetValue( rot );
+   dynamic_cast<SerializedVector3*>(fields[ "position" ])->SetValue( pos );
+}
+
+// In this function, the created components cannot interact with the world so be
+// carefull what functions you call on them.
+GameObject& HierarchyForNewProject( std::vector<GameObject*>& gameObjects )
+{
    // root
    GameObject* root = new GameObject();
 
    root->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
    root->CacheTransform();
+
+   gameObjects.push_back( root );
 
    // cube
    GameObject* cube = new GameObject();
@@ -156,15 +167,14 @@ GameObject& HierarchyForNewProject()
    cube->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
    cube->CacheTransform();
    cube->GetTransform().InitParent( root->GetTransform() );
-   cube->GetTransform().SetLocalPosition( vmath::vec3( 0.0f, 0.0f, 0.0f ) );
-   cube->GetTransform().SetLocalRotation( vmath::mat4().identity() );
+   InitTransformState( cube->GetTransform(), vmath::vec3( 0.0f, 0.0f, 0.0f ), vmath::mat4().identity() );
 
    cube->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_MESHRENDERER )) );
-   cube->GetComponent<MeshRenderer>()->GetSerializedFields( fields );
-   dynamic_cast<SerializedString*>(fields[ "meshName" ])->SetValue( "square.mesh" );
-   dynamic_cast<SerializedString*>(fields[ "shaderName" ])->SetValue( "diffuse.txt" );
+   MeshRenderer* meshRen = cube->GetComponent<MeshRenderer>();
+   meshRen->SetMeshName( "square.mesh" );
+   meshRen->SetShaderName( "diffuse.txt" );
 
-   fields.clear();
+   gameObjects.push_back( cube );
 
    // camera
    GameObject* cam = new GameObject();
@@ -172,16 +182,15 @@ GameObject& HierarchyForNewProject()
    cam->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
    cam->CacheTransform();
    cam->GetTransform().InitParent( root->GetTransform() );
-   cam->GetTransform().SetLocalPosition( vmath::vec3( 0.0f, 0.0f, 10.0f ) );
-   cam->GetTransform().SetLocalRotation( vmath::rotate( 0.0f, (float)M_PI, 0.0f ) );
+   InitTransformState( cam->GetTransform(), vmath::vec3( 0.0f, 0.0f, 10.0f ), vmath::rotate( 0.0f, (float)M_PI, 0.0f ) );
 
    cam->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_CAMERA )) );
-   cam->GetComponent<Camera>()->GetSerializedFields( fields );
-   dynamic_cast<SerializedFloat*>(fields[ "fov" ])->SetValue( (float)M_PI / 4.0f );
-   dynamic_cast<SerializedFloat*>(fields[ "nearClip" ])->SetValue( 0.3f );
-   dynamic_cast<SerializedFloat*>(fields[ "farClip" ])->SetValue( 1000.0f );
+   Camera* camComp = cam->GetComponent<Camera>();
+   camComp->SetFOV( (float)M_PI / 4.0f );
+   camComp->SetNearClip( 0.3f );
+   camComp->SetFarClip( 1000.0f );
 
-   fields.clear();
+   gameObjects.push_back( cam );
 
    // light
    GameObject* light = new GameObject();
@@ -189,10 +198,11 @@ GameObject& HierarchyForNewProject()
    light->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
    light->CacheTransform();
    light->GetTransform().InitParent( root->GetTransform() );
-   light->GetTransform().SetLocalPosition( vmath::vec3( 0.0f, 0.0f, 10.0f ) );
-   light->GetTransform().SetLocalRotation( vmath::rotate( 0.0f, (float)M_PI, 0.0f ) );
+   InitTransformState( light->GetTransform(), vmath::vec3( 0.0f, 0.0f, 10.0f ), vmath::rotate( 0.0f, (float)M_PI, 0.0f ) );
 
    light->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_LIGHT )) );
+
+   gameObjects.push_back( light );
 
    return *root;
 }
