@@ -1,7 +1,14 @@
 #pragma once
-#include "World.h"
+#include <unordered_map>
+#include <string>
 #include "Functions.h"
-#include "GameObject.h"
+#include "SerializedFields.h"
+
+class GameObject;
+class World;
+class TransformUpdater;
+class Transform;
+class GeometryRenderer;
 
 class Component
 {

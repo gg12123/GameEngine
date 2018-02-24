@@ -27,6 +27,8 @@ bool Application::InitWindow()
       if (m_Window)
          ok = true;
    }
+
+   return ok;
 }
 
 void Application::SetupCallbacks()

@@ -1,0 +1,8 @@
+#pragma once
+
+#define COMPONENT_COUNT 4
+
+#define COMPONENT_ID_TRANSFORM    0
+#define COMPONENT_ID_MESHRENDERER 1
+#define COMPONENT_ID_CAMERA       2
+#define COMPONENT_ID_LIGHT        3

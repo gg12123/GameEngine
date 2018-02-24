@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
-#include "Transform.h"
+
+class Transform;
 
 class TransformUpdater
 {

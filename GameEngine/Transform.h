@@ -38,6 +38,9 @@ public:
    std::list<Transform*>::iterator RegisterChild( Transform& child );
    void UnRegisterChild( std::list<Transform*>::iterator toChild );
 
+   int32_t GetType() override;
+   std::string GetName() override;
+
 protected:
 
    void Awake();

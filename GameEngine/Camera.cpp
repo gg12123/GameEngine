@@ -1,5 +1,12 @@
 #include "Camera.h"
 #include "ShaderLocations.h"
+#include "GeometryRenderer.h"
+#include "MyVmath.h"
+#include "Transform.h"
+#include "GameObject.h"
+#include "ComponentIDs.h"
+
+using namespace vmath;
 
 Camera::Camera()
 {
@@ -20,7 +27,7 @@ void Camera::Awake()
 
 void Camera::ApplyCameraUniforms()
 {
-   mat4 cameraTransform = GetGameObject().GetTransfrom().GetTransformMatrixAssumingClean();
+   mat4 cameraTransform = GetGameObject().GetTransform().GetTransformMatrixAssumingClean();
 
    vec3 cameraForward = vec3( cameraTransform[ 2 ][ 0 ], cameraTransform[ 2 ][ 1 ], cameraTransform[ 2 ][ 2 ] );
    vec3 cameraUp = vec3( cameraTransform[ 1 ][ 0 ], cameraTransform[ 1 ][ 1 ], cameraTransform[ 1 ][ 2 ] );
@@ -50,4 +57,14 @@ void Camera::ApplyCameraUniforms()
                        1,
                        GL_FALSE,
                        wvp );
+}
+
+int32_t Camera::GetType()
+{
+   return COMPONENT_ID_CAMERA;
+}
+
+std::string Camera::GetName()
+{
+   return "Camera";
 }

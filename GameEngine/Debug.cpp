@@ -8,5 +8,5 @@ Debug& Debug::Instance()
 
 void Debug::LogError( std::string msg )
 {
-   // maybe use imgui here
+   // maybe use imgui here aswell as file log
 }

@@ -5,6 +5,8 @@
 #include "ShaderLocations.h"
 #include "Mesh.h"
 #include "ShaderProgram.h"
+#include "Camera.h"
+#include "Light.h"
 
 GeometryRenderer::GeometryRenderer()
 {
@@ -15,7 +17,7 @@ GeometryRenderer::GeometryRenderer()
 }
 
 // maybe pass a config object
-void GeometryRenderer::Awake( IWindowConfiguration& const windowConfig, AssetLoader& const assetLoader )
+void GeometryRenderer::Awake( IWindowConfiguration& windowConfig, AssetLoader& assetLoader )
 {
    m_WindowConfig = &windowConfig;
    m_AssetLoader = &assetLoader;
@@ -56,7 +58,7 @@ void GeometryRenderer::Awake( IWindowConfiguration& const windowConfig, AssetLoa
    glEnableVertexAttribArray( TC_VERT_ATTRIBUTE );
 }
 
-std::list<MeshRenderer*>::iterator GeometryRenderer::Register( MeshRenderer& const toReg )
+std::list<MeshRenderer*>::iterator GeometryRenderer::Register( MeshRenderer& toReg )
 {
    // if this is a new shader name
    if (m_RenderingSlots.count( toReg.GetShaderName() ) == 0)
@@ -99,7 +101,7 @@ void GeometryRenderer::UnRegister( MeshRenderer& toUnReg, std::list<MeshRenderer
    }
 }
 
-IWindowConfiguration& GeometryRenderer::SetCamera( Camera& const cam )
+IWindowConfiguration& GeometryRenderer::SetCamera( Camera& cam )
 {
    if (m_Camera)
    {
@@ -111,7 +113,7 @@ IWindowConfiguration& GeometryRenderer::SetCamera( Camera& const cam )
    return *m_WindowConfig;
 }
 
-void GeometryRenderer::SetLight( Light& const light )
+void GeometryRenderer::SetLight( Light& light )
 {
    if (m_Light)
    {
@@ -123,7 +125,7 @@ void GeometryRenderer::SetLight( Light& const light )
 
 void GeometryRenderer::Render()
 {
-   for (MeshNameToShaderNameToRenderSlot::iterator it = m_RenderingSlots.begin; it != m_RenderingSlots.end; it++)
+   for (MeshNameToShaderNameToRenderSlot::iterator it = m_RenderingSlots.begin(); it != m_RenderingSlots.end(); it++)
    {
       MeshNameToRenderSlot &meshNameToSlot = *(it->second);
 

@@ -2,8 +2,13 @@
 #include "Utils.h"
 #include "Component.h"
 #include "ComponentCreator.h"
+#include "GameObject.h"
+#include "Transform.h"
+#include "Camera.h"
+#include "Light.h"
+#include "MeshRenderer.h"
 
-EnumerableHierarchy::EnumerableHierarchy( GameObject& const root )
+EnumerableHierarchy::EnumerableHierarchy( GameObject& root )
 {
    m_Stack.push( &root );
 }
@@ -17,7 +22,7 @@ GameObject* EnumerableHierarchy::Next()
       next = m_Stack.top();
       m_Stack.pop();
 
-      for (std::list<Transform*>::iterator it = next->GetTransfrom().ChildrenBegin(); it != next->GetTransfrom().ChildrenEnd(); it++)
+      for (std::list<Transform*>::iterator it = next->GetTransform().ChildrenBegin(); it != next->GetTransform().ChildrenEnd(); it++)
       {
          m_Stack.push( &((*it)->GetGameObject()) );
       }
@@ -69,7 +74,7 @@ void SerializeHierarchy( GameObject& root, std::string path )
       currID++;
 
       // parent
-      id.SetValue( gameObjToID[ &next->GetTransfrom().GetParent().GetGameObject() ] );
+      id.SetValue( gameObjToID[ &next->GetTransform().GetParent().GetGameObject() ] );
       id.Serialize( stream );
 
       // components
@@ -106,7 +111,7 @@ GameObject& DeSerializeHierarchy( std::string path )
 
    // get the id
    id.DeSerialize( stream );
-   idToGameObj[ id.Value ] = root;
+   idToGameObj[ id.Value() ] = root;
 
    // there is no parent id for the root
    
@@ -120,7 +125,7 @@ GameObject& DeSerializeHierarchy( std::string path )
 
       // get the id
       id.DeSerialize( stream );
-      idToGameObj[ id.Value ] = obj;
+      idToGameObj[ id.Value() ] = obj;
 
       // get the parent id
       id.DeSerialize( stream );
@@ -129,7 +134,7 @@ GameObject& DeSerializeHierarchy( std::string path )
       obj->DeSerialize( stream );
 
       // init parent
-      obj->GetTransfrom().InitParent( (idToGameObj[ id.Value ])->GetTransform() );
+      obj->GetTransform().InitParent( (idToGameObj[ id.Value() ])->GetTransform() );
    }
 
    return *root;
@@ -150,9 +155,9 @@ GameObject& HierarchyForNewProject()
 
    cube->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
    cube->CacheTransform();
-   cube->GetTransfrom().InitParent( root->GetTransfrom() );
-   cube->GetTransfrom().SetLocalPosition( vmath::vec3( 0.0f, 0.0f, 0.0f ) );
-   cube->GetTransfrom().SetLocalRotation( vmath::mat4().identity() );
+   cube->GetTransform().InitParent( root->GetTransform() );
+   cube->GetTransform().SetLocalPosition( vmath::vec3( 0.0f, 0.0f, 0.0f ) );
+   cube->GetTransform().SetLocalRotation( vmath::mat4().identity() );
 
    cube->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_MESHRENDERER )) );
    cube->GetComponent<MeshRenderer>()->GetSerializedFields( fields );
@@ -166,9 +171,9 @@ GameObject& HierarchyForNewProject()
 
    cam->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
    cam->CacheTransform();
-   cam->GetTransfrom().InitParent( root->GetTransfrom() );
-   cam->GetTransfrom().SetLocalPosition( vmath::vec3( 0.0f, 0.0f, 10.0f ) );
-   cam->GetTransfrom().SetLocalRotation( vmath::rotate( 0.0f, (float)M_PI, 0.0f ) );
+   cam->GetTransform().InitParent( root->GetTransform() );
+   cam->GetTransform().SetLocalPosition( vmath::vec3( 0.0f, 0.0f, 10.0f ) );
+   cam->GetTransform().SetLocalRotation( vmath::rotate( 0.0f, (float)M_PI, 0.0f ) );
 
    cam->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_CAMERA )) );
    cam->GetComponent<Camera>()->GetSerializedFields( fields );
@@ -183,9 +188,11 @@ GameObject& HierarchyForNewProject()
 
    light->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
    light->CacheTransform();
-   light->GetTransfrom().InitParent( root->GetTransfrom() );
-   light->GetTransfrom().SetLocalPosition( vmath::vec3( 0.0f, 0.0f, 10.0f ) );
-   light->GetTransfrom().SetLocalRotation( vmath::rotate( 0.0f, (float)M_PI, 0.0f ) );
+   light->GetTransform().InitParent( root->GetTransform() );
+   light->GetTransform().SetLocalPosition( vmath::vec3( 0.0f, 0.0f, 10.0f ) );
+   light->GetTransform().SetLocalRotation( vmath::rotate( 0.0f, (float)M_PI, 0.0f ) );
 
    light->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_LIGHT )) );
+
+   return *root;
 }

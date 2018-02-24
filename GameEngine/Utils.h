@@ -1,12 +1,13 @@
 #pragma once
 #include <stack>
 #include <string>
-#include "GameObject.h"
+
+class GameObject;
 
 class EnumerableHierarchy
 {
 public:
-   EnumerableHierarchy( GameObject& const root );
+   EnumerableHierarchy( GameObject& root );
 
    GameObject* Next();
 

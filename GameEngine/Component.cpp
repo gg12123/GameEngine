@@ -1,4 +1,9 @@
 #include "Component.h"
+#include "GameObject.h"
+#include "World.h"
+#include "TransformUpdater.h"
+#include "Transform.h"
+#include "GeometryRenderer.h"
 
 void Component::Awake( World &world, GameObject &gameObject )
 {

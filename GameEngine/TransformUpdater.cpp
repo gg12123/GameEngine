@@ -1,4 +1,5 @@
 #include "TransformUpdater.h"
+#include "Transform.h"
 
 void TransformUpdater::AddDirtyTransform( Transform& dirtyTransform )
 {
@@ -25,7 +26,7 @@ Transform& TransformUpdater::FindRootDirtyParent( Transform& child )
 
 void TransformUpdater::UpdateTransforms()
 {
-   for (std::vector<Transform*>::iterator it = m_DirtyTransforms.begin; it != m_DirtyTransforms.end; it++)
+   for (std::vector<Transform*>::iterator it = m_DirtyTransforms.begin(); it != m_DirtyTransforms.end(); it++)
    {
       Transform *t = (*it);
 

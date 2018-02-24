@@ -23,7 +23,11 @@ static GLchar* LoadShaderSource(ifstream &file)
    }
 
    char * copy = new char[ source.size() ];
-   source.copy( copy, source.size() );
+
+   for (unsigned int i = 0; i < source.size(); i++)
+   {
+      copy[ i ] = source.at( i );
+   }
 
    return copy;
 }

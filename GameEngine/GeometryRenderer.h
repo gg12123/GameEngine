@@ -3,10 +3,11 @@
 #include <string>
 #include <list>
 #include "RenderingSlot.h"
-#include "Camera.h"
 #include "WindowConfiguration.h"
 #include "AssetLoader.h"
-#include "Light.h"
+
+class Light;
+class Camera;
 
 typedef std::unordered_map<std::string, RenderingSlot*> MeshNameToRenderSlot;
 typedef std::unordered_map<std::string, MeshNameToRenderSlot*> MeshNameToShaderNameToRenderSlot;
@@ -18,15 +19,15 @@ public:
    GeometryRenderer();
 
    // must be called before components are awake
-   void Awake( IWindowConfiguration& const windowConfig, AssetLoader& const assetLoader );
+   void Awake( IWindowConfiguration& windowConfig, AssetLoader& assetLoader );
 
    void Render();
 
-   std::list<MeshRenderer*>::iterator Register(MeshRenderer& const toReg);
+   std::list<MeshRenderer*>::iterator Register(MeshRenderer& toReg);
    void UnRegister( MeshRenderer& toUnReg,  std::list<MeshRenderer*>::iterator toUnRegIter );
 
-   IWindowConfiguration& SetCamera( Camera& const cam );
-   void SetLight( Light& const light );
+   IWindowConfiguration& SetCamera( Camera& cam );
+   void SetLight( Light& light );
 
 private:
 

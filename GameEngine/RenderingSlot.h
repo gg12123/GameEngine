@@ -1,14 +1,15 @@
 #pragma once
 #include <list>
 #include "MeshRenderer.h"
+#include "Mesh.h"
 
 class RenderingSlot
 {
 public:
 
-   RenderingSlot( Mesh& const mesh, GLuint shader );
+   RenderingSlot( Mesh& mesh, GLuint shader );
 
-   std::list<MeshRenderer*>::iterator Add( MeshRenderer& const meshRenderer );
+   std::list<MeshRenderer*>::iterator Add( MeshRenderer& meshRenderer );
    void Remove( const std::list<MeshRenderer*>::iterator toRemove );
    void Render();
 

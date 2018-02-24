@@ -1,5 +1,7 @@
 #include "World.h"
 #include "Utils.h"
+#include "GameObject.h"
+#include "Transform.h"
 
 World::World()
 {
@@ -8,7 +10,7 @@ World::World()
 
 void World::Awake( GameObject& rootGameObject, IWindowConfiguration& windowConfig )
 {
-   m_Root = &rootGameObject.GetTransfrom();
+   m_Root = &rootGameObject.GetTransform();
 
    m_GeometryRenderer.Awake( windowConfig, m_AssetLoader );
 
@@ -58,22 +60,43 @@ void World::RegisterForStart( GameObject &toRegister )
 
 void World::RegisterToUpdateFunction( EUpdaterFunction updateFunction, GameObject& gameObject )
 {
-   m_UpdatableGameObjects[ updateFunction ].push_back( &gameObject );
+   std::unordered_map<EUpdaterFunction, std::list<GameObject*>*>::iterator it;
+   std::list<GameObject*>* lst;
+
+   it = m_UpdatableGameObjects.find( updateFunction );
+
+   if (it == m_UpdatableGameObjects.end())
+   {
+      lst = new std::list<GameObject*>();
+      m_UpdatableGameObjects[ updateFunction ] = lst;
+   }
+   else
+   {
+      lst = it->second;
+   }
+
+   lst->push_back( &gameObject );
 }
 
 void World::UpdateGameObjects( EUpdaterFunction updateFunction )
 {
-   std::list<GameObject*>* toUpdate = &m_UpdatableGameObjects[ updateFunction ];
+   std::unordered_map<EUpdaterFunction, std::list<GameObject*>*>::iterator it;
+   it = m_UpdatableGameObjects.find( updateFunction );
 
-   for (std::list<GameObject*>::iterator it = toUpdate->begin; it != toUpdate->end; it++)
+   if (it != m_UpdatableGameObjects.end())
    {
-      (*it)->UpdateComponents( updateFunction );
+      std::list<GameObject*>* toUpdate = it->second;
+
+      for (std::list<GameObject*>::iterator it = toUpdate->begin(); it != toUpdate->end(); it++)
+      {
+         (*it)->UpdateComponents( updateFunction );
+      }
    }
 }
 
 void World::StartGameObjects()
 {
-   for (std::list<GameObject*>::iterator it = m_GameObjectsToBeStarted.begin; it != m_GameObjectsToBeStarted.end; it++)
+   for (std::list<GameObject*>::iterator it = m_GameObjectsToBeStarted.begin(); it != m_GameObjectsToBeStarted.end(); it++)
    {
       (*it)->StartComponents();
    }

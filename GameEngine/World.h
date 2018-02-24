@@ -1,8 +1,10 @@
 #pragma once
 #include <list>
-#include "GameObject.h"
+#include <unordered_map>
 #include "TransformUpdater.h"
 #include "GeometryRenderer.h"
+
+class GameObject;
 
 class World
 {
@@ -30,7 +32,7 @@ private:
    void UpdateGameObjects( EUpdaterFunction updateFunction );
    void StartGameObjects();
 
-   std::unordered_map<EUpdaterFunction, std::list<GameObject*>> m_UpdatableGameObjects;
+   std::unordered_map<EUpdaterFunction, std::list<GameObject*>*> m_UpdatableGameObjects;
    std::list<GameObject*> m_GameObjectsToBeStarted;
 
    TransformUpdater m_TransformUpdater;

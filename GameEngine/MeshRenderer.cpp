@@ -1,6 +1,10 @@
 #include "MeshRenderer.h"
+#include "GeometryRenderer.h"
 #include "GL/gl3w.h"
 #include "ShaderLocations.h"
+#include "GameObject.h"
+#include "Transform.h"
+#include "ComponentIDs.h"
 
 MeshRenderer::MeshRenderer()
 {
@@ -19,15 +23,15 @@ void MeshRenderer::GetSerializedFields( std::unordered_map<std::string, Serializ
 
 void MeshRenderer::ApplyUniforms()
 {
-
+   glUniformMatrix4fv( OW_MATRIX_LOCATION,
+                       1,
+                       GL_FALSE,
+                       GetGameObject().GetTransform().GetTransformMatrixAssumingClean() );
 }
 
 void MeshRenderer::Render(const int count)
 {
-   glUniformMatrix4fv( OW_MATRIX_LOCATION,
-                       1,
-                       GL_FALSE,
-                       GetGameObject().GetTransfrom().GetTransformMatrixAssumingClean() );
+   ApplyUniforms();
 
    glDrawElements( GL_TRIANGLES, count, GL_UNSIGNED_SHORT, 0 );
 }
@@ -40,4 +44,14 @@ std::string MeshRenderer::GetMeshName()
 std::string MeshRenderer::GetShaderName()
 {
    return m_MeshName.Value();
+}
+
+int32_t MeshRenderer::GetType()
+{
+   return COMPONENT_ID_MESHRENDERER;
+}
+
+std::string MeshRenderer::GetName()
+{
+   return "Mesh Renderer";
 }

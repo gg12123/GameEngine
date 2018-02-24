@@ -2,10 +2,16 @@
 #include "Mesh.h"
 #include "Vertex.h"
 
-std::list<MeshRenderer*>::iterator RenderingSlot::Add( MeshRenderer& const meshRenderer )
+RenderingSlot::RenderingSlot( Mesh& mesh, GLuint shader )
 {
-   m_Renderers.push_back( &meshRenderer );
-   return m_Renderers.back;
+   m_Mesh = &mesh;
+   m_Shader = shader;
+}
+
+std::list<MeshRenderer*>::iterator RenderingSlot::Add( MeshRenderer& meshRenderer )
+{
+   m_Renderers.push_front( &meshRenderer );
+   return m_Renderers.begin();
 }
 
 void RenderingSlot::Remove(const std::list<MeshRenderer*>::iterator toRemove )
@@ -15,7 +21,7 @@ void RenderingSlot::Remove(const std::list<MeshRenderer*>::iterator toRemove )
 
 void RenderingSlot::Render()
 {
-   for (std::list<MeshRenderer*>::iterator it = m_Renderers.begin; it != m_Renderers.end; it++)
+   for (std::list<MeshRenderer*>::iterator it = m_Renderers.begin(); it != m_Renderers.end(); it++)
    {
       (*it)->Render(m_Mesh->GetNumIndices());
    }

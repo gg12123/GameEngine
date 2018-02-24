@@ -1,5 +1,7 @@
 #include "Transform.h"
 #include "Debug.h"
+#include "TransformUpdater.h"
+#include "ComponentIDs.h"
 
 Transform::Transform()
 {
@@ -27,8 +29,8 @@ std::list<Transform*>::iterator Transform::ChildrenEnd()
 
 std::list<Transform*>::iterator Transform::RegisterChild( Transform& child )
 {
-   m_Childern.push_back(&child);
-   return m_Childern.back;
+   m_Childern.push_front(&child);
+   return m_Childern.begin();
 }
 
 void Transform::UnRegisterChild( std::list<Transform*>::iterator toChild )
@@ -87,7 +89,7 @@ void Transform::Clean()
 
    m_Dirty = false;
 
-   for (std::list<Transform*>::iterator it = m_Childern.begin; it != m_Childern.end; it++)
+   for (std::list<Transform*>::iterator it = m_Childern.begin(); it != m_Childern.end(); it++)
    {
       (*it)->Clean();
    }
@@ -154,9 +156,9 @@ void Transform::ConstructLocalTransformMatrix()
 {
    m_LocalTransformMatrix = m_LocalRotation.Value();
 
-   m_LocalTransformMatrix[ 3 ] = vec4( m_LocalPosition.Value[ 0 ],
-                                       m_LocalPosition.Value[ 1 ],
-                                       m_LocalPosition.Value[ 2 ],
+   m_LocalTransformMatrix[ 3 ] = vec4( m_LocalPosition.Value()[ 0 ],
+                                       m_LocalPosition.Value()[ 1 ],
+                                       m_LocalPosition.Value()[ 2 ],
                                        1.0f );
 }
 
@@ -176,6 +178,8 @@ mat4 Transform::GetRotation()
    rot[ 3 ][ 0 ] = 0.0f;
    rot[ 3 ][ 1 ] = 0.0f;
    rot[ 3 ][ 2 ] = 0.0f;
+
+   return rot;
 }
 
 mat4 Transform::GetLocalTransformMatrix()
@@ -210,4 +214,14 @@ Transform& Transform::GetParent()
 bool Transform::IsDirty()
 {
    return m_Dirty;
+}
+
+int32_t Transform::GetType()
+{
+   return COMPONENT_ID_TRANSFORM;
+}
+
+std::string Transform::GetName()
+{
+   return "Transform";
 }

@@ -2,10 +2,11 @@
 #include <unordered_map>
 #include <vector>
 #include "Functions.h"
-#include "World.h"
 #include "Component.h"
-#include "Transform.h"
 #include "SerializedFields.h"
+
+class World;
+class Transform;
 
 class GameObject
 {
@@ -26,7 +27,7 @@ public:
    void AddComponent( Component &component );
    void RegisterUpdaterFunction( EUpdaterFunction updateFunction, UpdaterFunctionPtr updaterPtr );
 
-   Transform& GetTransfrom();
+   Transform& GetTransform();
 
    void DeSerialize( std::ifstream& stream );
    void Serialize( std::ofstream& stream );
@@ -39,7 +40,7 @@ public:
 
 private:
 
-   std::unordered_map<EUpdaterFunction, std::vector<UpdaterFunctionPtr>> m_UpdaterFunctions;
+   std::unordered_map<EUpdaterFunction, std::vector<UpdaterFunctionPtr>*> m_UpdaterFunctions;
    std::vector<Component*> m_Components;
 
    World *m_World;

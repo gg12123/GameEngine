@@ -1,14 +1,16 @@
 #pragma once
 #include "Component.h"
+#include "ComponentIDs.h"
 
-#define COMPONENT_ID_TRANSFORM    0
-#define COMPONENT_ID_MESHRENDERER 1
-#define COMPONENT_ID_CAMERA       2
-#define COMPONENT_ID_LIGHT        3
+typedef Component*(*ComponentCreationFunctionPtr)();
 
 class ComponentCreator
 {
 public:
    static ComponentCreator& Instance();
    Component* Create( int32_t id );
+
+private:
+   ComponentCreator();
+   ComponentCreationFunctionPtr m_CreationFunctions[ COMPONENT_COUNT ];
 };

@@ -11,6 +11,9 @@ public:
    void GetSerializedFields( std::unordered_map<std::string, SerializedField*>& fields ) override;
    void ApplyCameraUniforms();
 
+   int32_t GetType() override;
+   std::string GetName() override;
+
 protected:
 
    void Awake() override;

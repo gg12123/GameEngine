@@ -16,6 +16,9 @@ public:
    std::string GetMeshName();
    std::string GetShaderName();
 
+   int32_t GetType() override;
+   std::string GetName() override;
+
 protected:
 
    void Awake() override;
