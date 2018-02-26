@@ -18,7 +18,7 @@ GameObject& Component::GetGameObject()
    return *m_GameObject;
 }
 
-void Component::RegisterUpdaterFunction( EUpdaterFunction eFunction, UpdaterFunctionPtr functionPtr )
+void Component::RegisterUpdaterFunction( const EUpdaterFunction eFunction, const UpdaterFunctionPtr functionPtr )
 {
    m_GameObject->RegisterUpdaterFunction( eFunction, functionPtr );
 }
@@ -100,4 +100,14 @@ void Component::DeSerialize( std::ifstream& stream )
 
 void Component::GetSerializedFields( std::unordered_map<std::string, SerializedField*>& fields )
 {
+}
+
+GameObject& Component::InstantiatePrefab( const PrefabField& prefab )
+{
+   return prefab.Instantiate( *m_World );
+}
+
+std::string Component::InstantiateMesh( const MeshField& mesh )
+{
+   return mesh.Instantiate( *m_World );
 }

@@ -14,7 +14,16 @@ void Transform::Awake()
    m_Root = &GetRootTransform();
 
    ConstructLocalTransformMatrix();
-   SetDirty();
+
+   if (m_Parent != nullptr)
+   {
+      SetDirty();
+   }
+
+   if (m_Parent == nullptr && (m_Root != this))
+   {
+      throw std::exception( "Parent is null" );
+   }
 }
 
 std::list<Transform*>::iterator Transform::ChildrenBegin()

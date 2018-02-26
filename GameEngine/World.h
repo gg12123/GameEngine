@@ -28,6 +28,7 @@ public:
    Transform& GetRootTransform();
    TransformUpdater& GetTransformUpdater();
    GeometryRenderer& GetGeometryRenderer();
+   AssetLoader& GetAssetLoader();
 
 private:
 

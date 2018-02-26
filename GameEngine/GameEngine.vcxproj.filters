@@ -93,6 +93,12 @@
     <ClInclude Include="ComponentIDs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MeshField.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PrefabField.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -159,6 +165,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ComponentCreator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PrefabField.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshField.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -114,3 +114,8 @@ GeometryRenderer& World::GetGeometryRenderer()
 {
    return m_GeometryRenderer;
 }
+
+AssetLoader& World::GetAssetLoader()
+{
+   return m_AssetLoader;
+}

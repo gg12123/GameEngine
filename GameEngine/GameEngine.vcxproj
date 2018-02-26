@@ -124,6 +124,8 @@
     <ClInclude Include="ComponentCreator.h" />
     <ClInclude Include="ComponentIDs.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="MeshField.h" />
+    <ClInclude Include="PrefabField.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="GameObject.h" />
@@ -152,7 +154,9 @@
     <ClCompile Include="ComponentCreator.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MeshField.cpp" />
     <ClCompile Include="Path.cpp" />
+    <ClCompile Include="PrefabField.cpp" />
     <ClCompile Include="SerializedFields.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="GameObject.cpp" />

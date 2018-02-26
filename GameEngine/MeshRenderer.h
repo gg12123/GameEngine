@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "SerializedFields.h"
+#include "MeshField.h"
 
 class MeshRenderer : public Component
 {
@@ -30,7 +31,7 @@ protected:
 
 private:
 
-   SerializedString m_MeshName;
+   MeshField m_MeshName;
    SerializedString m_ShaderName;
    std::list<MeshRenderer*>::iterator m_ThisInRenderersList;
 };

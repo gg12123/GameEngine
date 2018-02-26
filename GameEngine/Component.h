@@ -3,6 +3,8 @@
 #include <string>
 #include "Functions.h"
 #include "SerializedFields.h"
+#include "PrefabField.h"
+#include "MeshField.h"
 
 class GameObject;
 class World;
@@ -31,11 +33,14 @@ protected:
 
    virtual void Awake();
 
-   void RegisterUpdaterFunction( EUpdaterFunction eFunction, UpdaterFunctionPtr functionPtr );
+   void RegisterUpdaterFunction( const EUpdaterFunction eFunction, const UpdaterFunctionPtr functionPtr );
 
    TransformUpdater& GetTransformUpdater();
    GeometryRenderer& GetGeometryRenderer();
    Transform& GetRootTransform();
+
+   GameObject& InstantiatePrefab( const PrefabField& prefab );
+   std::string InstantiateMesh( const MeshField& mesh );
 
 private:
 

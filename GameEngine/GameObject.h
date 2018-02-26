@@ -25,7 +25,7 @@ public:
    void UpdateComponents( EUpdaterFunction updateFunction );
 
    void AddComponent( Component &component );
-   void RegisterUpdaterFunction( EUpdaterFunction updateFunction, UpdaterFunctionPtr updaterPtr );
+   void RegisterUpdaterFunction( const EUpdaterFunction updateFunction, const UpdaterFunctionPtr updaterPtr );
 
    Transform& GetTransform();
 

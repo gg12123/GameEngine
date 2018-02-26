@@ -51,7 +51,7 @@ void GameObject::AddComponent( Component &component )
    m_Components.push_back( &component );
 }
 
-void GameObject::RegisterUpdaterFunction( EUpdaterFunction updateFunc, UpdaterFunctionPtr updaterPtr )
+void GameObject::RegisterUpdaterFunction( const EUpdaterFunction updateFunc, const UpdaterFunctionPtr updaterPtr )
 {
    std::unordered_map<EUpdaterFunction, std::vector<UpdaterFunctionPtr>*>::iterator it;
    std::vector<UpdaterFunctionPtr>* v;

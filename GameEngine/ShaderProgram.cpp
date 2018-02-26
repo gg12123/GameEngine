@@ -13,7 +13,7 @@ static GLchar* LoadShaderSource(ifstream &file)
    std::string source;
    char nextChar = file.get();
 
-   while ((nextChar != END_OF_SHADER) && !file.eof());
+   while ((nextChar != END_OF_SHADER) && !file.eof())
    {
       source.append( 1, nextChar );
       nextChar = file.get();
