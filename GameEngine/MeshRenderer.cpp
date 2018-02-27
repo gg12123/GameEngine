@@ -31,7 +31,7 @@ void MeshRenderer::ApplyUniforms()
    // Should set this in a derived class
    glUniform4fv( COLOUR1_LOCATION,
                  1,
-                 vec4(1.0f, 0.0f, 0.0f, 1.0f) );
+                 vec4(0.0f, 1.0f, 0.0f, 1.0f) );
 }
 
 void MeshRenderer::Render(const int count)

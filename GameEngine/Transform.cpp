@@ -17,7 +17,13 @@ void Transform::Awake()
 
    if (m_Parent != nullptr)
    {
+      // If not the root, set dirty so that global transform will be updated.
       SetDirty();
+   }
+   else
+   {
+      // The roots global transform will equal its local and it will never change
+      m_TransformMatrix = m_LocalTransformMatrix;
    }
 
    if (m_Parent == nullptr && (m_Root != this))

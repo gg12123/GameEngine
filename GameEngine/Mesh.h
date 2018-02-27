@@ -2,6 +2,7 @@
 #include <string>
 #include "GL/gl3w.h"
 #include "Asset.h"
+#include "Vertex.h"
 
 class Mesh : public Asset
 {
@@ -23,4 +24,6 @@ private:
    int m_NumIndices;
    GLuint m_VertexBuffer;
    GLuint m_IndicesBuffer;
+
+   Vertex* m_Vertices;
 };

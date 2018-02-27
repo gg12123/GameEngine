@@ -158,6 +158,7 @@ GameObject& HierarchyForNewProject( std::vector<GameObject*>& gameObjects )
 
    root->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
    root->CacheTransform();
+   InitTransformState( root->GetTransform(), vmath::vec3( 0.0f, 0.0f, 0.0f ), vmath::mat4().identity() );
 
    gameObjects.push_back( root );
 
@@ -167,7 +168,7 @@ GameObject& HierarchyForNewProject( std::vector<GameObject*>& gameObjects )
    cube->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
    cube->CacheTransform();
    cube->GetTransform().InitParent( root->GetTransform() );
-   InitTransformState( cube->GetTransform(), vmath::vec3( 0.0f, 0.0f, 0.0f ), vmath::mat4().identity() );
+   InitTransformState( cube->GetTransform(), vmath::vec3( 0.0f, 1.0f, 0.0f ), vmath::mat4().identity() );
 
    cube->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_MESHRENDERER )) );
    MeshRenderer* meshRen = cube->GetComponent<MeshRenderer>();
@@ -176,17 +177,32 @@ GameObject& HierarchyForNewProject( std::vector<GameObject*>& gameObjects )
 
    gameObjects.push_back( cube );
 
+   // cube 2
+   GameObject* cube2 = new GameObject();
+
+   cube2->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
+   cube2->CacheTransform();
+   cube2->GetTransform().InitParent( root->GetTransform() );
+   InitTransformState( cube2->GetTransform(), vmath::vec3( 0.0f, -1.0f, 0.0f ), vmath::mat4().identity() );
+
+   cube2->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_MESHRENDERER )) );
+   MeshRenderer* meshRen2 = cube2->GetComponent<MeshRenderer>();
+   meshRen2->SetMeshName( "square.mesh" );
+   meshRen2->SetShaderName( "diffuse.txt" );
+
+   gameObjects.push_back( cube2 );
+
    // camera
    GameObject* cam = new GameObject();
 
    cam->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
    cam->CacheTransform();
    cam->GetTransform().InitParent( root->GetTransform() );
-   InitTransformState( cam->GetTransform(), vmath::vec3( 0.0f, 0.0f, 10.0f ), vmath::rotate( 0.0f, (float)M_PI, 0.0f ) );
+   InitTransformState( cam->GetTransform(), vmath::vec3( 0.0f, 0.0f, 10.0f ), vmath::rotate( 0.0f, 180.0f, 0.0f ) );
 
    cam->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_CAMERA )) );
    Camera* camComp = cam->GetComponent<Camera>();
-   camComp->SetFOV( (float)M_PI / 4.0f );
+   camComp->SetFOV( 45.0f );
    camComp->SetNearClip( 0.3f );
    camComp->SetFarClip( 1000.0f );
 

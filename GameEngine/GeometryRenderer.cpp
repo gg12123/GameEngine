@@ -55,6 +55,10 @@ void GeometryRenderer::Awake( IWindowConfiguration& windowConfig, AssetLoader& a
                          GL_FALSE,
                          offsetof( Vertex, TexCords ) );
    glEnableVertexAttribArray( TC_VERT_ATTRIBUTE );
+
+   // Enable depth test
+   glEnable( GL_DEPTH_TEST );
+   glDepthFunc( GL_LEQUAL );
 }
 
 std::list<MeshRenderer*>::iterator GeometryRenderer::Register( MeshRenderer& toReg )
@@ -124,6 +128,12 @@ void GeometryRenderer::SetLight( Light& light )
 
 void GeometryRenderer::Render()
 {
+   // Clear background and depth
+   const GLfloat one = 1.0f;
+   const GLfloat background_colour[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+   glClearBufferfv( GL_COLOR, 0, background_colour );
+   glClearBufferfv( GL_DEPTH, 0, &one );
+
    for (MeshNameToShaderNameToRenderSlot::iterator it = m_RenderingSlots.begin(); it != m_RenderingSlots.end(); it++)
    {
       MeshNameToRenderSlot &meshNameToSlot = *(it->second);
@@ -136,7 +146,7 @@ void GeometryRenderer::Render()
       for (MeshNameToRenderSlot::iterator it2 = meshNameToSlot.begin(); it2 != meshNameToSlot.end(); it2++)
       {
          it2->second->BindMesh();
-         it2->second->Render(); // the number of vertices to draw is equal to the number of indices
+         it2->second->Render();
       }
    }
 }

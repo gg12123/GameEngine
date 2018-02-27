@@ -43,11 +43,24 @@ void Mesh::Load( std::string name )
       7, 3, 1
    };
 
+   m_NumVertices = 8;
+   m_NumIndices = 36;
+
+   m_Vertices = new Vertex[ m_NumVertices ];
+   int index = 0;
+
+   for (int i = 0; i < m_NumVertices; i++)
+   {
+      m_Vertices[ i ].Position = vmath::vec4( positions[ index ], positions[ index + 1 ], positions[ index + 2 ], 1.0f );
+
+      index += 3;
+   }
+
    glGenBuffers( 1, &m_VertexBuffer );
    glBindBuffer( GL_ARRAY_BUFFER, m_VertexBuffer );
    glBufferData( GL_ARRAY_BUFFER,
-                 sizeof( positions ),
-                 positions,
+                 m_NumVertices * sizeof( Vertex ),
+                 m_Vertices,
                  GL_STATIC_DRAW );
 
    glGenBuffers( 1, &m_IndicesBuffer );
