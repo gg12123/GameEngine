@@ -12,6 +12,7 @@ private:
 
    bool InitWindow();
    void InitWorld();
+   void InitImGUI();
    void RunLoop();
    void SetupCallbacks();
 

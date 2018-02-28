@@ -2,6 +2,8 @@
 #include "sb7.h"
 #include "Debug.h"
 #include "Utils.h"
+#include "ImGUI/imgui.h"
+#include "ImGUI/imgui_impl_glfw_gl3.h"
 
 bool Application::InitWindow()
 {
@@ -16,7 +18,7 @@ bool Application::InitWindow()
       glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
       glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE );
 
-      m_WindowConfig.Set( 800, 600 );
+      m_WindowConfig.Set( 1000, 800 );
 
       m_Window = glfwCreateWindow( m_WindowConfig.GetWidth(),
                                    m_WindowConfig.GetHeight(),
@@ -40,6 +42,13 @@ void Application::SetupCallbacks()
 
 }
 
+void Application::InitImGUI()
+{
+   ImGui::CreateContext();
+   ImGui_ImplGlfwGL3_Init( m_Window, true );
+   ImGui::StyleColorsDark();
+}
+
 void Application::Run()
 {
    if (!InitWindow())
@@ -50,6 +59,7 @@ void Application::Run()
 
    SetupCallbacks();
    InitWorld();
+   InitImGUI();
    RunLoop();
 }
 
@@ -70,10 +80,15 @@ void Application::RunLoop()
 
    do
    {
+      glfwPollEvents();
+      ImGui_ImplGlfwGL3_NewFrame();
+
       m_World.EditUpdate();
 
+      ImGui::Render();
+      ImGui_ImplGlfwGL3_RenderDrawData( ImGui::GetDrawData() );
+
       glfwSwapBuffers( m_Window );
-      glfwPollEvents();
 
       running &= (glfwGetKey( m_Window, GLFW_KEY_ESCAPE ) == GLFW_RELEASE);
       running &= (glfwWindowShouldClose( m_Window ) != GL_TRUE);

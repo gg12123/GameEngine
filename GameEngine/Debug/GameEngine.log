@@ -1,32 +1,4 @@
-﻿  World.cpp
-  WindowConfiguration.cpp
-  TransformUpdater.cpp
-  Transform.cpp
-c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\myvmath.h(1024): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\myvmath.h(1041): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  ShaderProgram.cpp
-  RenderingSlot.cpp
-  MeshRenderer.cpp
-  Mesh.cpp
-  Light.cpp
-  GeometryRenderer.cpp
-  GameObject.cpp
-  Utils.cpp
-  SerializedFields.cpp
-  PrefabField.cpp
-  Path.cpp
-  MeshField.cpp
-  main.cpp
-  Debug.cpp
-  ComponentCreator.cpp
-  Component.cpp
-  Generating Code...
-  Compiling...
-  Camera.cpp
-  AssetLoader.cpp
-  Asset.cpp
-  Application.cpp
-c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\application.cpp(25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  Generating Code...
+﻿  Application.cpp
+c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\application.cpp(27): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   GameEngine.vcxproj -> C:\Users\gg_11\Documents\Visual Studio 2015\Projects\GameEngine2\Debug\GameEngine.exe
   GameEngine.vcxproj -> C:\Users\gg_11\Documents\Visual Studio 2015\Projects\GameEngine2\Debug\GameEngine.pdb (Partial PDB)

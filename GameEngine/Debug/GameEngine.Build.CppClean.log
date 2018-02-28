@@ -1,8 +1,8 @@
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\vc140.pdb
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\vc140.idb
-c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\component.obj
-c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\componentcreator.obj
-c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\debug.obj
+c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\imgui_demo.obj
+c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\imgui_draw.obj
+c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\imgui_impl_glfw_gl3.obj
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\main.obj
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\meshfield.obj
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\path.obj
@@ -24,6 +24,10 @@ c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debu
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\asset.obj
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\assetloader.obj
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\camera.obj
+c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\component.obj
+c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\componentcreator.obj
+c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\debug.obj
+c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\imgui.obj
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\debug\gameengine.ilk
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\debug\gameengine.exe
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\debug\gameengine.pdb

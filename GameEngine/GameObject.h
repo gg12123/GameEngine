@@ -38,6 +38,9 @@ public:
    template <class T>
    T* GetComponent();
 
+   std::vector<Component*>::iterator ComponentsBegin();
+   std::vector<Component*>::iterator ComponentsEnd();
+
 private:
 
    std::unordered_map<EUpdaterFunction, std::vector<UpdaterFunctionPtr>*> m_UpdaterFunctions;

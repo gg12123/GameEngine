@@ -149,6 +149,58 @@ static void InitTransformState( Transform& tran, vmath::vec3 pos, vmath::mat4 ro
    dynamic_cast<SerializedVector3*>(fields[ "position" ])->SetValue( pos );
 }
 
+GameObject& CreateCubeGameObject( vmath::vec3 pos, vmath::mat4 rot, Transform& parent )
+{
+   GameObject* cube = new GameObject();
+
+   cube->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
+   cube->CacheTransform();
+   cube->GetTransform().InitParent( parent );
+   InitTransformState( cube->GetTransform(), pos, rot );
+
+   cube->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_MESHRENDERER )) );
+
+   std::unordered_map<std::string, SerializedField*> fields;
+   cube->GetComponent<MeshRenderer>()->GetSerializedFields(fields);
+
+   dynamic_cast<SerializedString*>(fields[ "meshName" ])->SetValue( "cube.mesh" );
+   dynamic_cast<SerializedString*>(fields[ "shaderName" ])->SetValue( "diffuse.txt" );
+
+   return *cube;
+}
+
+GameObject& CreateCameraGameObject( vmath::vec3 pos, vmath::mat4 rot, Transform& parent )
+{
+   GameObject* cam = new GameObject();
+
+   cam->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
+   cam->CacheTransform();
+   cam->GetTransform().InitParent( parent );
+   InitTransformState( cam->GetTransform(), pos, rot );
+
+   cam->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_CAMERA )) );
+   Camera* camComp = cam->GetComponent<Camera>();
+   camComp->SetFOV( 45.0f );
+   camComp->SetNearClip( 0.3f );
+   camComp->SetFarClip( 1000.0f );
+
+   return *cam;
+}
+
+GameObject& CreateLightGameObject( vmath::vec3 pos, vmath::mat4 rot, Transform& parent )
+{
+   GameObject* light = new GameObject();
+
+   light->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
+   light->CacheTransform();
+   light->GetTransform().InitParent( parent );
+   InitTransformState( light->GetTransform(), pos, rot );
+
+   light->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_LIGHT )) );
+
+   return *light;
+}
+
 // In this function, the created components cannot interact with the world so be
 // carefull what functions you call on them.
 GameObject& HierarchyForNewProject( std::vector<GameObject*>& gameObjects )
@@ -163,62 +215,16 @@ GameObject& HierarchyForNewProject( std::vector<GameObject*>& gameObjects )
    gameObjects.push_back( root );
 
    // cube
-   GameObject* cube = new GameObject();
-
-   cube->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
-   cube->CacheTransform();
-   cube->GetTransform().InitParent( root->GetTransform() );
-   InitTransformState( cube->GetTransform(), vmath::vec3( 0.0f, 1.0f, 0.0f ), vmath::mat4().identity() );
-
-   cube->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_MESHRENDERER )) );
-   MeshRenderer* meshRen = cube->GetComponent<MeshRenderer>();
-   meshRen->SetMeshName( "square.mesh" );
-   meshRen->SetShaderName( "diffuse.txt" );
-
-   gameObjects.push_back( cube );
+   gameObjects.push_back( &CreateCubeGameObject( vmath::vec3( 0.0f, 1.0f, 0.0f ), vmath::mat4().identity(), root->GetTransform() ) );
 
    // cube 2
-   GameObject* cube2 = new GameObject();
-
-   cube2->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
-   cube2->CacheTransform();
-   cube2->GetTransform().InitParent( root->GetTransform() );
-   InitTransformState( cube2->GetTransform(), vmath::vec3( 0.0f, -1.0f, 0.0f ), vmath::mat4().identity() );
-
-   cube2->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_MESHRENDERER )) );
-   MeshRenderer* meshRen2 = cube2->GetComponent<MeshRenderer>();
-   meshRen2->SetMeshName( "square.mesh" );
-   meshRen2->SetShaderName( "diffuse.txt" );
-
-   gameObjects.push_back( cube2 );
+   gameObjects.push_back( &CreateCubeGameObject( vmath::vec3( 0.0f, -1.0f, 0.0f ), vmath::mat4().identity(), root->GetTransform() ) );
 
    // camera
-   GameObject* cam = new GameObject();
-
-   cam->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
-   cam->CacheTransform();
-   cam->GetTransform().InitParent( root->GetTransform() );
-   InitTransformState( cam->GetTransform(), vmath::vec3( 0.0f, 0.0f, 10.0f ), vmath::rotate( 0.0f, 180.0f, 0.0f ) );
-
-   cam->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_CAMERA )) );
-   Camera* camComp = cam->GetComponent<Camera>();
-   camComp->SetFOV( 45.0f );
-   camComp->SetNearClip( 0.3f );
-   camComp->SetFarClip( 1000.0f );
-
-   gameObjects.push_back( cam );
+   gameObjects.push_back( &CreateCameraGameObject( vmath::vec3( 0.0f, 0.0f, 10.0f ), vmath::rotate( 0.0f, 180.0f, 0.0f ), root->GetTransform() ) );
 
    // light
-   GameObject* light = new GameObject();
-
-   light->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
-   light->CacheTransform();
-   light->GetTransform().InitParent( root->GetTransform() );
-   InitTransformState( light->GetTransform(), vmath::vec3( 0.0f, 0.0f, 10.0f ), vmath::rotate( 0.0f, (float)M_PI, 0.0f ) );
-
-   light->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_LIGHT )) );
-
-   gameObjects.push_back( light );
+   gameObjects.push_back( &CreateLightGameObject( vmath::vec3( 0.0f, 0.0f, 10.0f ), vmath::rotate( 0.0f, 180.0f, 0.0f ), root->GetTransform() ) );
 
    return *root;
 }

@@ -12,6 +12,8 @@ public:
 
    void SerializeWithSize( std::ofstream& stream );
    virtual void DeSerializeWithSize( std::ifstream& stream ) = 0;
+
+   virtual void OnGUI( std::string name ) = 0;
 protected:
    virtual void LocalSerialize( std::ofstream& stream ) = 0;
    virtual void LocalDeSerialize( std::ifstream& stream ) = 0;
