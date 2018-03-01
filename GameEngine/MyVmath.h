@@ -1053,6 +1053,57 @@ static inline mat4 perspective2( float fovy, float aspect, float n, float f )
    return result;
 }
 
+static inline mat4 toMat4( mat3 m )
+{
+   mat4 out;
+
+   out[ 0 ] = vec4( m[ 0 ], 0.0f );
+   out[ 1 ] = vec4( m[ 1 ], 0.0f );
+   out[ 2 ] = vec4( m[ 2 ], 0.0f );
+   out[ 3 ] = vec4( 0.0f, 0.0f, 0.0f, 1.0f );
+
+   return out;
+}
+
+// Will need changing when the matrix has scale
+static inline mat3 extractRotationOnly( mat4 m )
+{
+   mat3 rot;
+
+   for (int i = 0; i < 3; i++)
+   {
+      for (int j = 0; j < 3; j++)
+      {
+         rot[ i ][ j ] = m[ i ][ j ];
+      }
+   }
+
+   return rot;
+}
+
+// Will need changing when the matrix has scale
+static inline vec3 extractForwardOnly( mat4 m )
+{
+   return vec3( m[ 2 ][ 0 ], m[ 2 ][ 1 ], m[ 2 ][ 2 ] );
+}
+
+// Will need changing when the matrix has scale
+static inline vec3 extractUpOnly( mat4 m )
+{
+   return vec3( m[ 1 ][ 0 ], m[ 1 ][ 1 ], m[ 1 ][ 2 ] );
+}
+
+// Will need changing when the matrix has scale
+static inline vec3 extractRightOnly( mat4 m )
+{
+   return vec3( m[ 0 ][ 0 ], m[ 0 ][ 1 ], m[ 0 ][ 2 ] );
+}
+
+static inline vec3 extractPositionOnly( mat4 m )
+{
+   return vec3( m[ 3 ][ 0 ], m[ 3 ][ 1 ], m[ 3 ][ 2 ] );
+}
+
 static inline mat4 ortho(float left, float right, float bottom, float top, float n, float f)
 {
     return mat4( vec4(2.0f / (right - left), 0.0f, 0.0f, 0.0f),

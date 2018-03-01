@@ -12,14 +12,16 @@ public:
 
    vec3 GetLocalPosition();
    vec3 GetPosition();
-
-   mat4 GetRotation();
    mat4 GetLocalRotation();
+   mat4 GetRotation();
 
    void SetLocalPosition( vec3 pos );
+   void SetPosition( vec3 pos );
    void SetLocalRotation( mat4 rot );
+   void SetRotation( mat4 rot );
 
    mat4 GetTransformMatrixAssumingClean();
+   mat4 GetTransformMatrix();
    mat4 GetLocalTransformMatrix();
 
    void SetParent( Transform& parent );

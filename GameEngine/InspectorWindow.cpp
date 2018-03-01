@@ -14,7 +14,7 @@ void InspectorWindow::SetActiveGameObject( GameObject * obj )
    m_ActiveGameObject = obj;
 }
 
-void InspectorWindow::OnGUI()
+void InspectorWindow::Update()
 {
    if (m_ActiveGameObject != nullptr)
    {

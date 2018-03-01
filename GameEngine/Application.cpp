@@ -74,6 +74,13 @@ void Application::InitWorld()
    m_World.Awake( root, objects, m_WindowConfig );
 }
 
+static void TestOutImGui()
+{
+   static float f;
+
+   ImGui::InputFloat( "test float", &f );
+}
+
 void Application::RunLoop()
 {
    bool running = true;
@@ -84,6 +91,7 @@ void Application::RunLoop()
       ImGui_ImplGlfwGL3_NewFrame();
 
       m_World.EditUpdate();
+      TestOutImGui();
 
       ImGui::Render();
       ImGui_ImplGlfwGL3_RenderDrawData( ImGui::GetDrawData() );

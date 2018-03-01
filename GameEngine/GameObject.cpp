@@ -112,3 +112,13 @@ void GameObject::DeSerialize( std::ifstream& stream )
 
    CacheTransform();
 }
+
+std::vector<Component*>::iterator GameObject::ComponentsBegin()
+{
+   return m_Components.begin();
+}
+
+std::vector<Component*>::iterator GameObject::ComponentsEnd()
+{
+   return m_Components.end();
+}

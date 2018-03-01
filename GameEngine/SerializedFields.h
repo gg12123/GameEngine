@@ -31,6 +31,7 @@ class SerializedVector3 : public FixedSizeSerializedField
 public:
    vmath::vec3 Value();
    void SetValue( vmath::vec3 value );
+   void OnGUI( std::string name );
 protected:
    void LocalSerialize( std::ofstream& stream ) override;
    void LocalDeSerialize( std::ifstream& stream ) override;
@@ -44,6 +45,7 @@ class SerializedRotation : public FixedSizeSerializedField
 public:
    vmath::mat4 Value();
    void SetValue( vmath::mat4 value );
+   void OnGUI( std::string name );
 protected:
    void LocalSerialize( std::ofstream& stream ) override;
    void LocalDeSerialize( std::ifstream& stream ) override;
@@ -57,6 +59,7 @@ class SerializedString : public SerializedField
 public:
    std::string Value();
    void SetValue( std::string value );
+   void OnGUI( std::string name );
 protected:
    void DeSerializeWithSize( std::ifstream& stream ) override;
    void LocalSerialize( std::ofstream& stream ) override;
@@ -71,6 +74,7 @@ class SerializedFloat : public FixedSizeSerializedField
 public:
    float Value();
    void SetValue( float value );
+   void OnGUI( std::string name );
 protected:
    void LocalSerialize( std::ofstream& stream ) override;
    void LocalDeSerialize( std::ifstream& stream ) override;
@@ -84,6 +88,7 @@ class SerializedInt32 : public FixedSizeSerializedField
 public:
    int32_t Value();
    void SetValue( int32_t value );
+   void OnGUI( std::string name );
 protected:
    void LocalSerialize( std::ofstream& stream ) override;
    void LocalDeSerialize( std::ifstream& stream ) override;

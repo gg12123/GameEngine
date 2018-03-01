@@ -1,5 +1,6 @@
 #include "SerializedFields.h"
 #include "Debug.h"
+#include "ImGUI/imgui.h"
 
 // ################ BASE #######################
 
@@ -39,6 +40,15 @@ void FixedSizeSerializedField::DeSerializeWithSize( std::ifstream& stream )
 
 // ####################### VECTOR3 ########################### 
 
+void SerializedVector3::OnGUI( std::string name )
+{
+   ImGui::Text( name.c_str() );
+
+   ImGui::InputFloat( "X", &m_Value[ 0 ] );
+   ImGui::InputFloat( "Y", &m_Value[ 1 ] );
+   ImGui::InputFloat( "Z", &m_Value[ 0 ] );
+}
+
 vmath::vec3 SerializedVector3::Value()
 {
    return m_Value;
@@ -77,6 +87,11 @@ int32_t SerializedVector3::GetSize()
 }
 
 // ####################### ROTATION ########################### 
+
+void SerializedRotation::OnGUI( std::string name )
+{
+   ImGui::Text( name.c_str() );
+}
 
 vmath::mat4 SerializedRotation::Value()
 {
@@ -123,6 +138,11 @@ int32_t SerializedRotation::GetSize()
 
 // ####################### FLOAT ########################### 
 
+void SerializedFloat::OnGUI( std::string name )
+{
+   ImGui::Text( name.c_str() );
+}
+
 float SerializedFloat::Value()
 {
    return m_Value;
@@ -149,6 +169,11 @@ int32_t SerializedFloat::GetSize()
 }
 
 // ####################### STRING ########################### 
+
+void SerializedString::OnGUI( std::string name )
+{
+   ImGui::Text( name.c_str() );
+}
 
 std::string SerializedString::Value()
 {
@@ -204,6 +229,11 @@ int32_t SerializedString::GetSize()
 }
 
 // ####################### INT32 ########################### 
+
+void SerializedInt32::OnGUI( std::string name )
+{
+   ImGui::Text( name.c_str() );
+}
 
 int32_t SerializedInt32::Value()
 {

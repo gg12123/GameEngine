@@ -167,6 +167,12 @@ void Transform::ConstructTransformMatrix()
    m_TransformMatrix = current->GetTransformMatrixAssumingClean() * transformMatrix;
 }
 
+mat4 Transform::GetTransformMatrix()
+{
+   ConstructTransformMatrix();
+   return m_TransformMatrix;
+}
+
 void Transform::ConstructLocalTransformMatrix()
 {
    m_LocalTransformMatrix = m_LocalRotation.Value();
@@ -177,11 +183,36 @@ void Transform::ConstructLocalTransformMatrix()
                                        1.0f );
 }
 
+void Transform::SetPosition( vec3 pos )
+{
+   mat4 parentsTransform = m_Parent->GetTransformMatrix();
+
+   vec3 parentsPos = extractPositionOnly( parentsTransform );
+   vec3 parentsRight = extractRightOnly( parentsTransform );
+   vec3 parentsUp = extractUpOnly( parentsTransform );
+   vec3 parentsForward = extractForwardOnly( parentsTransform );
+
+   vec3 parentToThis = pos - parentsPos;
+
+   SetLocalPosition( vec3( dot( parentToThis, parentsRight ),
+                           dot( parentToThis, parentsUp ),
+                           dot( parentToThis, parentsForward ) ) );
+}
+
+void Transform::SetRotation( mat4 rot )
+{
+   mat3 parentsRot = extractRotationOnly( m_Parent->GetTransformMatrix() );
+   mat3 rotOnly = extractRotationOnly( rot );
+
+   mat3 requiredLocalRot = parentsRot.transpose() * rotOnly;
+
+   SetLocalRotation( toMat4( requiredLocalRot ) );
+}
+
 vec3 Transform::GetPosition()
 {
    ConstructTransformMatrix();
-   
-   return vec3( m_TransformMatrix[ 3 ][ 0 ], m_TransformMatrix[ 3 ][ 1 ], m_TransformMatrix[ 3 ][ 2 ] );
+   return extractPositionOnly( m_TransformMatrix );
 }
 
 mat4 Transform::GetRotation()

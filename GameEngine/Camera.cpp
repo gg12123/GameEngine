@@ -29,11 +29,10 @@ void Camera::ApplyCameraUniforms()
 {
    mat4 cameraTransform = GetGameObject().GetTransform().GetTransformMatrixAssumingClean();
 
-   vec3 cameraForward = vec3( cameraTransform[ 2 ][ 0 ], cameraTransform[ 2 ][ 1 ], cameraTransform[ 2 ][ 2 ] );
-   vec3 cameraUp = vec3( cameraTransform[ 1 ][ 0 ], cameraTransform[ 1 ][ 1 ], cameraTransform[ 1 ][ 2 ] );
-   vec3 cameraRight = vec3( cameraTransform[ 0 ][ 0 ], cameraTransform[ 0 ][ 1 ], cameraTransform[ 0 ][ 2 ] );
-
-   vec3 cameraPos = vec3( cameraTransform[ 3 ][ 0 ], cameraTransform[ 3 ][ 1 ], cameraTransform[ 3 ][ 2 ] );
+   vec3 cameraForward = extractForwardOnly( cameraTransform );
+   vec3 cameraUp = extractUpOnly( cameraTransform );
+   vec3 cameraRight = extractRightOnly( cameraTransform );
+   vec3 cameraPos = extractPositionOnly( cameraTransform );
 
    mat4 worldToView;
 
