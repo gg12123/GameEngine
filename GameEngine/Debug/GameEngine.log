@@ -1,3 +1,27 @@
-﻿  SerializedFields.cpp
+﻿  Application.cpp
+c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\application.cpp(29): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  Generating Code...
+  Compiling...
+  main.cpp
+  World.cpp
+  Utils.cpp
+  TransformUpdater.cpp
+  Transform.cpp
+  SerializedFields.cpp
+  RenderingSlot.cpp
+  PrefabField.cpp
+  MeshRenderer.cpp
+  MeshField.cpp
+  Mesh.cpp
+  Light.cpp
+  InspectorWindow.cpp
+  HierarchyWindow.cpp
+  GeometryRenderer.cpp
+  GameObject.cpp
+  Editor.cpp
+  ComponentCreator.cpp
+  Component.cpp
+  Camera.cpp
+  Generating Code...
   GameEngine.vcxproj -> C:\Users\gg_11\Documents\Visual Studio 2015\Projects\GameEngine2\Debug\GameEngine.exe
   GameEngine.vcxproj -> C:\Users\gg_11\Documents\Visual Studio 2015\Projects\GameEngine2\Debug\GameEngine.pdb (Partial PDB)

@@ -7,6 +7,8 @@
 
 #include <math.h>
 
+#define pow2(x) ((x) * (x))
+
 namespace vmath
 {
 
@@ -1021,7 +1023,7 @@ static inline mat4 frustum(float left, float right, float bottom, float top, flo
 
 static inline mat4 perspective(float fovy, float aspect, float n, float f)
 {
-    float q = 1.0f / tan(radians(0.5f * fovy));
+    float q = 1.0f / tanf(radians(0.5f * fovy));
     float A = q / aspect;
     float B = (n + f) / (n - f);
     float C = (2.0f * n * f) / (n - f);
@@ -1038,7 +1040,7 @@ static inline mat4 perspective(float fovy, float aspect, float n, float f)
 
 static inline mat4 perspective2( float fovy, float aspect, float n, float f )
 {
-   float q = 1.0f / tan( radians( 0.5f * fovy ) );
+   float q = 1.0f / tanf( radians( 0.5f * fovy ) );
    float A = q / aspect;
    float B = (-n - f) / (n - f);
    float C = (2.0f * n * f) / (n - f);
@@ -1053,7 +1055,22 @@ static inline mat4 perspective2( float fovy, float aspect, float n, float f )
    return result;
 }
 
-static inline mat4 toMat4( mat3 m )
+static inline vec3 vectorUp()
+{
+   return vec3( 0.0f, 1.0f, 0.0f );
+}
+
+static inline vec3 vectorRight()
+{
+   return vec3( 1.0f, 0.0f, 0.0f );
+}
+
+static inline vec3 vectorForward()
+{
+   return vec3( 0.0f, 0.0f, 1.0f );
+}
+
+static inline mat4 toMat4( const mat3& m )
 {
    mat4 out;
 
@@ -1066,7 +1083,7 @@ static inline mat4 toMat4( mat3 m )
 }
 
 // Will need changing when the matrix has scale
-static inline mat3 extractRotationOnly( mat4 m )
+static inline mat3 extractRotationOnly( const mat4& m )
 {
    mat3 rot;
 
@@ -1082,24 +1099,24 @@ static inline mat3 extractRotationOnly( mat4 m )
 }
 
 // Will need changing when the matrix has scale
-static inline vec3 extractForwardOnly( mat4 m )
+static inline vec3 extractForwardOnly( const mat4& m )
 {
    return vec3( m[ 2 ][ 0 ], m[ 2 ][ 1 ], m[ 2 ][ 2 ] );
 }
 
 // Will need changing when the matrix has scale
-static inline vec3 extractUpOnly( mat4 m )
+static inline vec3 extractUpOnly( const mat4& m )
 {
    return vec3( m[ 1 ][ 0 ], m[ 1 ][ 1 ], m[ 1 ][ 2 ] );
 }
 
 // Will need changing when the matrix has scale
-static inline vec3 extractRightOnly( mat4 m )
+static inline vec3 extractRightOnly( const mat4& m )
 {
    return vec3( m[ 0 ][ 0 ], m[ 0 ][ 1 ], m[ 0 ][ 2 ] );
 }
 
-static inline vec3 extractPositionOnly( mat4 m )
+static inline vec3 extractPositionOnly( const mat4& m )
 {
    return vec3( m[ 3 ][ 0 ], m[ 3 ][ 1 ], m[ 3 ][ 2 ] );
 }
@@ -1318,6 +1335,11 @@ static inline vecN<T,N> operator*(const vecN<T,M>& vec, const matNM<T,N,M>& mat)
     return result;
 }
 
+static inline vec4 operator*( const mat4& mat, const vec4& vec )
+{
+   return vec * mat;
+}
+
 template <typename T, const int N>
 static inline vecN<T,N> operator/(const T s, const vecN<T,N>& v)
 {
@@ -1374,6 +1396,97 @@ template <typename T>
 static inline T mix(const T& A, const T& B, const T& t)
 {
     return B + t * (B - A);
+}
+
+static inline float signedAngle( const vec3& from, const vec3& to, const vec3& axis )
+{
+   float angle;
+   vec3 fromCrossTo;
+   float fromDotTo;
+
+   fromDotTo = dot( from, to );
+
+   if (fromDotTo > 1.0)
+   {
+      fromDotTo = 1.0;
+   }
+   else if (fromDotTo < -1.0)
+   {
+      fromDotTo = -1.0;
+   }
+
+   angle = acosf( fromDotTo );
+
+   fromCrossTo = cross( from, to );
+
+   if (dot( fromCrossTo, axis ) < 0.0)
+   {
+      angle *= -1.0;
+   }
+
+   return angle;
+}
+
+static inline vec3 rotateVector( const vec3& vector, const float angleDegrees, const vec3& axis )
+{
+   mat4 rot = rotate( angleDegrees, axis );
+   vec4 result = rot * vec4( vector[ 0 ], vector[ 1 ], vector[ 2 ], 0.0f );
+
+   return vec3( result[ 0 ], result[ 1 ], result[ 2 ] );
+}
+
+static inline vec3 matrixToEuler( const mat4& m )
+{
+   vec3 p = extractRightOnly( m );
+   vec3 y = extractUpOnly( m );
+   vec3 r = extractForwardOnly( m );
+
+   float R, P, Y; // yaw pitch and roll
+
+   // Roll
+   float rz2Plusrx2 = pow2( r[ 2 ] ) + pow2( r[ 0 ] );
+   vec3 pR;
+
+   if (rz2Plusrx2 > 0.00001)
+   {
+      pR[ 1 ] = 0.0f;
+      pR[ 2 ] = sqrtf( pow2( r[ 0 ] ) / rz2Plusrx2 );
+      pR[ 0 ] = sqrtf( 1.0f - pow2( pR[ 2 ] ) );
+
+      R = signedAngle( pR, p, r );
+   }
+   else
+   {
+      pR = p;
+      R = 0.0;
+   }
+
+   // Pitch
+   vec3 yR = rotateVector( y, -degrees( R ), r );
+
+   P = signedAngle( vectorUp(), yR, p );
+
+   // Yaw
+   Y = signedAngle( vectorRight(), pR, vectorUp() );
+
+   return vec3( P, Y, R );
+}
+
+static inline mat4 eulerToMatrix( const float yawDeg, const float pitchDeg, const float rollDeg )
+{
+   // Yaw
+   mat4 My = rotate( yawDeg, vectorUp() );
+
+   // Pitch
+   vec4 pAxis = My * vec4( vectorRight(), 0.0f );
+   mat4 Mp = rotate( pitchDeg, vec3( pAxis[ 0 ], pAxis[ 1 ], pAxis[ 2 ] ) );
+
+   // Roll
+   mat4 MpMy = Mp * My;
+   vec4 rAxis = MpMy * vec4( vectorForward(), 0.0f );
+   mat4 Mr = rotate( rollDeg, vec3( rAxis[ 0 ], rAxis[ 1 ], rAxis[ 2 ] ) );
+
+   return (Mr * Mp * My);
 }
 
 };
