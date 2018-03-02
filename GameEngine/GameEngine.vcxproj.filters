@@ -138,6 +138,9 @@
     <ClInclude Include="EditorWindow.h">
       <Filter>EditorOnly</Filter>
     </ClInclude>
+    <ClInclude Include="EditorEvents.h">
+      <Filter>EditorOnly</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">

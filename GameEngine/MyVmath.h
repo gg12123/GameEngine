@@ -1105,6 +1105,21 @@ static inline mat3 extractRotationOnly( const mat4& m )
    return rot;
 }
 
+static inline mat3 extractRotationScaled( const mat4& m )
+{
+   mat3 rot;
+
+   for (int i = 0; i < 3; i++)
+   {
+      for (int j = 0; j < 3; j++)
+      {
+         rot[ i ][ j ] = m[ i ][ j ];
+      }
+   }
+
+   return rot;
+}
+
 static inline vec3 extractForwardOnly( const mat4& m )
 {
    return normalize( vec3( m[ 2 ][ 0 ], m[ 2 ][ 1 ], m[ 2 ][ 2 ] ) );

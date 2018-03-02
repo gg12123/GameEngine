@@ -53,14 +53,18 @@ void Transform::UnRegisterChild( std::list<Transform*>::iterator toChild )
    m_Childern.erase( toChild );
 }
 
-// will need to implment a world position stays version too.
 void Transform::SetParent( Transform& parent )
 {
+   ConstructTransformMatrix();
+   mat4 original = m_TransformMatrix; 
+
    m_Parent->UnRegisterChild( m_ToThisInParentsChildList );
    m_Parent = &parent;
    m_ToThisInParentsChildList = m_Parent->RegisterChild( *this );
 
-   SetDirty();
+   SetPosition( extractPositionOnly( original ) );
+   SetRotation( toMat4( extractRotationOnly( original ) ) );
+   SetScale( extractScaleOnly( original ) );
 }
 
 void Transform::ClearParent()
@@ -216,11 +220,12 @@ void Transform::SetRotation( mat4 rot )
 
 void Transform::SetScale( vec3 s )
 {
-   vec3 parScale = extractScaleOnly( m_Parent->GetTransformMatrix() );
+   mat3 parRotScaled = extractRotationScaled( m_Parent->GetTransformMatrix() );
+   mat3 unscaledTransform = parRotScaled * extractRotationOnly( m_LocalTransformMatrix );
 
-   SetLocalScale( vec3( s[ 0 ] / parScale[ 0 ],
-                        s[ 1 ] / parScale[ 1 ],
-                        s[ 2 ] / parScale[ 2 ] ) );
+   SetLocalScale( vec3( s[ 0 ] / length( unscaledTransform[ 0 ] ),
+                        s[ 1 ] / length( unscaledTransform[ 1 ] ),
+                        s[ 2 ] / length( unscaledTransform[ 2 ] ) ) );
 }
 
 vec3 Transform::GetPosition()

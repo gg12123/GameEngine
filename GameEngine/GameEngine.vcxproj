@@ -125,6 +125,7 @@
     <ClInclude Include="ComponentIDs.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Editor.h" />
+    <ClInclude Include="EditorEvents.h" />
     <ClInclude Include="EditorWindow.h" />
     <ClInclude Include="HierarchyWindow.h" />
     <ClInclude Include="ImGUI\imconfig.h" />

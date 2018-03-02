@@ -1,9 +1,11 @@
+#include <algorithm>
 #include "Editor.h"
 #include "InspectorWindow.h"
 #include "HierarchyWindow.h"
 #include "World.h"
 #include "Transform.h"
 #include "GameObject.h"
+#include "Debug.h"
 
 Editor::Editor()
 {
@@ -15,12 +17,12 @@ void Editor::Awake( World& w )
 {
    m_World = &w;
 
-   m_ActiveGameObject = &(*m_World->GetRootTransform().ChildrenBegin())->GetGameObject();
-
    // maybe create the editor hierarchy here (camera, movement handles etc.)
 
    AddWindow( *(new HierarchyWindow()) );
    AddWindow( *(new InspectorWindow()) );
+
+   SetActiveGameObject( &(*m_World->GetRootTransform().ChildrenBegin())->GetGameObject() );
 }
 
 void Editor::AddWindow( EditorWindow& wnd )
@@ -40,7 +42,7 @@ void Editor::Update()
 void Editor::SetActiveGameObject( GameObject* active )
 {
    m_ActiveGameObject = active;
-   // may need to notify objects of this change
+   InvokeEvent( eActiveGameObjectChanged );
 }
 
 GameObject* Editor::GetActiveGameObject()
@@ -51,4 +53,62 @@ GameObject* Editor::GetActiveGameObject()
 World& Editor::GetWorld()
 {
    return *m_World;
+}
+
+void Editor::RegisterForEvent( EEditorEvent eventID, EditorEventFunctionPtr callback )
+{
+   auto it = m_Events.find( eventID );
+   std::vector<EditorEventFunctionPtr>* v;
+
+   if (it != m_Events.end())
+   {
+      v = it->second;
+   }
+   else
+   {
+      v = new std::vector<EditorEventFunctionPtr>();
+      m_Events[ eventID ] = v;
+   }
+
+   v->push_back( callback );
+}
+
+void Editor::UnregisterCallback( EEditorEvent eventID, EditorEventFunctionPtr callback )
+{
+   auto it = m_Events.find( eventID );
+
+   if (it != m_Events.end())
+   {
+      std::vector<EditorEventFunctionPtr>* v = it->second;
+
+      auto it2 = std::find( v->begin(), v->end(), callback );
+
+      if (it2 != v->end())
+      {
+         v->erase( it2 );
+      }
+      else
+      {
+         Debug::Instance().LogError( "Unable to find callback to un reg event" );
+      }
+   }
+   else
+   {
+      Debug::Instance().LogError( "Unable to event ID to un reg event" );
+   }
+}
+
+void Editor::InvokeEvent( EEditorEvent eventID )
+{
+   auto it = m_Events.find( eventID );
+
+   if (it != m_Events.end())
+   {
+      std::vector<EditorEventFunctionPtr>* v = it->second;
+
+      for (auto it2 = v->begin(); it2 != v->end(); it2++)
+      {
+         (*it2)();
+      }
+   }
 }

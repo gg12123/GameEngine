@@ -1,9 +1,9 @@
-#include "InspectorWindow.h"
 #include "GameObject.h"
 #include "SerializedFields.h"
 #include "Component.h"
 #include "Editor.h"
 #include "ImGUI/imgui.h"
+#include "InspectorWindow.h"
 
 static void CallOnGUI( std::unordered_map<std::string, SerializedField*>::iterator it )
 {
@@ -23,6 +23,9 @@ InspectorWindow::InspectorWindow()
 void InspectorWindow::Awake( Editor& editor )
 {
    m_Editor = &editor;
+
+   m_Editor->RegisterForEvent( eActiveGameObjectChanged, (EditorEventFunctionPtr)OnActiveGameObjectChanged );
+   OnActiveGameObjectChanged();
 }
 
 void InspectorWindow::CallIntoSerializedFields( GameObject* active, InspectorGUIFunctionPtr function )

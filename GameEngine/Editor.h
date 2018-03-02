@@ -1,5 +1,7 @@
 #pragma once
 #include <vector>
+#include <unordered_map>
+#include "EditorEvents.h"
 
 class World;
 class GameObject;
@@ -21,8 +23,14 @@ public:
 
    void AddWindow( EditorWindow& wnd );
 
+   void RegisterForEvent( EEditorEvent eventID, EditorEventFunctionPtr callback );
+   void UnregisterCallback( EEditorEvent eventID, EditorEventFunctionPtr callback );
+
+   void InvokeEvent( EEditorEvent eventID );
+
 private:
    World* m_World;
    GameObject* m_ActiveGameObject;
    std::vector<EditorWindow*> m_CurrentWindows;
+   std::unordered_map<EEditorEvent, std::vector<EditorEventFunctionPtr>*> m_Events;
 };
