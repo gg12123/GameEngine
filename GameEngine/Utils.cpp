@@ -147,6 +147,7 @@ static void InitTransformState( Transform& tran, vmath::vec3 pos, vmath::mat4 ro
 
    dynamic_cast<SerializedRotation*>(fields[ "rotation" ])->SetValue( rot );
    dynamic_cast<SerializedVector3*>(fields[ "position" ])->SetValue( pos );
+   dynamic_cast<SerializedVector3*>(fields[ "scale" ])->SetValue( vec3( 1.0f, 1.0f, 1.0f ) );
 }
 
 GameObject& CreateCubeGameObject( vmath::vec3 pos, vmath::mat4 rot, Transform& parent )

@@ -23,6 +23,10 @@ void SerializedField::SerializeWithSize( std::ofstream& stream )
    LocalSerialize( stream );
 }
 
+void SerializedField::InitForGUI()
+{
+}
+
 // ################### FIXED SIZE ####################################
 
 void FixedSizeSerializedField::DeSerializeWithSize( std::ifstream& stream )
@@ -88,9 +92,20 @@ int32_t SerializedVector3::GetSize()
 
 // ####################### ROTATION ########################### 
 
+void SerializedRotation::InitForGUI()
+{
+   m_Euler = vmath::matrixToEuler( m_Value );
+}
+
 void SerializedRotation::OnGUI( std::string name )
 {
    ImGui::Text( name.c_str() );
+
+   ImGui::InputFloat( "Y (yaw)", &m_Euler[ 1 ] );
+   ImGui::InputFloat( "X (pitch)", &m_Euler[ 0 ] );
+   ImGui::InputFloat( "Z (roll)", &m_Euler[ 2 ] );
+
+   m_Value = vmath::eulerToMatrix( m_Euler[ 1 ], m_Euler[ 0 ], m_Euler[ 2 ] );
 }
 
 vmath::mat4 SerializedRotation::Value()

@@ -14,11 +14,15 @@ public:
    vec3 GetPosition();
    mat4 GetLocalRotation();
    mat4 GetRotation();
+   vec3 GetLocalScale();
+   vec3 GetScale();
 
    void SetLocalPosition( vec3 pos );
    void SetPosition( vec3 pos );
    void SetLocalRotation( mat4 rot );
    void SetRotation( mat4 rot );
+   void SetLocalScale( vec3 s );
+   void SetScale( vec3 s );
 
    mat4 GetTransformMatrixAssumingClean();
    mat4 GetTransformMatrix();
@@ -62,6 +66,7 @@ private:
 
    // always valid
    SerializedVector3 m_LocalPosition;
+   SerializedVector3 m_LocalScale;
    SerializedRotation m_LocalRotation;
    mat4 m_LocalTransformMatrix;
 

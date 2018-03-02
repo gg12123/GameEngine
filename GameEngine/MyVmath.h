@@ -1082,7 +1082,12 @@ static inline mat4 toMat4( const mat3& m )
    return out;
 }
 
-// Will need changing when the matrix has scale
+static inline vec3 extractScaleOnly( const mat4& m )
+{
+   // no need to turn the cols of m into vec3 becasue their 4th components are zero.
+   return vec3( length( m[ 0 ] ), length( m[ 1 ] ), length( m[ 2 ] ) );
+}
+
 static inline mat3 extractRotationOnly( const mat4& m )
 {
    mat3 rot;
@@ -1093,25 +1098,39 @@ static inline mat3 extractRotationOnly( const mat4& m )
       {
          rot[ i ][ j ] = m[ i ][ j ];
       }
+
+      rot[ i ] = normalize( rot[ i ] );
    }
 
    return rot;
 }
 
-// Will need changing when the matrix has scale
 static inline vec3 extractForwardOnly( const mat4& m )
+{
+   return normalize( vec3( m[ 2 ][ 0 ], m[ 2 ][ 1 ], m[ 2 ][ 2 ] ) );
+}
+
+static inline vec3 extractForwardScaled( const mat4& m )
 {
    return vec3( m[ 2 ][ 0 ], m[ 2 ][ 1 ], m[ 2 ][ 2 ] );
 }
 
-// Will need changing when the matrix has scale
 static inline vec3 extractUpOnly( const mat4& m )
+{
+   return normalize( vec3( m[ 1 ][ 0 ], m[ 1 ][ 1 ], m[ 1 ][ 2 ] ) );
+}
+
+static inline vec3 extractUpScaled( const mat4& m )
 {
    return vec3( m[ 1 ][ 0 ], m[ 1 ][ 1 ], m[ 1 ][ 2 ] );
 }
 
-// Will need changing when the matrix has scale
 static inline vec3 extractRightOnly( const mat4& m )
+{
+   return normalize( vec3( m[ 0 ][ 0 ], m[ 0 ][ 1 ], m[ 0 ][ 2 ] ) );
+}
+
+static inline vec3 extractRightScaled( const mat4& m )
 {
    return vec3( m[ 0 ][ 0 ], m[ 0 ][ 1 ], m[ 0 ][ 2 ] );
 }
@@ -1469,7 +1488,7 @@ static inline vec3 matrixToEuler( const mat4& m )
    // Yaw
    Y = signedAngle( vectorRight(), pR, vectorUp() );
 
-   return vec3( P, Y, R );
+   return vec3( degrees( P ), degrees( Y ), degrees( R ) );
 }
 
 static inline mat4 eulerToMatrix( const float yawDeg, const float pitchDeg, const float rollDeg )

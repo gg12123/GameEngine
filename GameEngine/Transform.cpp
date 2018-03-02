@@ -149,6 +149,11 @@ vec3 Transform::GetLocalPosition()
    return m_LocalPosition.Value();
 }
 
+vec3 Transform::GetLocalScale()
+{
+   return m_LocalScale.Value();
+}
+
 void Transform::ConstructTransformMatrix()
 {
    Transform *clean = &FindCleanHierarchy();
@@ -175,7 +180,7 @@ mat4 Transform::GetTransformMatrix()
 
 void Transform::ConstructLocalTransformMatrix()
 {
-   m_LocalTransformMatrix = m_LocalRotation.Value();
+   m_LocalTransformMatrix = m_LocalRotation.Value() * scale( m_LocalScale.Value() );
 
    m_LocalTransformMatrix[ 3 ] = vec4( m_LocalPosition.Value()[ 0 ],
                                        m_LocalPosition.Value()[ 1 ],
@@ -187,16 +192,16 @@ void Transform::SetPosition( vec3 pos )
 {
    mat4 parentsTransform = m_Parent->GetTransformMatrix();
 
-   vec3 parentsPos = extractPositionOnly( parentsTransform );
-   vec3 parentsRight = extractRightOnly( parentsTransform );
-   vec3 parentsUp = extractUpOnly( parentsTransform );
-   vec3 parentsForward = extractForwardOnly( parentsTransform );
+   vec3 parPos = extractPositionOnly( parentsTransform );
+   vec3 parRightScaled = extractRightOnly( parentsTransform );
+   vec3 parUpScaled = extractUpOnly( parentsTransform );
+   vec3 parForwardScaled = extractForwardOnly( parentsTransform );
 
-   vec3 parentToThis = pos - parentsPos;
+   vec3 parToMe = pos - parPos;
 
-   SetLocalPosition( vec3( dot( parentToThis, parentsRight ),
-                           dot( parentToThis, parentsUp ),
-                           dot( parentToThis, parentsForward ) ) );
+   SetLocalPosition( vec3( dot( parToMe, normalize( parRightScaled ) ) / length( parRightScaled ),
+                           dot( parToMe, normalize( parUpScaled ) ) / length( parUpScaled ),
+                           dot( parToMe, normalize( parForwardScaled ) ) / length( parForwardScaled ) ) );
 }
 
 void Transform::SetRotation( mat4 rot )
@@ -209,6 +214,15 @@ void Transform::SetRotation( mat4 rot )
    SetLocalRotation( toMat4( requiredLocalRot ) );
 }
 
+void Transform::SetScale( vec3 s )
+{
+   vec3 parScale = extractScaleOnly( m_Parent->GetTransformMatrix() );
+
+   SetLocalScale( vec3( s[ 0 ] / parScale[ 0 ],
+                        s[ 1 ] / parScale[ 1 ],
+                        s[ 2 ] / parScale[ 2 ] ) );
+}
+
 vec3 Transform::GetPosition()
 {
    ConstructTransformMatrix();
@@ -218,14 +232,13 @@ vec3 Transform::GetPosition()
 mat4 Transform::GetRotation()
 {
    ConstructTransformMatrix();
-   
-   mat4 rot = m_TransformMatrix;
+   return toMat4( extractRotationOnly( m_TransformMatrix ) );
+}
 
-   rot[ 3 ][ 0 ] = 0.0f;
-   rot[ 3 ][ 1 ] = 0.0f;
-   rot[ 3 ][ 2 ] = 0.0f;
-
-   return rot;
+vec3 Transform::GetScale()
+{
+   ConstructTransformMatrix();
+   return extractScaleOnly( m_TransformMatrix );
 }
 
 mat4 Transform::GetLocalTransformMatrix()
@@ -248,6 +261,13 @@ void Transform::SetLocalPosition( vec3 pos )
 void Transform::SetLocalRotation( mat4 rot )
 {
    m_LocalRotation.SetValue( rot );
+   ConstructLocalTransformMatrix();
+   SetDirty();
+}
+
+void Transform::SetLocalScale( vec3 s )
+{
+   m_LocalScale.SetValue( s );
    ConstructLocalTransformMatrix();
    SetDirty();
 }
@@ -276,4 +296,5 @@ void Transform::GetSerializedFields( std::unordered_map<std::string, SerializedF
 {
    fields[ "position" ] = &m_LocalPosition;
    fields[ "rotation" ] = &m_LocalRotation;
+   fields[ "scale" ] = &m_LocalScale;
 }

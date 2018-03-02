@@ -14,6 +14,7 @@ public:
    virtual void DeSerializeWithSize( std::ifstream& stream ) = 0;
 
    virtual void OnGUI( std::string name ) = 0;
+   virtual void InitForGUI();
 protected:
    virtual void LocalSerialize( std::ofstream& stream ) = 0;
    virtual void LocalDeSerialize( std::ifstream& stream ) = 0;
@@ -45,13 +46,15 @@ class SerializedRotation : public FixedSizeSerializedField
 public:
    vmath::mat4 Value();
    void SetValue( vmath::mat4 value );
-   void OnGUI( std::string name );
+   void OnGUI( std::string name ) override;
+   void InitForGUI() override;
 protected:
    void LocalSerialize( std::ofstream& stream ) override;
    void LocalDeSerialize( std::ifstream& stream ) override;
    int32_t GetSize() override;
 private:
    vmath::mat4 m_Value;
+   vmath::vec3 m_Euler;
 };
 
 class SerializedString : public SerializedField
