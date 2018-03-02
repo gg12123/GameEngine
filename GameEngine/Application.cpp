@@ -2,6 +2,8 @@
 #include "sb7.h"
 #include "Debug.h"
 #include "Utils.h"
+#include "Transform.h"
+#include "GameObject.h"
 #include "ImGUI/imgui.h"
 #include "ImGUI/imgui_impl_glfw_gl3.h"
 
@@ -59,6 +61,7 @@ void Application::Run()
 
    SetupCallbacks();
    InitWorld();
+   InitEditor();
    InitImGUI();
    RunLoop();
 }
@@ -72,6 +75,11 @@ void Application::InitWorld()
    GameObject& root = HierarchyForNewProject( objects );
 
    m_World.Awake( root, objects, m_WindowConfig );
+}
+
+void Application::InitEditor()
+{
+   m_Editor.Awake( m_World );
 }
 
 static void TestOutImGui()
@@ -91,7 +99,7 @@ void Application::RunLoop()
       ImGui_ImplGlfwGL3_NewFrame();
 
       m_World.EditUpdate();
-      TestOutImGui();
+      m_Editor.Update();
 
       ImGui::Render();
       ImGui_ImplGlfwGL3_RenderDrawData( ImGui::GetDrawData() );

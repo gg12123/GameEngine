@@ -124,6 +124,9 @@
     <ClInclude Include="ComponentCreator.h" />
     <ClInclude Include="ComponentIDs.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="Editor.h" />
+    <ClInclude Include="EditorWindow.h" />
+    <ClInclude Include="HierarchyWindow.h" />
     <ClInclude Include="ImGUI\imconfig.h" />
     <ClInclude Include="ImGUI\imgui.h" />
     <ClInclude Include="ImGUI\imgui_impl_glfw_gl3.h" />
@@ -161,6 +164,8 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentCreator.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="HierarchyWindow.cpp" />
     <ClCompile Include="ImGUI\imgui.cpp" />
     <ClCompile Include="ImGUI\imgui_demo.cpp" />
     <ClCompile Include="ImGUI\imgui_draw.cpp" />

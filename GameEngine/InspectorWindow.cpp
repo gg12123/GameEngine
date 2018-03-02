@@ -2,28 +2,31 @@
 #include "GameObject.h"
 #include "SerializedFields.h"
 #include "Component.h"
+#include "Editor.h"
 #include "ImGUI/imgui.h"
 
 InspectorWindow::InspectorWindow()
 {
-   m_ActiveGameObject = nullptr;
+   m_Editor = nullptr;
 }
 
-void InspectorWindow::SetActiveGameObject( GameObject * obj )
+void InspectorWindow::Awake( Editor& editor )
 {
-   m_ActiveGameObject = obj;
+   m_Editor = &editor;
 }
 
 void InspectorWindow::Update()
 {
-   if (m_ActiveGameObject != nullptr)
+   GameObject* active = m_Editor->GetActiveGameObject();
+
+   if (active != nullptr)
    {
-      ImGui::Begin( "Inspector" );
+      ImGui::Begin( "Inspector", 0, ImGuiWindowFlags_AlwaysAutoResize );
 
       std::unordered_map<std::string, SerializedField*> fields;
 
-      for (std::vector<Component*>::iterator it = m_ActiveGameObject->ComponentsBegin();
-            it != m_ActiveGameObject->ComponentsEnd();
+      for (std::vector<Component*>::iterator it = active->ComponentsBegin();
+            it != active->ComponentsEnd();
             it++)
       {
          fields.clear();

@@ -129,6 +129,15 @@
     <ClInclude Include="InspectorWindow.h">
       <Filter>EditorOnly</Filter>
     </ClInclude>
+    <ClInclude Include="Editor.h">
+      <Filter>EditorOnly</Filter>
+    </ClInclude>
+    <ClInclude Include="HierarchyWindow.h">
+      <Filter>EditorOnly</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorWindow.h">
+      <Filter>EditorOnly</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -216,6 +225,12 @@
       <Filter>ImGUI</Filter>
     </ClCompile>
     <ClCompile Include="InspectorWindow.cpp">
+      <Filter>EditorOnly</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor.cpp">
+      <Filter>EditorOnly</Filter>
+    </ClCompile>
+    <ClCompile Include="HierarchyWindow.cpp">
       <Filter>EditorOnly</Filter>
     </ClCompile>
   </ItemGroup>

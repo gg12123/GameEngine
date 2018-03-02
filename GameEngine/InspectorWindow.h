@@ -1,15 +1,16 @@
 #pragma once
+#include "EditorWindow.h"
 
 class GameObject;
 
-class InspectorWindow
+class InspectorWindow : public EditorWindow
 {
 public:
    InspectorWindow();
 
-   void SetActiveGameObject( GameObject * obj );
-   void Update();
+   void Awake( Editor& editor ) override;
+   void Update() override;
 
 private:
-   GameObject* m_ActiveGameObject;
+   Editor* m_Editor;
 };

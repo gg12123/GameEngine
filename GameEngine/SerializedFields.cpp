@@ -46,7 +46,7 @@ void SerializedVector3::OnGUI( std::string name )
 
    ImGui::InputFloat( "X", &m_Value[ 0 ] );
    ImGui::InputFloat( "Y", &m_Value[ 1 ] );
-   ImGui::InputFloat( "Z", &m_Value[ 0 ] );
+   ImGui::InputFloat( "Z", &m_Value[ 2 ] );
 }
 
 vmath::vec3 SerializedVector3::Value()
@@ -140,7 +140,7 @@ int32_t SerializedRotation::GetSize()
 
 void SerializedFloat::OnGUI( std::string name )
 {
-   ImGui::Text( name.c_str() );
+   ImGui::InputFloat( name.c_str(), &m_Value );
 }
 
 float SerializedFloat::Value()
@@ -172,7 +172,13 @@ int32_t SerializedFloat::GetSize()
 
 void SerializedString::OnGUI( std::string name )
 {
-   ImGui::Text( name.c_str() );
+   char buff[ 50 ];
+   ImGui::InputText( name.c_str(), buff, 50 );
+
+   for (char* p = buff; p; p++)
+   {
+      m_Value.append( 1, *p );
+   }
 }
 
 std::string SerializedString::Value()
@@ -232,7 +238,7 @@ int32_t SerializedString::GetSize()
 
 void SerializedInt32::OnGUI( std::string name )
 {
-   ImGui::Text( name.c_str() );
+   ImGui::InputInt( name.c_str(), &m_Value );
 }
 
 int32_t SerializedInt32::Value()

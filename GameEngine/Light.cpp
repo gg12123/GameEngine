@@ -16,7 +16,7 @@ void Light::Awake()
 void Light::ApplyLightUniforms()
 {
    mat4 lightTransform = GetGameObject().GetTransform().GetTransformMatrixAssumingClean();
-   vec3 lightDir = vec3( lightTransform[ 2 ][ 0 ], lightTransform[ 2 ][ 1 ], lightTransform[ 2 ][ 2 ] );
+   vec3 lightDir = extractForwardOnly( lightTransform );
 
    glUniform3fv( LIGHT_DIRECTION_LOCATION,
                  1,
