@@ -13,6 +13,10 @@ class GameObject
 public:
 
    GameObject();
+   GameObject( std::string name );
+
+   std::string GetName();
+   void SetName( std::string name );
 
    // called by the world if this object starts in the scene. If the object is instantiated, awake
    // must be called by the instantitor.
@@ -45,11 +49,15 @@ public:
 
 private:
 
+   void CommonConstructor();
+
    std::vector<Component*>* m_UpdateableComponents[ NUMBER_OF_UPDATE_FUNCTIONS ];
    std::vector<Component*> m_Components;
 
    World *m_World;
    Transform *m_Transform;
+
+   std::string m_Name;
 };
 
 template <class T>

@@ -59,10 +59,10 @@ void Application::Run()
       return;
    }
 
+   InitImGUI();
    SetupCallbacks();
    InitWorld();
    InitEditor();
-   InitImGUI();
    RunLoop();
 }
 

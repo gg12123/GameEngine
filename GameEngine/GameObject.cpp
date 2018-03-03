@@ -6,6 +6,28 @@
 
 GameObject::GameObject()
 {
+   CommonConstructor();
+   m_Name = "GameObject";
+}
+
+GameObject::GameObject( std::string name )
+{
+   CommonConstructor();
+   m_Name = name;
+}
+
+std::string GameObject::GetName()
+{
+   return m_Name;
+}
+
+void GameObject::SetName( std::string name )
+{
+   m_Name = name;
+}
+
+void GameObject::CommonConstructor()
+{
    m_Transform = nullptr;
    m_UpdateableComponents[ eUpdateFunction ] = nullptr;
    m_UpdateableComponents[ eFixedUpdateFunction ] = nullptr;

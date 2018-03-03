@@ -15,6 +15,15 @@ static void CallInitGUI( std::unordered_map<std::string, SerializedField*>::iter
    it->second->InitForGUI();
 }
 
+static void DrawText( std::vector<Component*>::iterator it )
+{
+   ImGui::Text( (*it)->GetName().c_str() );
+}
+
+static void DoNothing( std::vector<Component*>::iterator it )
+{
+}
+
 InspectorWindow::InspectorWindow()
 {
    m_Editor = nullptr;
@@ -27,10 +36,11 @@ void InspectorWindow::Awake( Editor& editor )
    m_OnNewActiveGOEvent = new VoidEvent<InspectorWindow>( &InspectorWindow::OnActiveGameObjectChanged, *this );
   
    m_Editor->RegisterForEvent( eActiveGameObjectChanged, *m_OnNewActiveGOEvent );
-   OnActiveGameObjectChanged();
 }
 
-void InspectorWindow::CallIntoSerializedFields( GameObject* active, InspectorGUIFunctionPtr function )
+void InspectorWindow::CallIntoSerializedFields( GameObject* active,
+                                                InspectorGUIFunctionPtr1 function1,
+                                                InspectorGUIFunctionPtr2 function2 )
 {
    std::unordered_map<std::string, SerializedField*> fields;
 
@@ -41,13 +51,13 @@ void InspectorWindow::CallIntoSerializedFields( GameObject* active, InspectorGUI
       fields.clear();
       (*it)->GetSerializedFields( fields );
 
-      ImGui::Text( (*it)->GetName().c_str() );
+      function1( it );
 
       for (std::unordered_map<std::string, SerializedField*>::iterator it2 = fields.begin();
             it2 != fields.end();
             it2++)
       {
-         function( it2 );
+         function2( it2 );
       }
    }
 }
@@ -59,8 +69,9 @@ void InspectorWindow::Update()
    if (active != nullptr)
    {
       ImGui::Begin( "Inspector", 0, ImGuiWindowFlags_AlwaysAutoResize );
+      ImGui::Text( active->GetName().c_str() );
 
-      CallIntoSerializedFields( active, CallOnGUI );
+      CallIntoSerializedFields( active, DrawText, CallOnGUI );
 
       ImGui::End();
    }
@@ -72,6 +83,6 @@ void InspectorWindow::OnActiveGameObjectChanged()
 
    if (active != nullptr)
    {
-      CallIntoSerializedFields( active, CallInitGUI );
+      CallIntoSerializedFields( active, DoNothing, CallInitGUI );
    }
 }

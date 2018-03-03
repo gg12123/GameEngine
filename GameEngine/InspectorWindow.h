@@ -6,8 +6,10 @@
 
 class GameObject;
 class SerializedField;
+class Component;
 
-typedef void( *InspectorGUIFunctionPtr )(std::unordered_map<std::string, SerializedField*>::iterator);
+typedef void( *InspectorGUIFunctionPtr1 )(std::vector<Component*>::iterator);
+typedef void( *InspectorGUIFunctionPtr2 )(std::unordered_map<std::string, SerializedField*>::iterator);
 
 class InspectorWindow : public EditorWindow
 {
@@ -20,7 +22,9 @@ public:
    void OnActiveGameObjectChanged();
 
 private:
-   void CallIntoSerializedFields( GameObject* active, InspectorGUIFunctionPtr function );
+   void CallIntoSerializedFields( GameObject* active,
+                                  InspectorGUIFunctionPtr1 function1,
+                                  InspectorGUIFunctionPtr2 function2 );
 
    Editor* m_Editor;
    Event* m_OnNewActiveGOEvent;

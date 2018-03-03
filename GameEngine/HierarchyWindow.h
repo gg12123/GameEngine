@@ -12,6 +12,7 @@ public:
    void Update() override;
 
 private:
+   void DrawTreeView( GameObject& obj, int id );
 
    Editor* m_Editor;
    GameObject* m_Root;
