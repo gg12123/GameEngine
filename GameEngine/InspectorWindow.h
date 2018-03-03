@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include <string>
 #include "EditorWindow.h"
+#include "Events.h"
 
 class GameObject;
 class SerializedField;
@@ -22,4 +23,5 @@ private:
    void CallIntoSerializedFields( GameObject* active, InspectorGUIFunctionPtr function );
 
    Editor* m_Editor;
+   Event* m_OnNewActiveGOEvent;
 };

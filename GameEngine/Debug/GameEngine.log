@@ -1,26 +1,11 @@
-﻿  Transform.cpp
-  InspectorWindow.cpp
-c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\inspectorwindow.cpp(26): error C3867: 'InspectorWindow::OnActiveGameObjectChanged': non-standard syntax; use '&' to create a pointer to member
-  Editor.cpp
+﻿  Application.cpp
+c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\application.cpp(29): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   Generating Code...
   Compiling...
   main.cpp
-  World.cpp
-  Utils.cpp
-  TransformUpdater.cpp
-  SerializedFields.cpp
-  RenderingSlot.cpp
-  PrefabField.cpp
-  MeshRenderer.cpp
-  MeshField.cpp
-  Mesh.cpp
-  Light.cpp
+  InspectorWindow.cpp
   HierarchyWindow.cpp
-  GeometryRenderer.cpp
-  GameObject.cpp
-  ComponentCreator.cpp
-  Component.cpp
-  Camera.cpp
-  Application.cpp
-c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\application.cpp(29): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  Editor.cpp
   Generating Code...
+  GameEngine.vcxproj -> C:\Users\gg_11\Documents\Visual Studio 2015\Projects\GameEngine2\Debug\GameEngine.exe
+  GameEngine.vcxproj -> C:\Users\gg_11\Documents\Visual Studio 2015\Projects\GameEngine2\Debug\GameEngine.pdb (Partial PDB)

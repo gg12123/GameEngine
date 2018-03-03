@@ -2,10 +2,14 @@
 #include "ComponentCreator.h"
 #include "World.h"
 #include "Transform.h"
+#include "Debug.h"
 
 GameObject::GameObject()
 {
    m_Transform = nullptr;
+   m_UpdateableComponents[ eUpdateFunction ] = nullptr;
+   m_UpdateableComponents[ eFixedUpdateFunction ] = nullptr;
+   m_UpdateableComponents[ eUpdateInEditMode ] = nullptr;
 }
 
 Transform& GameObject::GetTransform()
@@ -13,15 +17,54 @@ Transform& GameObject::GetTransform()
    return *m_Transform;
 }
 
-void GameObject::UpdateComponents( EUpdaterFunction updateFunction )
+void GameObject::Update()
 {
-   // If this update is being called by the world, it is garunteed that
-   // the corresponding vector exists in the map. (becasue of the registration process)
-   std::vector<UpdaterFunctionPtr> *functions = m_UpdaterFunctions[ updateFunction ];
+   auto v = m_UpdateableComponents[ eUpdateFunction ];
 
-   for (std::vector<UpdaterFunctionPtr>::iterator it = functions->begin(); it != functions->end(); it++)
+   if (!v)
    {
-      (*it)();
+      Debug::Instance().LogError( "Update called with no updatable comps" );
+   }
+   else
+   {
+      for (auto it = v->begin(); it != v->end(); it++)
+      {
+         (*it)->Update();
+      }
+   }
+}
+
+void GameObject::FixedUpdate()
+{
+   auto v = m_UpdateableComponents[ eFixedUpdateFunction ];
+
+   if (!v)
+   {
+      Debug::Instance().LogError( "Fixed update called with no updatable comps" );
+   }
+   else
+   {
+      for (auto it = v->begin(); it != v->end(); it++)
+      {
+         (*it)->FixedUpdate();
+      }
+   }
+}
+
+void GameObject::EditUpdate()
+{
+   auto v = m_UpdateableComponents[ eUpdateInEditMode ];
+
+   if (!v)
+   {
+      Debug::Instance().LogError( "Edit update called with no updatable comps" );
+   }
+   else
+   {
+      for (auto it = v->begin(); it != v->end(); it++)
+      {
+         (*it)->EditUpdate();
+      }
    }
 }
 
@@ -51,26 +94,22 @@ void GameObject::AddComponent( Component &component )
    m_Components.push_back( &component );
 }
 
-void GameObject::RegisterUpdaterFunction( const EUpdaterFunction updateFunc, const UpdaterFunctionPtr updaterPtr )
+void GameObject::RegisterComponentForUpdate( const EUpdaterFunction updateFunction, Component& comp )
 {
-   std::unordered_map<EUpdaterFunction, std::vector<UpdaterFunctionPtr>*>::iterator it;
-   std::vector<UpdaterFunctionPtr>* v;
-
-   it = m_UpdaterFunctions.find( updateFunc );
-
-   if (it == m_UpdaterFunctions.end())
+   if (!m_UpdateableComponents[ updateFunction ])
    {
-      v = new std::vector<UpdaterFunctionPtr>();
-      m_UpdaterFunctions[ updateFunc ] = v;
-
-      m_World->RegisterToUpdateFunction( updateFunc, *this );
-   }
-   else
-   {
-      v = it->second;
+      m_UpdateableComponents[ updateFunction ] = new std::vector<Component*>();
+      m_World->RegisterToUpdateFunction( updateFunction, *this );
    }
 
-   v->push_back( updaterPtr );
+   std::vector<Component*>* v = m_UpdateableComponents[ updateFunction ];
+
+   if (std::find( v->begin(), v->end(), &comp ) != v->end())
+   {
+      Debug::Instance().LogError( "Component registers twice for update" );
+   }
+
+   v->push_back( &comp );
 }
 
 void GameObject::CacheTransform()

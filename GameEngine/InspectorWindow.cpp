@@ -23,8 +23,10 @@ InspectorWindow::InspectorWindow()
 void InspectorWindow::Awake( Editor& editor )
 {
    m_Editor = &editor;
-
-   m_Editor->RegisterForEvent( eActiveGameObjectChanged, (EditorEventFunctionPtr)OnActiveGameObjectChanged );
+  
+   m_OnNewActiveGOEvent = new VoidEvent<InspectorWindow>( &InspectorWindow::OnActiveGameObjectChanged, *this );
+  
+   m_Editor->RegisterForEvent( eActiveGameObjectChanged, *m_OnNewActiveGOEvent );
    OnActiveGameObjectChanged();
 }
 

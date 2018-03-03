@@ -18,9 +18,9 @@ GameObject& Component::GetGameObject()
    return *m_GameObject;
 }
 
-void Component::RegisterUpdaterFunction( const EUpdaterFunction eFunction, const UpdaterFunctionPtr functionPtr )
+void Component::RegisterForUpdate( const EUpdaterFunction eFunction )
 {
-   m_GameObject->RegisterUpdaterFunction( eFunction, functionPtr );
+   m_GameObject->RegisterComponentForUpdate( eFunction, *this );
 }
 
 void Component::Start()
@@ -110,4 +110,19 @@ GameObject& Component::InstantiatePrefab( const PrefabField& prefab )
 std::string Component::InstantiateMesh( const MeshField& mesh )
 {
    return mesh.Instantiate( *m_World );
+}
+
+void Component::Update()
+{
+   throw std::exception( "Update called with no implementation" );
+}
+
+void Component::FixedUpdate()
+{
+   throw std::exception( "Fixed update called with no implementation" );
+}
+
+void Component::EditUpdate()
+{
+   throw std::exception( "Edit update called with no implementation" );
 }

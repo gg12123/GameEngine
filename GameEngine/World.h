@@ -32,10 +32,9 @@ public:
 
 private:
 
-   void UpdateGameObjects( EUpdaterFunction updateFunction );
    void StartGameObjects();
 
-   std::unordered_map<EUpdaterFunction, std::list<GameObject*>*> m_UpdatableGameObjects;
+   std::list<GameObject*> m_UpdatableGameObjects[ NUMBER_OF_UPDATE_FUNCTIONS ];
    std::list<GameObject*> m_GameObjectsToBeStarted;
 
    TransformUpdater m_TransformUpdater;

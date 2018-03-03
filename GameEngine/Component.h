@@ -29,11 +29,15 @@ public:
    virtual int32_t GetType() = 0;
    virtual std::string GetName() = 0;
 
+   virtual void Update();
+   virtual void FixedUpdate();
+   virtual void EditUpdate();
+
 protected:
 
    virtual void Awake();
 
-   void RegisterUpdaterFunction( const EUpdaterFunction eFunction, const UpdaterFunctionPtr functionPtr );
+   void RegisterForUpdate( const EUpdaterFunction eFunction );
 
    TransformUpdater& GetTransformUpdater();
    GeometryRenderer& GetGeometryRenderer();

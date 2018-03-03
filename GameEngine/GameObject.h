@@ -22,10 +22,12 @@ public:
    void StartComponents();
 
    // called by the world
-   void UpdateComponents( EUpdaterFunction updateFunction );
+   void Update();
+   void FixedUpdate();
+   void EditUpdate();
 
    void AddComponent( Component &component );
-   void RegisterUpdaterFunction( const EUpdaterFunction updateFunction, const UpdaterFunctionPtr updaterPtr );
+   void RegisterComponentForUpdate( const EUpdaterFunction updateFunction, Component& comp );
 
    Transform& GetTransform();
 
@@ -43,7 +45,7 @@ public:
 
 private:
 
-   std::unordered_map<EUpdaterFunction, std::vector<UpdaterFunctionPtr>*> m_UpdaterFunctions;
+   std::vector<Component*>* m_UpdateableComponents[ NUMBER_OF_UPDATE_FUNCTIONS ];
    std::vector<Component*> m_Components;
 
    World *m_World;

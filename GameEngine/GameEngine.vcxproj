@@ -127,6 +127,7 @@
     <ClInclude Include="Editor.h" />
     <ClInclude Include="EditorEvents.h" />
     <ClInclude Include="EditorWindow.h" />
+    <ClInclude Include="Events.h" />
     <ClInclude Include="HierarchyWindow.h" />
     <ClInclude Include="ImGUI\imconfig.h" />
     <ClInclude Include="ImGUI\imgui.h" />

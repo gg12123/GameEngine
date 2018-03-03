@@ -2,6 +2,7 @@
 #include "Utils.h"
 #include "GameObject.h"
 #include "Transform.h"
+#include "Debug.h"
 
 World::World()
 {
@@ -24,27 +25,40 @@ void World::Awake( GameObject& rootGameObject, std::vector<GameObject*>& gameObj
 void World::Update()
 {
    StartGameObjects();
-   UpdateGameObjects( eUpdateFunction );
+   
+   auto l = &m_UpdatableGameObjects[ eUpdateFunction ];
+   for (auto it = l->begin(); it != l->end(); it++)
+   {
+      (*it)->Update();
+   }
 
    m_TransformUpdater.UpdateTransforms();
-
    m_GeometryRenderer.Render();
 }
 
 void World::EditUpdate()
 {
    StartGameObjects(); // may not need to call start here
-   UpdateGameObjects( eUpdateInEditMode );
+   
+   auto l = &m_UpdatableGameObjects[ eUpdateInEditMode ];
+   for (auto it = l->begin(); it != l->end(); it++)
+   {
+      (*it)->EditUpdate();
+   }
 
    m_TransformUpdater.UpdateTransforms();
-
    m_GeometryRenderer.Render();
 }
 
 void World::FixedUpdate()
 {
    StartGameObjects();
-   UpdateGameObjects( eFixedUpdateFunction );
+   
+   auto l = &m_UpdatableGameObjects[ eFixedUpdateFunction ];
+   for (auto it = l->begin(); it != l->end(); it++)
+   {
+      (*it)->FixedUpdate();
+   }
 
    // do some physics stuff
 }
@@ -56,38 +70,16 @@ void World::RegisterForStart( GameObject &toRegister )
 
 void World::RegisterToUpdateFunction( EUpdaterFunction updateFunction, GameObject& gameObject )
 {
-   std::unordered_map<EUpdaterFunction, std::list<GameObject*>*>::iterator it;
-   std::list<GameObject*>* lst;
+   std::list<GameObject*>* l = &m_UpdatableGameObjects[ updateFunction ];
 
-   it = m_UpdatableGameObjects.find( updateFunction );
+   auto it = std::find( l->begin(), l->end(), &gameObject );
 
-   if (it == m_UpdatableGameObjects.end())
+   if (it != l->end())
    {
-      lst = new std::list<GameObject*>();
-      m_UpdatableGameObjects[ updateFunction ] = lst;
-   }
-   else
-   {
-      lst = it->second;
+      Debug::Instance().LogError( "Game object registerd twice for update" );
    }
 
-   lst->push_back( &gameObject );
-}
-
-void World::UpdateGameObjects( EUpdaterFunction updateFunction )
-{
-   std::unordered_map<EUpdaterFunction, std::list<GameObject*>*>::iterator it;
-   it = m_UpdatableGameObjects.find( updateFunction );
-
-   if (it != m_UpdatableGameObjects.end())
-   {
-      std::list<GameObject*>* toUpdate = it->second;
-
-      for (std::list<GameObject*>::iterator it = toUpdate->begin(); it != toUpdate->end(); it++)
-      {
-         (*it)->UpdateComponents( updateFunction );
-      }
-   }
+   l->push_back( &gameObject );
 }
 
 void World::StartGameObjects()

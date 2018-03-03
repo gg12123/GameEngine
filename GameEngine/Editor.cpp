@@ -55,10 +55,10 @@ World& Editor::GetWorld()
    return *m_World;
 }
 
-void Editor::RegisterForEvent( EEditorEvent eventID, EditorEventFunctionPtr callback )
+void Editor::RegisterForEvent( EEditorEvent eventID, Event& callback )
 {
    auto it = m_Events.find( eventID );
-   std::vector<EditorEventFunctionPtr>* v;
+   std::vector<Event*>* v;
 
    if (it != m_Events.end())
    {
@@ -66,22 +66,22 @@ void Editor::RegisterForEvent( EEditorEvent eventID, EditorEventFunctionPtr call
    }
    else
    {
-      v = new std::vector<EditorEventFunctionPtr>();
+      v = new std::vector<Event*>();
       m_Events[ eventID ] = v;
    }
 
-   v->push_back( callback );
+   v->push_back( &callback );
 }
 
-void Editor::UnregisterCallback( EEditorEvent eventID, EditorEventFunctionPtr callback )
+void Editor::UnregisterCallback( EEditorEvent eventID, Event& callback )
 {
    auto it = m_Events.find( eventID );
 
    if (it != m_Events.end())
    {
-      std::vector<EditorEventFunctionPtr>* v = it->second;
+      std::vector<Event*>* v = it->second;
 
-      auto it2 = std::find( v->begin(), v->end(), callback );
+      auto it2 = std::find( v->begin(), v->end(), &callback );
 
       if (it2 != v->end())
       {
@@ -104,11 +104,11 @@ void Editor::InvokeEvent( EEditorEvent eventID )
 
    if (it != m_Events.end())
    {
-      std::vector<EditorEventFunctionPtr>* v = it->second;
+      std::vector<Event*>* v = it->second;
 
       for (auto it2 = v->begin(); it2 != v->end(); it2++)
       {
-         (*it2)();
+         (*it2)->Invoke();
       }
    }
 }
