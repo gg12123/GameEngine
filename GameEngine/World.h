@@ -13,7 +13,7 @@ public:
    ~World();
    World();
 
-   void OnDestroy();
+   void DestroyHierarchy( GameObject& root ) const;
 
    // When the world is awoken, all GOs in scene are instantiated and serialized fields good to go.
    // The vector of game objects is required becasue references between transforms and game objects is not
@@ -26,7 +26,8 @@ public:
    void EditUpdate();
 
    void RegisterForStart( GameObject &toRegister );
-   void RegisterToUpdateFunction( EUpdaterFunction updateFunction, GameObject& gameObject );
+   std::list<GameObject*>::iterator RegisterToUpdateFunction( EUpdaterFunction updateFunction, GameObject& gameObject );
+   void UnRegisterToUpdateFunction( EUpdaterFunction updateFunction, std::list<GameObject*>::iterator it );
 
    Transform& GetRootTransform();
    TransformUpdater& GetTransformUpdater();

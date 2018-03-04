@@ -4,6 +4,16 @@
 #include "Transform.h"
 #include "Debug.h"
 
+std::vector<Component*>* UpdateableComponents::Components()
+{
+   return &m_Components;
+}
+
+NullableValue<std::list<GameObject*>::iterator>& UpdateableComponents::ToThisInWorld()
+{
+   return m_ToMyGOInWorldsUpdateList;
+}
+
 GameObject::~GameObject()
 {
    for (auto it = m_Components.begin(); it != m_Components.end(); it++)
@@ -11,8 +21,35 @@ GameObject::~GameObject()
       delete *it;
    }
 
+   for (int i = 0; i < NUMBER_OF_UPDATE_FUNCTIONS; i++)
+   {
+      if (m_UpdateableComponents[ i ])
+      {
+         delete m_UpdateableComponents[ i ];
+      }
+   }
+
    m_Transform = nullptr;
    m_World = nullptr;
+}
+
+void GameObject::OnDestroy()
+{
+   for (int i = 0; i < NUMBER_OF_UPDATE_FUNCTIONS; i++)
+   {
+      UpdateableComponents* x = m_UpdateableComponents[ i ];
+
+      if (x && !x->ToThisInWorld().IsNull())
+      {
+         m_World->UnRegisterToUpdateFunction( (EUpdaterFunction)i, x->ToThisInWorld().Get() );
+         x->ToThisInWorld().Clear(); // not actually nessary here but will be when going inactive
+      }
+   }
+
+   for (auto it = m_Components.begin(); it != m_Components.end(); it++)
+   {
+      (*it)->OnDestroy();
+   }
 }
 
 GameObject::GameObject()
@@ -60,7 +97,7 @@ void GameObject::Update()
    }
    else
    {
-      for (auto it = v->begin(); it != v->end(); it++)
+      for (auto it = v->Components()->begin(); it != v->Components()->end(); it++)
       {
          (*it)->Update();
       }
@@ -77,7 +114,7 @@ void GameObject::FixedUpdate()
    }
    else
    {
-      for (auto it = v->begin(); it != v->end(); it++)
+      for (auto it = v->Components()->begin(); it != v->Components()->end(); it++)
       {
          (*it)->FixedUpdate();
       }
@@ -94,7 +131,7 @@ void GameObject::EditUpdate()
    }
    else
    {
-      for (auto it = v->begin(); it != v->end(); it++)
+      for (auto it = v->Components()->begin(); it != v->Components()->end(); it++)
       {
          (*it)->EditUpdate();
       }
@@ -131,11 +168,11 @@ void GameObject::RegisterComponentForUpdate( const EUpdaterFunction updateFuncti
 {
    if (!m_UpdateableComponents[ updateFunction ])
    {
-      m_UpdateableComponents[ updateFunction ] = new std::vector<Component*>();
-      m_World->RegisterToUpdateFunction( updateFunction, *this );
+      m_UpdateableComponents[ updateFunction ] = new UpdateableComponents();
+      m_UpdateableComponents[ updateFunction ]->ToThisInWorld().Set( m_World->RegisterToUpdateFunction( updateFunction, *this ) );
    }
 
-   std::vector<Component*>* v = m_UpdateableComponents[ updateFunction ];
+   std::vector<Component*>* v = m_UpdateableComponents[ updateFunction ]->Components();
 
    if (std::find( v->begin(), v->end(), &comp ) != v->end())
    {

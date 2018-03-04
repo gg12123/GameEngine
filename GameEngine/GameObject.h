@@ -4,9 +4,20 @@
 #include "Functions.h"
 #include "Component.h"
 #include "SerializedFields.h"
+#include "NullableIterator.h"
 
 class World;
 class Transform;
+
+class UpdateableComponents
+{
+public:
+   std::vector<Component*>* Components();
+   NullableValue<std::list<GameObject*>::iterator>& ToThisInWorld();
+private:
+   std::vector<Component*> m_Components;
+   NullableValue<std::list<GameObject*>::iterator> m_ToMyGOInWorldsUpdateList;
+};
 
 class GameObject
 {
@@ -32,6 +43,8 @@ public:
    void FixedUpdate();
    void EditUpdate();
 
+   void OnDestroy();
+
    void AddComponent( Component &component );
    void RegisterComponentForUpdate( const EUpdaterFunction updateFunction, Component& comp );
 
@@ -53,7 +66,7 @@ private:
 
    void CommonConstructor();
 
-   std::vector<Component*>* m_UpdateableComponents[ NUMBER_OF_UPDATE_FUNCTIONS ];
+   UpdateableComponents* m_UpdateableComponents[ NUMBER_OF_UPDATE_FUNCTIONS ];
    std::vector<Component*> m_Components;
 
    World *m_World;

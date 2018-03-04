@@ -6,37 +6,35 @@
 
 World::~World()
 {
-   EnumerableHierarchy enumerator( m_Root->GetGameObject() );
-
-   GameObject* next = enumerator.Next();
-
-   while (next)
-   {
-      delete next;
-      next = enumerator.Next();
-   }
-
-   m_Root = nullptr;
-}
-
-void World::OnDestroy()
-{
-   EnumerableHierarchy enumerator( m_Root->GetGameObject() );
-
-   GameObject* next = enumerator.Next();
-
-   while (next)
-   {
-      // call on destroy
-      next = enumerator.Next();
-   }
+   DestroyHierarchy( m_Root->GetGameObject() );
 
    for (int i = 0; i < NUMBER_OF_UPDATE_FUNCTIONS; i++)
    {
-      m_UpdatableGameObjects[ i ].clear();
+      if (m_UpdatableGameObjects[ i ].size() > 0)
+      {
+         Debug::Instance().LogError( "Updateable game objects not cleared on destroy " );
+      }
+   }
+}
+
+void World::DestroyHierarchy( GameObject& root ) const
+{
+   EnumerableHierarchy enumerator( root );
+   std::vector<GameObject*> toDestroy;
+
+   GameObject* next = enumerator.Next();
+
+   while (next)
+   {
+      toDestroy.push_back( next );
+      next->OnDestroy(); // this call will break transform parent child links, hence the need for the vector.
+      next = enumerator.Next();
    }
 
-   m_GeometryRenderer.OnDestroy();
+   for (auto it = toDestroy.begin(); it != toDestroy.end(); it++)
+   {
+      delete *it;
+   }
 }
 
 World::World()
@@ -103,7 +101,7 @@ void World::RegisterForStart( GameObject &toRegister )
    m_GameObjectsToBeStarted.push_back( &toRegister );
 }
 
-void World::RegisterToUpdateFunction( EUpdaterFunction updateFunction, GameObject& gameObject )
+std::list<GameObject*>::iterator World::RegisterToUpdateFunction( EUpdaterFunction updateFunction, GameObject& gameObject )
 {
    std::list<GameObject*>* l = &m_UpdatableGameObjects[ updateFunction ];
 
@@ -114,7 +112,14 @@ void World::RegisterToUpdateFunction( EUpdaterFunction updateFunction, GameObjec
       Debug::Instance().LogError( "Game object registerd twice for update" );
    }
 
-   l->push_back( &gameObject );
+   l->push_front( &gameObject );
+
+   return l->begin();
+}
+
+void World::UnRegisterToUpdateFunction( EUpdaterFunction updateFunction, std::list<GameObject*>::iterator it )
+{
+   m_UpdatableGameObjects[ updateFunction ].erase( it );
 }
 
 void World::StartGameObjects()

@@ -26,7 +26,7 @@ public:
 
    void AddWindow( EditorWindow& wnd );
 
-   void RegisterForEvent( EEditorEvent eventID, Event& callback );
+   void RegisterCallbackForEvent( EEditorEvent eventID, Event& callback );
    void UnregisterCallback( EEditorEvent eventID, Event& callback );
 
    void InvokeEvent( EEditorEvent eventID );

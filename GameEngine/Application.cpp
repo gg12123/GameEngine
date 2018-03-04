@@ -82,16 +82,11 @@ void Application::InitEditor()
    m_Editor.Awake( m_World );
 }
 
-static void TestOutImGui()
-{
-   static float f;
-
-   ImGui::InputFloat( "test float", &f );
-}
-
 void Application::RunLoop()
 {
    bool running = true;
+
+   Debug::Instance().Log( "starting main loop" );
 
    do
    {
@@ -110,6 +105,4 @@ void Application::RunLoop()
       running &= (glfwWindowShouldClose( m_Window ) != GL_TRUE);
 
    } while (running);
-
-   m_World.OnDestroy();
 }

@@ -30,19 +30,6 @@ GeometryRenderer::~GeometryRenderer()
    m_Light = nullptr;
 }
 
-void GeometryRenderer::OnDestroy()
-{
-   for (ShaderNameToMeshNameToRenderSlot::iterator it = m_RenderingSlots.begin(); it != m_RenderingSlots.end(); it++)
-   {
-      MeshNameToRenderSlot &meshNameToSlot = *(it->second);
-
-      for (MeshNameToRenderSlot::iterator it2 = meshNameToSlot.begin(); it2 != meshNameToSlot.end(); it2++)
-      {
-         it2->second->OnDestroy();
-      }
-   }
-}
-
 GeometryRenderer::GeometryRenderer()
 {
    m_Camera = nullptr;

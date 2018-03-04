@@ -7,7 +7,6 @@ class RenderingSlot
 {
 public:
 
-   ~RenderingSlot();
    RenderingSlot( Mesh& mesh, GLuint shader );
 
    std::list<MeshRenderer*>::iterator Add( MeshRenderer& meshRenderer );
@@ -16,8 +15,6 @@ public:
 
    void UseProgram();
    void BindMesh();
-
-   void OnDestroy();
 
 private:
 

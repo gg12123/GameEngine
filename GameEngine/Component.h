@@ -16,6 +16,9 @@ class Component
 {
 public:
 
+   virtual ~Component();
+   virtual void OnDestroy();
+
    void Awake( World &world, GameObject &gameObject );
 
    virtual void Start();

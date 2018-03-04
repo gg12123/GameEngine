@@ -63,7 +63,7 @@ World& Editor::GetWorld()
    return *m_World;
 }
 
-void Editor::RegisterForEvent( EEditorEvent eventID, Event& callback )
+void Editor::RegisterCallbackForEvent( EEditorEvent eventID, Event& callback )
 {
    auto it = m_Events.find( eventID );
    std::vector<Event*>* v;

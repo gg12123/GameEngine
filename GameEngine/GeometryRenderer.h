@@ -30,8 +30,6 @@ public:
    IWindowConfiguration& SetCamera( Camera& cam );
    void SetLight( Light& light );
 
-   void OnDestroy();
-
 private:
 
    GLuint m_Vao;

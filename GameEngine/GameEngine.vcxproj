@@ -138,6 +138,7 @@
     <ClInclude Include="ImGUI\stb_truetype.h" />
     <ClInclude Include="InspectorWindow.h" />
     <ClInclude Include="MeshField.h" />
+    <ClInclude Include="NullableIterator.h" />
     <ClInclude Include="PrefabField.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Functions.h" />

@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "SerializedFields.h"
 #include "MeshField.h"
+#include "NullableIterator.h"
 
 class MeshRenderer : public Component
 {
@@ -10,6 +11,7 @@ public:
    MeshRenderer();
 
    void GetSerializedFields( std::unordered_map<std::string, SerializedField*>& fields ) override;
+   void OnDestroy() override;
 
    // this will need to be virtual
    void Render(const int count);
@@ -33,5 +35,5 @@ private:
 
    MeshField m_MeshName;
    SerializedString m_ShaderName;
-   std::list<MeshRenderer*>::iterator m_ThisInRenderersList;
+   NullableValue<std::list<MeshRenderer*>::iterator> m_ToThisInRenderersList;
 };

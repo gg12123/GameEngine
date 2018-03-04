@@ -10,9 +10,19 @@ MeshRenderer::MeshRenderer()
 {
 }
 
+void MeshRenderer::OnDestroy()
+{
+   Component::OnDestroy();
+
+   if (!m_ToThisInRenderersList.IsNull())
+   {
+      GetGeometryRenderer().UnRegister( *this, m_ToThisInRenderersList.Get() );
+   }
+}
+
 void MeshRenderer::Awake()
 {
-   m_ThisInRenderersList = GetGeometryRenderer().Register( *this );
+   m_ToThisInRenderersList.Set( GetGeometryRenderer().Register( *this ) );
 }
 
 void MeshRenderer::GetSerializedFields( std::unordered_map<std::string, SerializedField*> &fields )

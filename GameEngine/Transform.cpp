@@ -8,6 +8,17 @@ Transform::Transform()
    m_Parent = nullptr;
 }
 
+void Transform::OnDestroy()
+{
+   Component::OnDestroy();
+
+   if (m_Parent)
+   {
+      m_Parent->UnRegisterChild( m_ToThisInParentsChildList );
+      m_Parent = nullptr;
+   }
+}
+
 void Transform::Awake()
 {
    m_TransformUpdater = &GetTransformUpdater();
@@ -15,7 +26,7 @@ void Transform::Awake()
 
    ConstructLocalTransformMatrix();
 
-   if (m_Parent != nullptr)
+   if (m_Parent)
    {
       // If not the root, set dirty so that global transform will be updated.
       SetDirty();
@@ -26,9 +37,9 @@ void Transform::Awake()
       m_TransformMatrix = m_LocalTransformMatrix;
    }
 
-   if (m_Parent == nullptr && (m_Root != this))
+   if (!m_Parent && (m_Root != this))
    {
-      throw std::exception( "Parent is null" );
+      throw std::exception( "Parent is null on non root" );
    }
 }
 
