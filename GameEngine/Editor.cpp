@@ -13,6 +13,14 @@ Editor::Editor()
    m_ActiveGameObject = nullptr;
 }
 
+Editor::~Editor()
+{
+   for (auto it = m_CurrentWindows.begin(); it != m_CurrentWindows.end(); it++)
+   {
+      delete *it;
+   }
+}
+
 void Editor::Awake( World& w )
 {
    m_World = &w;

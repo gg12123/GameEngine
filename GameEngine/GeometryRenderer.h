@@ -10,12 +10,13 @@ class Light;
 class Camera;
 
 typedef std::unordered_map<std::string, RenderingSlot*> MeshNameToRenderSlot;
-typedef std::unordered_map<std::string, MeshNameToRenderSlot*> MeshNameToShaderNameToRenderSlot;
+typedef std::unordered_map<std::string, MeshNameToRenderSlot*> ShaderNameToMeshNameToRenderSlot;
 
 class GeometryRenderer
 {
 public:
 
+   ~GeometryRenderer();
    GeometryRenderer();
 
    // must be called before components are awake
@@ -29,12 +30,14 @@ public:
    IWindowConfiguration& SetCamera( Camera& cam );
    void SetLight( Light& light );
 
+   void OnDestroy();
+
 private:
 
    GLuint m_Vao;
 
    // [shader name][mesh name]
-   MeshNameToShaderNameToRenderSlot m_RenderingSlots;
+   ShaderNameToMeshNameToRenderSlot m_RenderingSlots;
 
    Camera *m_Camera;
    IWindowConfiguration *m_WindowConfig;

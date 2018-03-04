@@ -4,6 +4,41 @@
 #include "Transform.h"
 #include "Debug.h"
 
+World::~World()
+{
+   EnumerableHierarchy enumerator( m_Root->GetGameObject() );
+
+   GameObject* next = enumerator.Next();
+
+   while (next)
+   {
+      delete next;
+      next = enumerator.Next();
+   }
+
+   m_Root = nullptr;
+}
+
+void World::OnDestroy()
+{
+   EnumerableHierarchy enumerator( m_Root->GetGameObject() );
+
+   GameObject* next = enumerator.Next();
+
+   while (next)
+   {
+      // call on destroy
+      next = enumerator.Next();
+   }
+
+   for (int i = 0; i < NUMBER_OF_UPDATE_FUNCTIONS; i++)
+   {
+      m_UpdatableGameObjects[ i ].clear();
+   }
+
+   m_GeometryRenderer.OnDestroy();
+}
+
 World::World()
 {
    m_Root = nullptr;

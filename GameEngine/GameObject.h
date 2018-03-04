@@ -12,6 +12,8 @@ class GameObject
 {
 public:
 
+   ~GameObject();
+
    GameObject();
    GameObject( std::string name );
 

@@ -1,3 +1,37 @@
-﻿  HierarchyWindow.cpp
+﻿  World.cpp
+  WindowConfiguration.cpp
+  TransformUpdater.cpp
+  Transform.cpp
+  ShaderProgram.cpp
+  RenderingSlot.cpp
+  MeshRenderer.cpp
+  Mesh.cpp
+  Light.cpp
+  GeometryRenderer.cpp
+  GameObject.cpp
+  Utils.cpp
+  SerializedFields.cpp
+  PrefabField.cpp
+  Path.cpp
+  MeshField.cpp
+  main.cpp
+  InspectorWindow.cpp
+  imgui_impl_glfw_gl3.cpp
+  imgui_draw.cpp
+  Generating Code...
+  Compiling...
+  imgui_demo.cpp
+  imgui.cpp
+  HierarchyWindow.cpp
+  Editor.cpp
+  Debug.cpp
+  ComponentCreator.cpp
+  Component.cpp
+  Camera.cpp
+  AssetLoader.cpp
+  Asset.cpp
+  Application.cpp
+c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\application.cpp(29): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  Generating Code...
   GameEngine.vcxproj -> C:\Users\gg_11\Documents\Visual Studio 2015\Projects\GameEngine2\Debug\GameEngine.exe
   GameEngine.vcxproj -> C:\Users\gg_11\Documents\Visual Studio 2015\Projects\GameEngine2\Debug\GameEngine.pdb (Partial PDB)

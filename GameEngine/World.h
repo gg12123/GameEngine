@@ -10,7 +10,10 @@ class World
 {
 public:
 
+   ~World();
    World();
+
+   void OnDestroy();
 
    // When the world is awoken, all GOs in scene are instantiated and serialized fields good to go.
    // The vector of game objects is required becasue references between transforms and game objects is not

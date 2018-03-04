@@ -2,6 +2,16 @@
 #include "Mesh.h"
 #include "Vertex.h"
 
+RenderingSlot::~RenderingSlot()
+{
+   
+}
+
+void RenderingSlot::OnDestroy()
+{
+   m_Renderers.clear();
+}
+
 RenderingSlot::RenderingSlot( Mesh& mesh, GLuint shader )
 {
    m_Mesh = &mesh;

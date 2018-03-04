@@ -110,4 +110,6 @@ void Application::RunLoop()
       running &= (glfwWindowShouldClose( m_Window ) != GL_TRUE);
 
    } while (running);
+
+   m_World.OnDestroy();
 }

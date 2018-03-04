@@ -8,6 +8,41 @@
 #include "Camera.h"
 #include "Light.h"
 
+GeometryRenderer::~GeometryRenderer()
+{
+   for (ShaderNameToMeshNameToRenderSlot::iterator it = m_RenderingSlots.begin(); it != m_RenderingSlots.end(); it++)
+   {
+      MeshNameToRenderSlot &meshNameToSlot = *(it->second);
+
+      for (MeshNameToRenderSlot::iterator it2 = meshNameToSlot.begin(); it2 != meshNameToSlot.end(); it2++)
+      {
+         // delete each render slot
+         delete it2->second;
+      }
+
+      // delete the map from mesh name to render slot
+      delete it->second;
+   }
+
+   m_Camera = nullptr;
+   m_WindowConfig = nullptr;
+   m_AssetLoader = nullptr;
+   m_Light = nullptr;
+}
+
+void GeometryRenderer::OnDestroy()
+{
+   for (ShaderNameToMeshNameToRenderSlot::iterator it = m_RenderingSlots.begin(); it != m_RenderingSlots.end(); it++)
+   {
+      MeshNameToRenderSlot &meshNameToSlot = *(it->second);
+
+      for (MeshNameToRenderSlot::iterator it2 = meshNameToSlot.begin(); it2 != meshNameToSlot.end(); it2++)
+      {
+         it2->second->OnDestroy();
+      }
+   }
+}
+
 GeometryRenderer::GeometryRenderer()
 {
    m_Camera = nullptr;
@@ -134,7 +169,7 @@ void GeometryRenderer::Render()
    glClearBufferfv( GL_COLOR, 0, background_colour );
    glClearBufferfv( GL_DEPTH, 0, &one );
 
-   for (MeshNameToShaderNameToRenderSlot::iterator it = m_RenderingSlots.begin(); it != m_RenderingSlots.end(); it++)
+   for (ShaderNameToMeshNameToRenderSlot::iterator it = m_RenderingSlots.begin(); it != m_RenderingSlots.end(); it++)
    {
       MeshNameToRenderSlot &meshNameToSlot = *(it->second);
 

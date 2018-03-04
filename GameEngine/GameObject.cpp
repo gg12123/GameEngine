@@ -4,6 +4,17 @@
 #include "Transform.h"
 #include "Debug.h"
 
+GameObject::~GameObject()
+{
+   for (auto it = m_Components.begin(); it != m_Components.end(); it++)
+   {
+      delete *it;
+   }
+
+   m_Transform = nullptr;
+   m_World = nullptr;
+}
+
 GameObject::GameObject()
 {
    CommonConstructor();

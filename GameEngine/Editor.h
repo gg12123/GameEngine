@@ -13,6 +13,7 @@ class Editor
 {
 public:
 
+   ~Editor();
    Editor();
 
    void Awake( World& w );

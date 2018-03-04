@@ -1,5 +1,13 @@
 #include "AssetLoader.h"
 
+AssetLoader::~AssetLoader()
+{
+   for (auto it = m_Assets.begin(); it != m_Assets.end(); it++)
+   {
+      delete it->second;
+   }
+}
+
 Asset& AssetLoader::LoadIfNotAlreadyLoaded( std::string name, AssetCreationFunctionPtr creator )
 {
    Asset* out = nullptr;

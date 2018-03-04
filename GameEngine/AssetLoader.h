@@ -7,6 +7,9 @@ typedef Asset*( *AssetCreationFunctionPtr )();
 class AssetLoader
 {
 public:
+
+   ~AssetLoader();
+
    // Name must be with extension.
    Asset& LoadIfNotAlreadyLoaded( std::string name, AssetCreationFunctionPtr creator );
 
