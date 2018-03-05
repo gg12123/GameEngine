@@ -187,13 +187,13 @@ int32_t SerializedFloat::GetSize()
 
 void SerializedString::OnGUI( std::string name )
 {
-   char buff[ 50 ];
-   ImGui::InputText( name.c_str(), buff, 50 );
-
-   for (char* p = buff; p; p++)
-   {
-      m_Value.append( 1, *p );
-   }
+  // char buff[ 50 ];
+  // ImGui::InputText( name.c_str(), buff, 50 );
+  //
+  // for (char* p = buff; p; p++)
+  // {
+  //    m_Value.append( 1, *p );
+  // }
 }
 
 std::string SerializedString::Value()

@@ -22,10 +22,13 @@ void HierarchyWindow::DrawTreeView( GameObject& obj, int id )
    if (ImGui::TreeNode( (void*)(intptr_t)id, obj.GetName().c_str() ))
    {
       ImGui::SameLine();
-      if (ImGui::SmallButton( "Set active" ))
+
+      if (ImGui::SmallButton( (m_Editor->GetActiveGameObject() == &obj) ? "Active" : "Set active" ))
       {
          m_Editor->SetActiveGameObject( &obj );
       }
+
+      m_ParentSetter.Draw( obj );
 
       Transform& t = obj.GetTransform();
       int i = 0;
@@ -40,9 +43,35 @@ void HierarchyWindow::DrawTreeView( GameObject& obj, int id )
    }
 }
 
+void HierarchyWindow::ContextMenu()
+{
+   int selected = -1;
+
+   if (ImGui::IsWindowHovered() && ImGui::IsMouseClicked( 1 ))
+   {
+      ImGui::OpenPopup( "HierarchyContext" );
+   }
+
+   if (ImGui::BeginPopup( "HierarchyContext" ))
+   {
+      if (m_Editor->GetActiveGameObject() != nullptr)
+      {
+         GameObject* obj = m_GOCreation.OnGUI( *m_Editor->GetActiveGameObject() );
+         obj->AwakeComponents( m_Editor->GetWorld() );
+      }
+
+      ImGui::EndPopup();
+   }
+}
+
 void HierarchyWindow::Update()
 {
    ImGui::Begin( "Hierarchy", 0, ImGuiWindowFlags_AlwaysAutoResize );
+
    DrawTreeView( *m_Root, 0 );
+   m_ParentSetter.OnEndOfDrawing();
+
+   ContextMenu();
+
    ImGui::End();
 }

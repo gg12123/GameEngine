@@ -147,6 +147,12 @@
     <ClInclude Include="NullableIterator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ParentSetter.h">
+      <Filter>EditorOnly</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectCreationContext.h">
+      <Filter>EditorOnly</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -240,6 +246,12 @@
       <Filter>EditorOnly</Filter>
     </ClCompile>
     <ClCompile Include="HierarchyWindow.cpp">
+      <Filter>EditorOnly</Filter>
+    </ClCompile>
+    <ClCompile Include="ParentSetter.cpp">
+      <Filter>EditorOnly</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectCreationContext.cpp">
       <Filter>EditorOnly</Filter>
     </ClCompile>
   </ItemGroup>
