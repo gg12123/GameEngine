@@ -12,8 +12,6 @@ MeshRenderer::MeshRenderer()
 
 void MeshRenderer::OnDestroy()
 {
-   Component::OnDestroy();
-
    if (!m_ToThisInRenderersList.IsNull())
    {
       GetGeometryRenderer().UnRegister( *this, m_ToThisInRenderersList.Get() );
@@ -23,6 +21,7 @@ void MeshRenderer::OnDestroy()
 void MeshRenderer::Awake()
 {
    m_ToThisInRenderersList.Set( GetGeometryRenderer().Register( *this ) );
+   GetGameObject().RegisterForEvent( eOnDestroy, *m_OnDestroyEvent.Init( &MeshRenderer::OnDestroy, this ) );
 }
 
 void MeshRenderer::GetSerializedFields( std::unordered_map<std::string, SerializedField*> &fields )

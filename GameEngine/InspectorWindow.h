@@ -27,5 +27,5 @@ private:
                                   InspectorGUIFunctionPtr2 function2 );
 
    Editor* m_Editor;
-   Event* m_OnNewActiveGOEvent;
+   VoidEventHandler<InspectorWindow> m_OnNewActiveGOEvent;
 };

@@ -3,6 +3,8 @@
 #include "SerializedFields.h"
 #include "MeshField.h"
 #include "NullableIterator.h"
+#include "Events.h"
+#include "GameObjectEvents.h"
 
 class MeshRenderer : public Component
 {
@@ -11,7 +13,8 @@ public:
    MeshRenderer();
 
    void GetSerializedFields( std::unordered_map<std::string, SerializedField*>& fields ) override;
-   void OnDestroy() override;
+
+   void OnDestroy();
 
    // this will need to be virtual
    void Render(const int count);
@@ -36,4 +39,6 @@ private:
    MeshField m_MeshName;
    SerializedString m_ShaderName;
    NullableValue<std::list<MeshRenderer*>::iterator> m_ToThisInRenderersList;
+
+   VoidEventHandler<MeshRenderer> m_OnDestroyEvent;
 };

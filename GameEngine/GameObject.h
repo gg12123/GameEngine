@@ -5,6 +5,8 @@
 #include "Component.h"
 #include "SerializedFields.h"
 #include "NullableIterator.h"
+#include "Events.h"
+#include "GameObjectEvents.h"
 
 class World;
 class Transform;
@@ -56,6 +58,9 @@ public:
    // do this inside DeSerialize()
    void CacheTransform();
 
+   void InvokeEvent( EGameObjectEvent eventID );
+   void RegisterForEvent( EGameObjectEvent eventID, EventHandler& handler );
+
    template <class T>
    T* GetComponent();
 
@@ -68,6 +73,8 @@ private:
 
    UpdateableComponents* m_UpdateableComponents[ NUMBER_OF_UPDATE_FUNCTIONS ];
    std::vector<Component*> m_Components;
+
+   std::vector<EventHandler*>* m_Events[ NUMBER_OF_GAME_OBJECT_EVENTS ];
 
    World *m_World;
    Transform *m_Transform;

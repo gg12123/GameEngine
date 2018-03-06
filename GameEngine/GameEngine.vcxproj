@@ -129,6 +129,7 @@
     <ClInclude Include="EditorWindow.h" />
     <ClInclude Include="Events.h" />
     <ClInclude Include="GameObjectCreationContext.h" />
+    <ClInclude Include="GameObjectEvents.h" />
     <ClInclude Include="HierarchyWindow.h" />
     <ClInclude Include="ImGUI\imconfig.h" />
     <ClInclude Include="ImGUI\imgui.h" />

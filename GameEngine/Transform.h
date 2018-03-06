@@ -2,6 +2,8 @@
 #include "MyVmath.h"
 #include "Component.h"
 #include "SerializedFields.h"
+#include "Events.h"
+#include "GameObjectEvents.h"
 
 using namespace vmath;
 
@@ -47,7 +49,7 @@ public:
    int32_t GetType() override;
    std::string GetName() override;
    void GetSerializedFields( std::unordered_map<std::string, SerializedField*>& fields ) override;
-   void OnDestroy() override;
+   void OnDestroy();
 
 protected:
 
@@ -78,4 +80,6 @@ private:
    std::list<Transform*> m_Childern;
 
    TransformUpdater *m_TransformUpdater;
+
+   VoidEventHandler<Transform> m_OnDestroyEvent;
 };

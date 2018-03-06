@@ -2,6 +2,7 @@
 #include "Debug.h"
 #include "TransformUpdater.h"
 #include "ComponentIDs.h"
+#include "GameObject.h"
 
 Transform::Transform()
 {
@@ -10,8 +11,6 @@ Transform::Transform()
 
 void Transform::OnDestroy()
 {
-   Component::OnDestroy();
-
    if (m_Parent)
    {
       m_Parent->UnRegisterChild( m_ToThisInParentsChildList );
@@ -41,6 +40,8 @@ void Transform::Awake()
    {
       throw std::exception( "Parent is null on non root" );
    }
+
+   GetGameObject().RegisterForEvent( eOnDestroy, *m_OnDestroyEvent.Init( &Transform::OnDestroy, this ) );
 }
 
 std::list<Transform*>::iterator Transform::ChildrenBegin()

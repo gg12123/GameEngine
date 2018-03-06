@@ -48,9 +48,9 @@ void SerializedVector3::OnGUI( std::string name )
 {
    ImGui::Text( name.c_str() );
 
-   ImGui::InputFloat( "X", &m_Value[ 0 ] );
-   ImGui::InputFloat( "Y", &m_Value[ 1 ] );
-   ImGui::InputFloat( "Z", &m_Value[ 2 ] );
+   ImGui::InputFloat( (name + " X").c_str(), &m_Value[ 0 ] );
+   ImGui::InputFloat( (name + " Y").c_str(), &m_Value[ 1 ] );
+   ImGui::InputFloat( (name + " Z").c_str(), &m_Value[ 2 ] );
 }
 
 vmath::vec3 SerializedVector3::Value()

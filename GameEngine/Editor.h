@@ -26,8 +26,8 @@ public:
 
    void AddWindow( EditorWindow& wnd );
 
-   void RegisterCallbackForEvent( EEditorEvent eventID, Event& callback );
-   void UnregisterCallback( EEditorEvent eventID, Event& callback );
+   void RegisterCallbackForEvent( EEditorEvent eventID, EventHandler& callback );
+   void UnregisterCallback( EEditorEvent eventID, EventHandler& callback );
 
    void InvokeEvent( EEditorEvent eventID );
 
@@ -35,5 +35,5 @@ private:
    World* m_World;
    GameObject* m_ActiveGameObject;
    std::vector<EditorWindow*> m_CurrentWindows;
-   std::unordered_map<EEditorEvent, std::vector<Event*>*> m_Events;
+   std::unordered_map<EEditorEvent, std::vector<EventHandler*>*> m_Events;
 };

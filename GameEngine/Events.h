@@ -1,7 +1,7 @@
 #pragma once
 #include <functional>
 
-class Event
+class EventHandler
 {
 public:
    virtual void Invoke()
@@ -11,20 +11,22 @@ public:
 };
 
 template<typename T>
-class VoidEvent : public Event
+class VoidEventHandler : public EventHandler
 {
 public:
-   VoidEvent( void(T::*func)(), T& owner ) : m_Owner( owner )
+   VoidEventHandler<T>* Init( void(T::*func)(), T* owner )
    {
       m_Function = func;
+      m_Owner = owner;
+      return this;
    }
 
    void Invoke()
    {
-      (m_Owner.*(m_Function))();
+      ((*m_Owner).*(m_Function))();
    }
 
 private:
    void(T::*m_Function)();
-   T& m_Owner;
+   T* m_Owner;
 };

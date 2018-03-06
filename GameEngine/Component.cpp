@@ -9,13 +9,6 @@ Component::~Component()
 {
 }
 
-void Component::OnDestroy()
-{
-   // dont need to do anything at the moment becasue the whole GO is being destroyed.
-   // however, if i ever allow destroying of single components, i will need to unregister
-   // from the GO in here.
-}
-
 void Component::Awake( World &world, GameObject &gameObject )
 {
    m_World = &world;

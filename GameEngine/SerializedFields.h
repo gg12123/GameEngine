@@ -13,7 +13,7 @@ public:
    void SerializeWithSize( std::ofstream& stream );
    virtual void DeSerializeWithSize( std::ifstream& stream ) = 0;
 
-   virtual void OnGUI( std::string name ) = 0;
+   virtual void OnGUI( std::string name ) = 0; // must pass in the component here so i can raise a property changed event (or maybe pass in an ISerializedFieldOwner)
    virtual void InitForGUI();
 protected:
    virtual void LocalSerialize( std::ofstream& stream ) = 0;

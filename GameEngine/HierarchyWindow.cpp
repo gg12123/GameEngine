@@ -54,10 +54,14 @@ void HierarchyWindow::ContextMenu()
 
    if (ImGui::BeginPopup( "HierarchyContext" ))
    {
-      if (m_Editor->GetActiveGameObject() != nullptr)
+      GameObject* active = m_Editor->GetActiveGameObject();
+
+      if (active)
       {
-         GameObject* obj = m_GOCreation.OnGUI( *m_Editor->GetActiveGameObject() );
-         obj->AwakeComponents( m_Editor->GetWorld() );
+         GameObject* obj = m_GOCreation.OnGUI( *active );
+
+         if (obj)
+            obj->AwakeComponents( m_Editor->GetWorld() );
       }
 
       ImGui::EndPopup();
@@ -70,7 +74,6 @@ void HierarchyWindow::Update()
 
    DrawTreeView( *m_Root, 0 );
    m_ParentSetter.OnEndOfDrawing();
-
    ContextMenu();
 
    ImGui::End();

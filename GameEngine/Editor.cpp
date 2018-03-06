@@ -63,10 +63,10 @@ World& Editor::GetWorld()
    return *m_World;
 }
 
-void Editor::RegisterCallbackForEvent( EEditorEvent eventID, Event& callback )
+void Editor::RegisterCallbackForEvent( EEditorEvent eventID, EventHandler& callback )
 {
    auto it = m_Events.find( eventID );
-   std::vector<Event*>* v;
+   std::vector<EventHandler*>* v;
 
    if (it != m_Events.end())
    {
@@ -74,20 +74,20 @@ void Editor::RegisterCallbackForEvent( EEditorEvent eventID, Event& callback )
    }
    else
    {
-      v = new std::vector<Event*>();
+      v = new std::vector<EventHandler*>();
       m_Events[ eventID ] = v;
    }
 
    v->push_back( &callback );
 }
 
-void Editor::UnregisterCallback( EEditorEvent eventID, Event& callback )
+void Editor::UnregisterCallback( EEditorEvent eventID, EventHandler& callback )
 {
    auto it = m_Events.find( eventID );
 
    if (it != m_Events.end())
    {
-      std::vector<Event*>* v = it->second;
+      std::vector<EventHandler*>* v = it->second;
 
       auto it2 = std::find( v->begin(), v->end(), &callback );
 
@@ -112,7 +112,7 @@ void Editor::InvokeEvent( EEditorEvent eventID )
 
    if (it != m_Events.end())
    {
-      std::vector<Event*>* v = it->second;
+      std::vector<EventHandler*>* v = it->second;
 
       for (auto it2 = v->begin(); it2 != v->end(); it2++)
       {

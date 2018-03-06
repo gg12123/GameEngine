@@ -29,12 +29,21 @@ GameObject::~GameObject()
       }
    }
 
+   for (int i = 0; i < NUMBER_OF_GAME_OBJECT_EVENTS; i++)
+   {
+      if (m_Events[ i ])
+      {
+         delete m_Events[ i ];
+      }
+   }
+
    m_Transform = nullptr;
    m_World = nullptr;
 }
 
 void GameObject::OnDestroy()
 {
+   // un-register this go from the world
    for (int i = 0; i < NUMBER_OF_UPDATE_FUNCTIONS; i++)
    {
       UpdateableComponents* x = m_UpdateableComponents[ i ];
@@ -46,10 +55,8 @@ void GameObject::OnDestroy()
       }
    }
 
-   for (auto it = m_Components.begin(); it != m_Components.end(); it++)
-   {
-      (*it)->OnDestroy();
-   }
+   // invoke the event on components
+   InvokeEvent( eOnDestroy );
 }
 
 GameObject::GameObject()
@@ -77,9 +84,16 @@ void GameObject::SetName( std::string name )
 void GameObject::CommonConstructor()
 {
    m_Transform = nullptr;
-   m_UpdateableComponents[ eUpdateFunction ] = nullptr;
-   m_UpdateableComponents[ eFixedUpdateFunction ] = nullptr;
-   m_UpdateableComponents[ eUpdateInEditMode ] = nullptr;
+
+   for (int i = 0; i < NUMBER_OF_UPDATE_FUNCTIONS; i++)
+   {
+      m_UpdateableComponents[ i ] = nullptr;
+   }
+
+   for (int i = 0; i < NUMBER_OF_GAME_OBJECT_EVENTS; i++)
+   {
+      m_Events[ i ] = nullptr;
+   }
 }
 
 Transform& GameObject::GetTransform()
@@ -180,6 +194,29 @@ void GameObject::RegisterComponentForUpdate( const EUpdaterFunction updateFuncti
    }
 
    v->push_back( &comp );
+}
+
+void GameObject::InvokeEvent( EGameObjectEvent eventID )
+{
+   auto v = m_Events[ eventID ];
+
+   if (v)
+   {
+      for (auto it = v->begin(); it != v->end(); it++)
+      {
+         (*it)->Invoke();
+      }
+   }
+}
+
+void GameObject::RegisterForEvent( EGameObjectEvent eventID, EventHandler& handler )
+{
+   if (!m_Events[ eventID ])
+   {
+      m_Events[ eventID ] = new std::vector<EventHandler*>();
+   }
+
+   m_Events[ eventID ]->push_back( &handler );
 }
 
 void GameObject::CacheTransform()

@@ -33,9 +33,7 @@ void InspectorWindow::Awake( Editor& editor )
 {
    m_Editor = &editor;
   
-   m_OnNewActiveGOEvent = new VoidEvent<InspectorWindow>( &InspectorWindow::OnActiveGameObjectChanged, *this );
-  
-   m_Editor->RegisterCallbackForEvent( eActiveGameObjectChanged, *m_OnNewActiveGOEvent );
+   m_Editor->RegisterCallbackForEvent( eActiveGameObjectChanged, *m_OnNewActiveGOEvent.Init( &InspectorWindow::OnActiveGameObjectChanged, this ) );
 }
 
 void InspectorWindow::CallIntoSerializedFields( GameObject* active,
