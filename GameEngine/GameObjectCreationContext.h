@@ -2,10 +2,11 @@
 #include <string>
 #include "MyVmath.h"
 
-#define NUMBER_OFCREATABLE_GAME_OBJECTS 3
+#define NUMBER_OF_CREATABLE_GAME_OBJECTS 3
 
 class GameObject;
 class Transform;
+class World;
 
 typedef GameObject&(*GOCreationFunctionPtr)(vmath::vec3 pos, vmath::mat4 rot, Transform& parent);
 
@@ -25,8 +26,10 @@ class GameObjectCreationContext
 {
 public:
    GameObjectCreationContext();
-   GameObject* OnGUI( GameObject& parent );
+   void OnGUI( World& world, GameObject& parent );
 
 private:
-   FunctionWithName m_CreationFunctions[ NUMBER_OFCREATABLE_GAME_OBJECTS ];
+   FunctionWithName m_CreationFunctions[ NUMBER_OF_CREATABLE_GAME_OBJECTS ];
 };
+
+void AddComponentOnGUI( World& world, GameObject& active );

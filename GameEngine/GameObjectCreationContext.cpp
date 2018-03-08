@@ -3,6 +3,7 @@
 #include "Transform.h"
 #include "Utils.h"
 #include "ImGUI/imgui.h"
+#include "ComponentCreator.h"
 
 GameObjectCreationContext::GameObjectCreationContext()
 {
@@ -11,17 +12,41 @@ GameObjectCreationContext::GameObjectCreationContext()
    m_CreationFunctions[ 2 ].Init( "Cube", CreateCubeGameObject );
 }
 
-GameObject* GameObjectCreationContext::OnGUI( GameObject& parent )
+void GameObjectCreationContext::OnGUI( World& world, GameObject& parent )
 {
-   GameObject* obj = nullptr;
-
-   for (int i = 0; i < NUMBER_OFCREATABLE_GAME_OBJECTS; i++)
+   if (ImGui::BeginMenu( "New game object" ))
    {
-      if (ImGui::Selectable( m_CreationFunctions[ i ].Name.c_str() ))
+      for (int i = 0; i < NUMBER_OF_CREATABLE_GAME_OBJECTS; i++)
       {
-         obj = &m_CreationFunctions[ i ].Function( vmath::vec3( 0.0f, 0.0f, 0.0f ), vmath::mat4().identity(), parent.GetTransform() );
+         if (ImGui::Selectable( m_CreationFunctions[ i ].Name.c_str() ))
+         {
+            GameObject& newObj = m_CreationFunctions[ i ].Function( vmath::vec3( 0.0f, 0.0f, 0.0f ), vmath::mat4().identity(), parent.GetTransform() );
+            newObj.AwakeComponents( world );
+         }
       }
-   }
 
-   return obj;
+      ImGui::EndMenu();
+   }
+}
+
+void AddComponentOnGUI( World& world, GameObject& active )
+{
+   if (ImGui::BeginMenu( "Add component" ))
+   {
+      for (int i = 0; i < COMPONENT_COUNT; i++)
+      {
+         if (ComponentCreator::Instance().ComponentIDIsValid( i ))
+         {
+            if (ImGui::Selectable( ComponentCreator::Instance().GetName( i ).c_str() ))
+            {
+               Component* newComp = ComponentCreator::Instance().Create( i );
+               
+               active.AddComponent( *newComp );
+               newComp->Awake( world, active ); // not sure about calling awake on a new component (needs some thought)
+            }
+         }
+      }
+
+      ImGui::EndMenu();
+   }
 }

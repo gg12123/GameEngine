@@ -22,6 +22,7 @@ public:
    static ComponentCreator& Instance();
    Component* Create( int32_t id );
    std::string GetName( int32_t id );
+   bool ComponentIDIsValid( int32_t id );
 
 private:
    ComponentCreator();

@@ -71,7 +71,7 @@ void World::Update()
 
 void World::EditUpdate()
 {
-   StartGameObjects(); // may not need to call start here
+   // no need to call start in edit mode
    
    auto l = &m_UpdatableGameObjects[ eUpdateInEditMode ];
    for (auto it = l->begin(); it != l->end(); it++)

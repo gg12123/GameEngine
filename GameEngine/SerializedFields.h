@@ -61,12 +61,15 @@ private:
    vmath::vec3 m_Euler;
 };
 
+#define MAX_SERAIALIZED_STRING_SIZE 50
+
 class SerializedString : public SerializedField
 {
 public:
    std::string Value();
    void SetValue( std::string value );
    void OnGUI( std::string fieldName, ISerializedFieldOwner& owner ) override;
+   void InitForGUI( std::string fieldName, ISerializedFieldOwner& owner ) override;
 protected:
    void DeSerializeWithSize( std::ifstream& stream ) override;
    void LocalSerialize( std::ofstream& stream ) override;
@@ -74,6 +77,7 @@ protected:
    int32_t GetSize() override;
 private:
    std::string m_Value;
+   char m_Buffer[ MAX_SERAIALIZED_STRING_SIZE ];
 };
 
 class SerializedFloat : public FixedSizeSerializedField

@@ -2,6 +2,7 @@
 #include "Debug.h"
 #include "ImGUI/imgui.h"
 #include "ISearializedFieldOwner.h"
+#include "Utils.h"
 
 // ################ BASE #######################
 
@@ -221,15 +222,21 @@ int32_t SerializedFloat::GetSize()
 
 // ####################### STRING ########################### 
 
+void SerializedString::InitForGUI( std::string fieldName, ISerializedFieldOwner& owner )
+{
+   CopyStringToBuffer( m_Buffer, m_Value );
+}
+
 void SerializedString::OnGUI( std::string fieldName, ISerializedFieldOwner& owner )
 {
-  // char buff[ 50 ];
-  // ImGui::InputText( name.c_str(), buff, 50 );
-  //
-  // for (char* p = buff; p; p++)
-  // {
-  //    m_Value.append( 1, *p );
-  // }
+   ImGui::InputText( fieldName.c_str(), m_Buffer, MAX_SERAIALIZED_STRING_SIZE );
+  
+   ImGui::SameLine();
+   if (ImGui::SmallButton( "OK" ))
+   {
+      m_Value = m_Buffer;
+      owner.OnNewSerializedFields();
+   }
 }
 
 std::string SerializedString::Value()

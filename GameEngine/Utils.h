@@ -28,3 +28,5 @@ GameObject& CreateLightGameObject( vmath::vec3 pos, vmath::mat4 rot, Transform& 
 GameObject& CreateCameraGameObject( vmath::vec3 pos, vmath::mat4 rot, Transform& parent );
 
 GameObject& CreateCubeGameObject( vmath::vec3 pos, vmath::mat4 rot, Transform& parent );
+
+void CopyStringToBuffer( char *buffer, std::string str );

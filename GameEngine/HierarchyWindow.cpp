@@ -54,19 +54,13 @@ void HierarchyWindow::ContextMenu()
 
    if (ImGui::BeginPopup( "HierarchyContext" ))
    {
-      if (ImGui::BeginMenu( "New game object" ))
+      GameObject* active = m_Editor->GetActiveGameObject();
+
+      if (active)
       {
-         GameObject* active = m_Editor->GetActiveGameObject();
-
-         if (active)
-         {
-            GameObject* obj = m_GOCreation.OnGUI( *active );
-
-            if (obj)
-               obj->AwakeComponents( m_Editor->GetWorld() );
-         }
-
-         ImGui::EndMenu();
+         m_GOCreation.OnGUI( m_Editor->GetWorld(), *active );
+         AddComponentOnGUI( m_Editor->GetWorld(), *active );
+         m_GORenamer.OnGUI( *active );
       }
 
       ImGui::EndPopup();

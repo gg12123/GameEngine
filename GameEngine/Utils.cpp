@@ -229,3 +229,11 @@ GameObject& HierarchyForNewProject( std::vector<GameObject*>& gameObjects )
 
    return *root;
 }
+
+void CopyStringToBuffer( char *buffer, std::string str )
+{
+   for (unsigned int i = 0; i < str.size(); i++)
+      buffer[ i ] = str.at( i );
+
+   buffer[ str.size() ] = '\0';
+}

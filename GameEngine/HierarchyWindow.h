@@ -2,6 +2,7 @@
 #include "EditorWindow.h"
 #include "GameObjectCreationContext.h"
 #include "ParentSetter.h"
+#include "GameObjectRenamer.h"
 
 class GameObject;
 
@@ -21,4 +22,5 @@ private:
    GameObject* m_Root;
    ParentSetter m_ParentSetter;
    GameObjectCreationContext m_GOCreation;
+   GameObjectRenamer m_GORenamer;
 };

@@ -1,6 +1,7 @@
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\vc140.pdb
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\vc140.idb
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\imgui_impl_glfw_gl3.obj
+c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\inspectorwindow.obj
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\main.obj
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\meshfield.obj
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\parentsetter.obj
@@ -32,7 +33,11 @@ c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debu
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\imgui.obj
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\imgui_demo.obj
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\imgui_draw.obj
-c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\inspectorwindow.obj
+c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\gameobjectrenamer.obj
+c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\debug\gameengine.pdb
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\gameengine.tlog\cl.command.1.tlog
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\gameengine.tlog\cl.read.1.tlog
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\gameengine.tlog\cl.write.1.tlog
+c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\gameengine.tlog\link.command.1.tlog
+c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\gameengine.tlog\link.read.1.tlog
+c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\debug\gameengine.tlog\link.write.1.tlog

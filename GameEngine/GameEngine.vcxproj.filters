@@ -159,6 +159,9 @@
     <ClInclude Include="ISearializedFieldOwner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameObjectRenamer.h">
+      <Filter>EditorOnly</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -258,6 +261,9 @@
       <Filter>EditorOnly</Filter>
     </ClCompile>
     <ClCompile Include="GameObjectCreationContext.cpp">
+      <Filter>EditorOnly</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectRenamer.cpp">
       <Filter>EditorOnly</Filter>
     </ClCompile>
   </ItemGroup>
