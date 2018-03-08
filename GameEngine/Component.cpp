@@ -18,6 +18,14 @@ void Component::Awake( World &world, GameObject &gameObject )
    Awake();
 }
 
+void Component::EditAwake( World &world, GameObject &gameObject )
+{
+   m_World = &world;
+   m_GameObject = &gameObject;
+
+   EditAwake();
+}
+
 GameObject& Component::GetGameObject()
 {
    return *m_GameObject;
@@ -33,6 +41,10 @@ void Component::Start()
 }
 
 void Component::Awake()
+{
+}
+
+void Component::EditAwake()
 {
 }
 

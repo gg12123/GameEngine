@@ -19,8 +19,7 @@ public:
    ~GeometryRenderer();
    GeometryRenderer();
 
-   // must be called before components are awake
-   void Awake( IWindowConfiguration& windowConfig, AssetLoader& assetLoader );
+   void Init( IWindowConfiguration& windowConfig, AssetLoader& assetLoader );
 
    void Render();
 

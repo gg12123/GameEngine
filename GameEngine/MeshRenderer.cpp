@@ -18,6 +18,11 @@ void MeshRenderer::OnDestroy()
    }
 }
 
+void MeshRenderer::EditAwake()
+{
+   Awake();
+}
+
 void MeshRenderer::Awake()
 {
    m_ToThisInRenderersList.Set( GetGeometryRenderer().Register( *this ) );

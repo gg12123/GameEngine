@@ -31,6 +31,7 @@ public:
 protected:
 
    void Awake() override;
+   void EditAwake() override;
    virtual void ApplyUniforms();
 
 private:

@@ -145,6 +145,7 @@
     <ClInclude Include="NullableIterator.h" />
     <ClInclude Include="ParentSetter.h" />
     <ClInclude Include="PrefabField.h" />
+    <ClInclude Include="SceneLoader.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="GameObject.h" />
@@ -186,6 +187,7 @@
     <ClCompile Include="ParentSetter.cpp" />
     <ClCompile Include="Path.cpp" />
     <ClCompile Include="PrefabField.cpp" />
+    <ClCompile Include="SceneLoader.cpp" />
     <ClCompile Include="SerializedFields.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="GameObject.cpp" />

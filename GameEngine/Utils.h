@@ -17,9 +17,9 @@ private:
    std::stack<GameObject*> m_Stack;
 };
 
-GameObject& DeSerializeHierarchy( std::string path );
+GameObject& DeSerializeHierarchy( std::ifstream& stream, std::vector<GameObject*>& gameObjects );
 
-void SerializeHierarchy( GameObject& root, std::string path );
+void SerializeHierarchy( GameObject& root, std::ofstream& stream );
 
 GameObject& HierarchyForNewProject( std::vector<GameObject*>& gameObjects );
 

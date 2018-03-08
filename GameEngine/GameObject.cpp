@@ -165,6 +165,16 @@ void GameObject::AwakeComponents( World &world )
    m_World->RegisterForStart( *this );
 }
 
+void GameObject::EditAwakeComponents( World &world )
+{
+   m_World = &world;
+
+   for (std::vector<Component*>::iterator it = m_Components.begin(); it != m_Components.end(); it++)
+   {
+      (*it)->EditAwake( world, *this );
+   }
+}
+
 void GameObject::StartComponents()
 {
    for (std::vector<Component*>::iterator it = m_Components.begin(); it != m_Components.end(); it++)

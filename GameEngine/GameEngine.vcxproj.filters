@@ -162,6 +162,9 @@
     <ClInclude Include="GameObjectRenamer.h">
       <Filter>EditorOnly</Filter>
     </ClInclude>
+    <ClInclude Include="SceneLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -265,6 +268,9 @@
     </ClCompile>
     <ClCompile Include="GameObjectRenamer.cpp">
       <Filter>EditorOnly</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneLoader.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

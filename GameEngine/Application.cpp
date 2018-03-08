@@ -68,13 +68,8 @@ void Application::Run()
 
 void Application::InitWorld()
 {
-   // DeSerialize here if there is a start up secene available
-
-   std::vector<GameObject*> objects;
-
-   GameObject& root = HierarchyForNewProject( objects );
-
-   m_World.Awake( root, objects, m_WindowConfig );
+   m_World.Init( m_WindowConfig, m_SceneLoader );
+   m_SceneLoader.LoadStartUpScene();
 }
 
 void Application::InitEditor()

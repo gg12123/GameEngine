@@ -54,7 +54,8 @@ public:
 
 protected:
 
-   void Awake();
+   void Awake() override;
+   void EditAwake() override;
 
 private:
 

@@ -10,4 +10,5 @@ public:
    std::string GetMeshPath( std::string meshName );
    std::string GetShaderPath( std::string shaderName );
    std::string GetDebugPath( std::string fileName );
+   std::string GetScenePath( std::string sceneName );
 };

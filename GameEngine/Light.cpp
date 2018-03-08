@@ -13,6 +13,11 @@ void Light::Awake()
    GetGeometryRenderer().SetLight( *this );
 }
 
+void Light::EditAwake()
+{
+   Awake();
+}
+
 void Light::ApplyLightUniforms()
 {
    mat4 lightTransform = GetGameObject().GetTransform().GetTransformMatrixAssumingClean();

@@ -20,6 +20,7 @@ public:
 protected:
 
    void Awake() override;
+   void EditAwake() override;
 
 private:
 

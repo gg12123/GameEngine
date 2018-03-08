@@ -18,6 +18,11 @@ void Transform::OnDestroy()
    }
 }
 
+void Transform::EditAwake()
+{
+   Awake();
+}
+
 void Transform::Awake()
 {
    m_TransformUpdater = &GetTransformUpdater();

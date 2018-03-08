@@ -3,18 +3,11 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "Debug.h"
+#include "SceneLoader.h"
 
 World::~World()
 {
-   DestroyHierarchy( m_Root->GetGameObject() );
-
-   for (int i = 0; i < NUMBER_OF_UPDATE_FUNCTIONS; i++)
-   {
-      if (m_UpdatableGameObjects[ i ].size() > 0)
-      {
-         Debug::Instance().LogError( "Updateable game objects not cleared on destroy " );
-      }
-   }
+   ClearAll();
 }
 
 void World::DestroyHierarchy( GameObject& root ) const
@@ -40,17 +33,52 @@ void World::DestroyHierarchy( GameObject& root ) const
 World::World()
 {
    m_Root = nullptr;
+   m_SceneLoader = nullptr;
 }
 
-void World::Awake( GameObject& rootGameObject, std::vector<GameObject*>& gameObjects, IWindowConfiguration& windowConfig )
+void World::ClearAll()
+{
+   if (m_Root)
+   {
+      m_GameObjectsToBeStarted.clear();
+      DestroyHierarchy( m_Root->GetGameObject() );
+
+      for (int i = 0; i < NUMBER_OF_UPDATE_FUNCTIONS; i++)
+      {
+         if (m_UpdatableGameObjects[ i ].size() > 0)
+         {
+            Debug::Instance().LogError( "Updateable game objects not cleared in clear all" );
+         }
+      }
+      m_Root = nullptr;
+   }
+}
+
+void World::Init( IWindowConfiguration& windowConfig, SceneLoader& loader )
+{
+   m_GeometryRenderer.Init( windowConfig, m_AssetLoader );
+
+   m_SceneLoader = &loader;
+   m_SceneLoader->Init( *this );
+}
+
+void World::Awake( GameObject& rootGameObject, std::vector<GameObject*>& gameObjects )
 {
    m_Root = &rootGameObject.GetTransform();
-
-   m_GeometryRenderer.Awake( windowConfig, m_AssetLoader );
 
    for (std::vector<GameObject*>::iterator it = gameObjects.begin(); it != gameObjects.end(); it++)
    {
       (*it)->AwakeComponents( *this );
+   }
+}
+
+void World::EditAwake( GameObject& rootGameObject, std::vector<GameObject*>& gameObjects )
+{
+   m_Root = &rootGameObject.GetTransform();
+
+   for (std::vector<GameObject*>::iterator it = gameObjects.begin(); it != gameObjects.end(); it++)
+   {
+      (*it)->EditAwakeComponents( *this );
    }
 }
 
@@ -150,4 +178,9 @@ GeometryRenderer& World::GetGeometryRenderer()
 AssetLoader& World::GetAssetLoader()
 {
    return m_AssetLoader;
+}
+
+SceneLoader& World::GetSceneLoader()
+{
+   return *m_SceneLoader;
 }

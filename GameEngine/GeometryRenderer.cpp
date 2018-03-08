@@ -38,7 +38,7 @@ GeometryRenderer::GeometryRenderer()
    m_Light = nullptr;
 }
 
-void GeometryRenderer::Awake( IWindowConfiguration& windowConfig, AssetLoader& assetLoader )
+void GeometryRenderer::Init( IWindowConfiguration& windowConfig, AssetLoader& assetLoader )
 {
    m_WindowConfig = &windowConfig;
    m_AssetLoader = &assetLoader;

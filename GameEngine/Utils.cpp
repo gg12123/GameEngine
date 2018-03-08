@@ -31,22 +31,14 @@ GameObject* EnumerableHierarchy::Next()
    return next;
 }
 
-void SerializeHierarchy( GameObject& root, std::string path )
+void SerializeHierarchy( GameObject& root, std::ofstream& stream )
 {
-   std::ofstream stream;
    std::unordered_map<GameObject*, int32_t> gameObjToID;
    SerializedInt32 id;
 
    EnumerableHierarchy enumerator( root );
    int32_t currID = 0;
    GameObject* next = enumerator.Next();
-
-   stream.open( path, std::ios::binary );
-
-   if (!stream.is_open())
-   {
-      throw std::exception( "Unable to open file" );
-   }
 
    // reserve space for object count
    stream.seekp( sizeof( int32_t ), stream.beg );
@@ -89,18 +81,11 @@ void SerializeHierarchy( GameObject& root, std::string path )
    id.Serialize( stream );
 }
 
-GameObject& DeSerializeHierarchy( std::string path )
+GameObject& DeSerializeHierarchy( std::ifstream& stream, std::vector<GameObject*>& gameObjects )
 {
    std::unordered_map<int32_t, GameObject*> idToGameObj;
    SerializedInt32 id;
    std::ifstream stream;
-
-   stream.open( path, std::ios::binary );
-
-   if (!stream.is_open())
-   {
-      throw std::exception( "Unable to open file" );
-   }
 
    // Get the number of objects
    id.DeSerialize( stream );

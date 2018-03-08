@@ -20,6 +20,7 @@ public:
    virtual ~Component();
 
    void Awake( World &world, GameObject &gameObject );
+   void EditAwake( World &world, GameObject &gameObject );
 
    virtual void Start();
 
@@ -40,6 +41,7 @@ public:
 protected:
 
    virtual void Awake();
+   virtual void EditAwake();
 
    void RegisterForUpdate( const EUpdaterFunction eFunction );
 

@@ -4,7 +4,10 @@
 class Light : public Component
 {
 public:
-   void Awake() override;
    void ApplyLightUniforms();
    int32_t GetType() override;
+
+protected:
+   void Awake() override;
+   void EditAwake() override;
 };

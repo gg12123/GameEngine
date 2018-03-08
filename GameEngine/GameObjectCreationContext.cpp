@@ -42,7 +42,7 @@ void AddComponentOnGUI( World& world, GameObject& active )
                Component* newComp = ComponentCreator::Instance().Create( i );
                
                active.AddComponent( *newComp );
-               newComp->Awake( world, active ); // not sure about calling awake on a new component (needs some thought)
+               newComp->EditAwake( world, active );
             }
          }
       }

@@ -20,6 +20,11 @@ void Camera::GetSerializedFields( std::unordered_map<std::string, SerializedFiel
    fields[ "farClip" ] = &m_FarClip;
 }
 
+void Camera::EditAwake()
+{
+   Awake();
+}
+
 void Camera::Awake()
 {
    m_WindowConfig = &GetGeometryRenderer().SetCamera( *this );
