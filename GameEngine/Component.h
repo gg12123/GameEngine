@@ -5,6 +5,7 @@
 #include "SerializedFields.h"
 #include "PrefabField.h"
 #include "MeshField.h"
+#include "ISearializedFieldOwner.h"
 
 class GameObject;
 class World;
@@ -12,7 +13,7 @@ class TransformUpdater;
 class Transform;
 class GeometryRenderer;
 
-class Component
+class Component : public ISerializedFieldOwner
 {
 public:
 
@@ -22,14 +23,15 @@ public:
 
    virtual void Start();
 
-   virtual void GetSerializedFields( std::unordered_map<std::string, SerializedField*>& fields );
-   void DeSerialize( std::ifstream& stream );
-   void Serialize( std::ofstream& stream );
+   void GetSerializedFields( std::unordered_map<std::string, SerializedField*>& fields ) override;
+   void DeSerialize( std::ifstream& stream ) override;
+   void Serialize( std::ofstream& stream ) override;
+   std::string GetName() override;
+   void OnNewSerializedFields() override;
 
    GameObject& GetGameObject();
 
    virtual int32_t GetType() = 0;
-   virtual std::string GetName() = 0;
 
    virtual void Update();
    virtual void FixedUpdate();

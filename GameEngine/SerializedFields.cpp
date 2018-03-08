@@ -1,6 +1,7 @@
 #include "SerializedFields.h"
 #include "Debug.h"
 #include "ImGUI/imgui.h"
+#include "ISearializedFieldOwner.h"
 
 // ################ BASE #######################
 
@@ -23,7 +24,7 @@ void SerializedField::SerializeWithSize( std::ofstream& stream )
    LocalSerialize( stream );
 }
 
-void SerializedField::InitForGUI()
+void SerializedField::InitForGUI( std::string fieldName, ISerializedFieldOwner& owner )
 {
 }
 
@@ -44,13 +45,31 @@ void FixedSizeSerializedField::DeSerializeWithSize( std::ifstream& stream )
 
 // ####################### VECTOR3 ########################### 
 
-void SerializedVector3::OnGUI( std::string name )
+void SerializedVector3::InitForGUI( std::string fieldName, ISerializedFieldOwner& owner )
 {
-   ImGui::Text( name.c_str() );
+   m_ElementNames[ 0 ] = fieldName + " X";
+   m_ElementNames[ 1 ] = fieldName + " Y";
+   m_ElementNames[ 2 ] = fieldName + " Z";
+}
 
-   ImGui::InputFloat( (name + " X").c_str(), &m_Value[ 0 ] );
-   ImGui::InputFloat( (name + " Y").c_str(), &m_Value[ 1 ] );
-   ImGui::InputFloat( (name + " Z").c_str(), &m_Value[ 2 ] );
+void SerializedVector3::OnGUI( std::string fieldName, ISerializedFieldOwner& owner )
+{
+   ImGui::Text( fieldName.c_str() );
+
+   if (ImGui::InputFloat( m_ElementNames[ 0 ].c_str(), &m_Value[ 0 ] ))
+   {
+      owner.OnNewSerializedFields();
+   }
+
+   if (ImGui::InputFloat( m_ElementNames[ 1 ].c_str(), &m_Value[ 1 ] ))
+   {
+      owner.OnNewSerializedFields();
+   }
+
+   if (ImGui::InputFloat( m_ElementNames[ 2 ].c_str(), &m_Value[ 2 ] ))
+   {
+      owner.OnNewSerializedFields();
+   }
 }
 
 vmath::vec3 SerializedVector3::Value()
@@ -92,20 +111,37 @@ int32_t SerializedVector3::GetSize()
 
 // ####################### ROTATION ########################### 
 
-void SerializedRotation::InitForGUI()
+void SerializedRotation::InitForGUI( std::string fieldName, ISerializedFieldOwner& owner )
 {
    m_Euler = vmath::matrixToEuler( m_Value );
 }
 
-void SerializedRotation::OnGUI( std::string name )
+void SerializedRotation::OnGUI( std::string fieldName, ISerializedFieldOwner& owner )
 {
-   ImGui::Text( name.c_str() );
+   ImGui::Text( fieldName.c_str() );
 
-   ImGui::InputFloat( "Y (yaw)", &m_Euler[ 1 ] );
-   ImGui::InputFloat( "X (pitch)", &m_Euler[ 0 ] );
-   ImGui::InputFloat( "Z (roll)", &m_Euler[ 2 ] );
+   bool inputDone = false;
 
-   m_Value = vmath::eulerToMatrix( m_Euler[ 1 ], m_Euler[ 0 ], m_Euler[ 2 ] );
+   if (ImGui::InputFloat( "Y (yaw)", &m_Euler[ 1 ] ))
+   {
+      inputDone = true;
+   }
+
+   if (ImGui::InputFloat( "X (pitch)", &m_Euler[ 0 ] ))
+   {
+      inputDone = true;
+   }
+
+   if (ImGui::InputFloat( "Z (roll)", &m_Euler[ 2 ] ))
+   {
+      inputDone = true;
+   }
+
+   if (inputDone)
+   {
+      m_Value = vmath::eulerToMatrix( m_Euler[ 1 ], m_Euler[ 0 ], m_Euler[ 2 ] );
+      owner.OnNewSerializedFields();
+   }
 }
 
 vmath::mat4 SerializedRotation::Value()
@@ -153,9 +189,9 @@ int32_t SerializedRotation::GetSize()
 
 // ####################### FLOAT ########################### 
 
-void SerializedFloat::OnGUI( std::string name )
+void SerializedFloat::OnGUI( std::string fieldName, ISerializedFieldOwner& owner )
 {
-   ImGui::InputFloat( name.c_str(), &m_Value );
+   ImGui::InputFloat( fieldName.c_str(), &m_Value );
 }
 
 float SerializedFloat::Value()
@@ -185,7 +221,7 @@ int32_t SerializedFloat::GetSize()
 
 // ####################### STRING ########################### 
 
-void SerializedString::OnGUI( std::string name )
+void SerializedString::OnGUI( std::string fieldName, ISerializedFieldOwner& owner )
 {
   // char buff[ 50 ];
   // ImGui::InputText( name.c_str(), buff, 50 );
@@ -251,9 +287,9 @@ int32_t SerializedString::GetSize()
 
 // ####################### INT32 ########################### 
 
-void SerializedInt32::OnGUI( std::string name )
+void SerializedInt32::OnGUI( std::string fieldName, ISerializedFieldOwner& owner )
 {
-   ImGui::InputInt( name.c_str(), &m_Value );
+   ImGui::InputInt( fieldName.c_str(), &m_Value );
 }
 
 int32_t SerializedInt32::Value()

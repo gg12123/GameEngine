@@ -23,7 +23,6 @@ public:
    std::string GetShaderName();
 
    int32_t GetType() override;
-   std::string GetName() override;
 
    // At the moment, setting these will only have an effect if its done before awake.
    void SetMeshName( std::string name );

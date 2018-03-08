@@ -304,14 +304,15 @@ int32_t Transform::GetType()
    return COMPONENT_ID_TRANSFORM;
 }
 
-std::string Transform::GetName()
-{
-   return "Transform";
-}
-
 void Transform::GetSerializedFields( std::unordered_map<std::string, SerializedField*>& fields )
 {
    fields[ "position" ] = &m_LocalPosition;
    fields[ "rotation" ] = &m_LocalRotation;
    fields[ "scale" ] = &m_LocalScale;
+}
+
+void Transform::OnNewSerializedFields()
+{
+   ConstructLocalTransformMatrix();
+   SetDirty();
 }

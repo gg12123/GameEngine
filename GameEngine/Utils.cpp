@@ -152,7 +152,7 @@ static void InitTransformState( Transform& tran, vmath::vec3 pos, vmath::mat4 ro
 
 GameObject& CreateCubeGameObject( vmath::vec3 pos, vmath::mat4 rot, Transform& parent )
 {
-   GameObject* cube = new GameObject();
+   GameObject* cube = new GameObject( "Cube" );
 
    cube->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
    cube->CacheTransform();
@@ -172,7 +172,7 @@ GameObject& CreateCubeGameObject( vmath::vec3 pos, vmath::mat4 rot, Transform& p
 
 GameObject& CreateCameraGameObject( vmath::vec3 pos, vmath::mat4 rot, Transform& parent )
 {
-   GameObject* cam = new GameObject();
+   GameObject* cam = new GameObject( "Camera" );
 
    cam->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
    cam->CacheTransform();
@@ -190,7 +190,7 @@ GameObject& CreateCameraGameObject( vmath::vec3 pos, vmath::mat4 rot, Transform&
 
 GameObject& CreateLightGameObject( vmath::vec3 pos, vmath::mat4 rot, Transform& parent )
 {
-   GameObject* light = new GameObject();
+   GameObject* light = new GameObject( "Light" );
 
    light->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
    light->CacheTransform();
@@ -207,7 +207,7 @@ GameObject& CreateLightGameObject( vmath::vec3 pos, vmath::mat4 rot, Transform& 
 GameObject& HierarchyForNewProject( std::vector<GameObject*>& gameObjects )
 {
    // root
-   GameObject* root = new GameObject();
+   GameObject* root = new GameObject( "Root" );
 
    root->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
    root->CacheTransform();

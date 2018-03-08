@@ -47,8 +47,9 @@ public:
    void UnRegisterChild( std::list<Transform*>::iterator toChild );
 
    int32_t GetType() override;
-   std::string GetName() override;
    void GetSerializedFields( std::unordered_map<std::string, SerializedField*>& fields ) override;
+   void OnNewSerializedFields() override;
+
    void OnDestroy();
 
 protected:

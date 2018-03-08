@@ -139,6 +139,7 @@
     <ClInclude Include="ImGUI\stb_textedit.h" />
     <ClInclude Include="ImGUI\stb_truetype.h" />
     <ClInclude Include="InspectorWindow.h" />
+    <ClInclude Include="ISearializedFieldOwner.h" />
     <ClInclude Include="MeshField.h" />
     <ClInclude Include="NullableIterator.h" />
     <ClInclude Include="ParentSetter.h" />

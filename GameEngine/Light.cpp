@@ -27,8 +27,3 @@ int32_t Light::GetType()
 {
    return COMPONENT_ID_LIGHT;
 }
-
-std::string Light::GetName()
-{
-   return "Light";
-}

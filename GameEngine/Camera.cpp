@@ -63,11 +63,6 @@ int32_t Camera::GetType()
    return COMPONENT_ID_CAMERA;
 }
 
-std::string Camera::GetName()
-{
-   return "Camera";
-}
-
 void Camera::SetNearClip( float val )
 {
    m_NearClip.SetValue( val );

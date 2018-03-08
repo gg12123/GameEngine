@@ -4,15 +4,16 @@
 #include "Editor.h"
 #include "ImGUI/imgui.h"
 #include "InspectorWindow.h"
+#include "ISearializedFieldOwner.h"
 
-static void CallOnGUI( std::unordered_map<std::string, SerializedField*>::iterator it )
+static void CallOnGUI( std::unordered_map<std::string, SerializedField*>::iterator it, Component& comp )
 {
-   it->second->OnGUI( it->first );
+   it->second->OnGUI( it->first, comp );
 }
 
-static void CallInitGUI( std::unordered_map<std::string, SerializedField*>::iterator it )
+static void CallInitGUI( std::unordered_map<std::string, SerializedField*>::iterator it, Component& comp )
 {
-   it->second->InitForGUI();
+   it->second->InitForGUI( it->first, comp );
 }
 
 static void DrawText( std::vector<Component*>::iterator it )
@@ -37,8 +38,8 @@ void InspectorWindow::Awake( Editor& editor )
 }
 
 void InspectorWindow::CallIntoSerializedFields( GameObject* active,
-                                                InspectorGUIFunctionPtr1 function1,
-                                                InspectorGUIFunctionPtr2 function2 )
+                                                InspectorGUIFunctionPtr1 eachCompFunction,
+                                                InspectorGUIFunctionPtr2 eachFieldFunction )
 {
    std::unordered_map<std::string, SerializedField*> fields;
 
@@ -49,13 +50,13 @@ void InspectorWindow::CallIntoSerializedFields( GameObject* active,
       fields.clear();
       (*it)->GetSerializedFields( fields );
 
-      function1( it );
+      eachCompFunction( it );
 
       for (std::unordered_map<std::string, SerializedField*>::iterator it2 = fields.begin();
             it2 != fields.end();
             it2++)
       {
-         function2( it2 );
+         eachFieldFunction( it2, **it );
       }
    }
 }

@@ -7,5 +7,4 @@ public:
    void Awake() override;
    void ApplyLightUniforms();
    int32_t GetType() override;
-   std::string GetName() override;
 };

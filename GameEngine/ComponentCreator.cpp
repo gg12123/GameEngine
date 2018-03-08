@@ -30,10 +30,10 @@ static Component* CreateLight()
 
 ComponentCreator::ComponentCreator()
 {
-   m_CreationFunctions[ COMPONENT_ID_CAMERA ] = CreateCamera;
-   m_CreationFunctions[ COMPONENT_ID_LIGHT ] = CreateLight;
-   m_CreationFunctions[ COMPONENT_ID_TRANSFORM ] = CreateTransform;
-   m_CreationFunctions[ COMPONENT_ID_MESHRENDERER ] = CreateMeshRenderer;
+   m_ComponentInfo[ COMPONENT_ID_CAMERA ].Init( "Camera", CreateCamera );
+   m_ComponentInfo[ COMPONENT_ID_LIGHT ].Init( "Light", CreateLight );
+   m_ComponentInfo[ COMPONENT_ID_TRANSFORM ].Init( "Transform", CreateTransform );
+   m_ComponentInfo[ COMPONENT_ID_MESHRENDERER ].Init( "Mesh renderer", CreateMeshRenderer );
 }
 
 Component* ComponentCreator::Create( int32_t id )
@@ -43,7 +43,17 @@ Component* ComponentCreator::Create( int32_t id )
       throw std::exception( "Component ID out of range" );
    }
 
-   return m_CreationFunctions[ id ]();
+   return m_ComponentInfo[ id ].CreationFunc();
+}
+
+std::string ComponentCreator::GetName( int32_t id )
+{
+   if (id >= COMPONENT_COUNT)
+   {
+      throw std::exception( "Component ID out of range" );
+   }
+
+   return m_ComponentInfo[ id ].Name;
 }
 
 ComponentCreator& ComponentCreator::Instance()

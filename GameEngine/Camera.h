@@ -12,7 +12,6 @@ public:
    void ApplyCameraUniforms();
 
    int32_t GetType() override;
-   std::string GetName() override;
 
    void SetNearClip( float val );
    void SetFarClip( float val );

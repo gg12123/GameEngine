@@ -4,6 +4,7 @@
 #include "TransformUpdater.h"
 #include "Transform.h"
 #include "GeometryRenderer.h"
+#include "ComponentCreator.h"
 
 Component::~Component()
 {
@@ -33,6 +34,11 @@ void Component::Start()
 
 void Component::Awake()
 {
+}
+
+std::string Component::GetName()
+{
+   return ComponentCreator::Instance().GetName( GetType() );
 }
 
 TransformUpdater& Component::GetTransformUpdater()
@@ -129,4 +135,8 @@ void Component::FixedUpdate()
 void Component::EditUpdate()
 {
    throw std::exception( "Edit update called with no implementation" );
+}
+
+void Component::OnNewSerializedFields()
+{
 }

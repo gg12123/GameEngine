@@ -65,11 +65,6 @@ int32_t MeshRenderer::GetType()
    return COMPONENT_ID_MESHRENDERER;
 }
 
-std::string MeshRenderer::GetName()
-{
-   return "Mesh Renderer";
-}
-
 void MeshRenderer::SetMeshName( std::string name )
 {
    m_MeshName.SetValue( name );

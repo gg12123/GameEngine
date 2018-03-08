@@ -9,7 +9,7 @@ class SerializedField;
 class Component;
 
 typedef void( *InspectorGUIFunctionPtr1 )(std::vector<Component*>::iterator);
-typedef void( *InspectorGUIFunctionPtr2 )(std::unordered_map<std::string, SerializedField*>::iterator);
+typedef void( *InspectorGUIFunctionPtr2 )(std::unordered_map<std::string, SerializedField*>::iterator, Component&);
 
 class InspectorWindow : public EditorWindow
 {
