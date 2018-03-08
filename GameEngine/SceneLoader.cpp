@@ -2,21 +2,22 @@
 #include "Utils.h"
 #include "World.h"
 #include "Path.h"
+#include "Editor.h"
 #include <iostream>
 #include <fstream>
 
-SceneLoader::SceneLoader()
+std::string SceneLoader::GetActiveSceneName()
 {
-   m_World = nullptr;
+   return m_ActiveSceneName;
 }
 
 void SceneLoader::LoadCompletelyNewScene( std::string name )
 {
-   m_World->ClearAll();
+   ClearAll();
 
    std::vector<GameObject*> objects;
    GameObject& root = HierarchyForNewProject( objects );
-   CallAwake( *m_World, root, objects );
+   CallAwake( root, objects );
 
    m_ActiveSceneName = name;
 }
@@ -64,8 +65,8 @@ bool SceneLoader::LoadScene( std::string name )
 
       GameObject& root = DeSerializeHierarchy( stream, gameObjects );
 
-      m_World->ClearAll();
-      CallAwake( *m_World, root, gameObjects );
+      ClearAll();
+      CallAwake( root, gameObjects );
 
       stream.close();
 
@@ -73,4 +74,45 @@ bool SceneLoader::LoadScene( std::string name )
    }
 
    return success;
+}
+
+EditModeSceneLoader::EditModeSceneLoader()
+{
+   m_Editor = nullptr;
+}
+
+void EditModeSceneLoader::Init( Editor& editor )
+{
+   m_Editor = &editor;
+}
+
+void EditModeSceneLoader::CallAwake( GameObject& rootGameObject, std::vector<GameObject*>& gameObjects )
+{
+   m_Editor->GetWorld().EditAwake( rootGameObject, gameObjects );
+   m_Editor->OnNewHierarchy( rootGameObject );
+}
+
+void EditModeSceneLoader::ClearAll()
+{
+   m_Editor->GetWorld().ClearAll();
+}
+
+PlayModeSceneLoader::PlayModeSceneLoader()
+{
+   m_World = nullptr;
+}
+
+void PlayModeSceneLoader::Init( World& world )
+{
+   m_World = &world;
+}
+
+void PlayModeSceneLoader::CallAwake( GameObject& rootGameObject, std::vector<GameObject*>& gameObjects )
+{
+   m_World->Awake( rootGameObject, gameObjects );
+}
+
+void PlayModeSceneLoader::ClearAll()
+{
+   m_World->ClearAll();
 }

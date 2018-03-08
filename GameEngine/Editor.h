@@ -16,7 +16,7 @@ public:
    ~Editor();
    Editor();
 
-   void Awake( World& w );
+   void Init( World& w );
    void Update();
 
    void SetActiveGameObject( GameObject* active );
@@ -30,6 +30,7 @@ public:
    void UnregisterCallback( EEditorEvent eventID, EventHandler& callback );
 
    void InvokeEvent( EEditorEvent eventID );
+   void OnNewHierarchy( GameObject& root );
 
 private:
    World* m_World;

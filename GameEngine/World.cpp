@@ -57,9 +57,7 @@ void World::ClearAll()
 void World::Init( IWindowConfiguration& windowConfig, SceneLoader& loader )
 {
    m_GeometryRenderer.Init( windowConfig, m_AssetLoader );
-
    m_SceneLoader = &loader;
-   m_SceneLoader->Init( *this );
 }
 
 void World::Awake( GameObject& rootGameObject, std::vector<GameObject*>& gameObjects )
@@ -95,6 +93,7 @@ void World::Update()
 
    m_TransformUpdater.UpdateTransforms();
    m_GeometryRenderer.Render();
+   m_SceneLoader->Update();
 }
 
 void World::EditUpdate()
@@ -109,6 +108,7 @@ void World::EditUpdate()
 
    m_TransformUpdater.UpdateTransforms();
    m_GeometryRenderer.Render();
+   m_SceneLoader->Update();
 }
 
 void World::FixedUpdate()

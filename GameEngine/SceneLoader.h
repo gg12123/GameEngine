@@ -4,33 +4,25 @@
 
 class World;
 class GameObject;
+class Editor;
 
-class ISceneLoader
+class SceneLoader
 {
 public:
-   virtual void PendLoadScene( std::string name ) = 0; // this is whats available to the components
-};
-
-class SceneLoader : public ISceneLoader
-{
-public:
-   SceneLoader();
-
    void LoadStartUpScene();
    void LoadCompletelyNewScene( std::string name );
    bool LoadScene( std::string name );
-   void Init( World& world );
+   void PendLoadScene( std::string name );
+
    void Update();
 
    std::string GetActiveSceneName();
 
-   void PendLoadScene( std::string name ) override;
-
 protected:
-   virtual void CallAwake( World& world, GameObject& rootGameObject, std::vector<GameObject*>& gameObjects ) = 0;
+   virtual void CallAwake( GameObject& rootGameObject, std::vector<GameObject*>& gameObjects ) = 0;
+   virtual void ClearAll() = 0;
 
 private:
-   World *m_World;
    std::string m_PendingSceneName;
    std::string m_ActiveSceneName;
    bool m_LoadPending;
@@ -38,12 +30,24 @@ private:
 
 class EditModeSceneLoader : public SceneLoader
 {
+public:
+   EditModeSceneLoader();
+   void Init( Editor& editor );
 protected:
-   void CallAwake( World& world, GameObject& rootGameObject, std::vector<GameObject*>& gameObjects ) override;
+   void CallAwake( GameObject& rootGameObject, std::vector<GameObject*>& gameObjects ) override;
+   void ClearAll() override;
+private:
+   Editor* m_Editor;
 };
 
 class PlayModeSceneLoader : public SceneLoader
 {
+public:
+   PlayModeSceneLoader();
+   void Init( World& world );
 protected:
-   void CallAwake( World& world, GameObject& rootGameObject, std::vector<GameObject*>& gameObjects ) override;
+   void CallAwake( GameObject& rootGameObject, std::vector<GameObject*>& gameObjects ) override;
+   void ClearAll() override;
+private:
+   World* m_World;
 };

@@ -14,5 +14,5 @@ public:
    GameObject& InstantiateEdit( Editor& editor, Transform& parent );
 
 private:
-   void CreateInstance( Transform& parent, World& world, std::vector<GameObject*>& hierarchy );
+   GameObject& CreateInstance( Transform& parent, World& world, std::vector<GameObject*>& hierarchy );
 };

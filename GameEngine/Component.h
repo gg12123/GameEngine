@@ -51,6 +51,8 @@ protected:
    GeometryRenderer& GetGeometryRenderer();
    Transform& GetRootTransform();
 
+   void LoadScene( std::string name );
+
    GameObject& InstantiatePrefab( PrefabField& prefab );
    std::string InstantiateMesh( MeshField& mesh );
 

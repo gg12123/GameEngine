@@ -1,11 +1,12 @@
 #include "Application.h"
-#include "sb7.h"
 #include "Debug.h"
 #include "Utils.h"
 #include "Transform.h"
 #include "GameObject.h"
 #include "ImGUI/imgui.h"
 #include "ImGUI/imgui_impl_glfw_gl3.h"
+#include "HierarchyWindow.h"
+#include "InspectorWindow.h"
 
 bool Application::InitWindow()
 {
@@ -61,20 +62,20 @@ void Application::Run()
 
    InitImGUI();
    SetupCallbacks();
-   InitWorld();
-   InitEditor(); // order important - must init world before editor
+   InitEngine();
    RunLoop();
 }
 
-void Application::InitWorld()
+void Application::InitEngine()
 {
    m_World.Init( m_WindowConfig, m_SceneLoader );
-   m_SceneLoader.LoadStartUpScene();
-}
+   m_Editor.Init( m_World );
 
-void Application::InitEditor()
-{
-   m_Editor.Awake( m_World );
+   m_SceneLoader.Init( m_Editor );
+   m_SceneLoader.LoadStartUpScene();
+
+   m_Editor.AddWindow( *(new HierarchyWindow()) );
+   m_Editor.AddWindow( *(new InspectorWindow()) );
 }
 
 void Application::RunLoop()

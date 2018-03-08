@@ -21,18 +21,9 @@ Editor::~Editor()
    }
 }
 
-void Editor::Awake( World& w )
+void Editor::Init( World& w )
 {
    m_World = &w;
-
-   // maybe create the editor hierarchy here (camera, movement handles etc.)
-
-   AddWindow( *(new HierarchyWindow()) );
-   AddWindow( *(new InspectorWindow()) );
-
-   SetActiveGameObject( &(*m_World->GetRootTransform().ChildrenBegin())->GetGameObject() );
-
-   // pass editor to special editor components (may also need an on new scene editor event to do this when reloading the scene)
 }
 
 void Editor::AddWindow( EditorWindow& wnd )
@@ -121,4 +112,9 @@ void Editor::InvokeEvent( EEditorEvent eventID )
          (*it2)->Invoke();
       }
    }
+}
+
+void Editor::OnNewHierarchy( GameObject& root )
+{
+   // pass the editor into all special editor components
 }

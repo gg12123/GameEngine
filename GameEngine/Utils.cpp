@@ -85,7 +85,6 @@ GameObject& DeSerializeHierarchy( std::ifstream& stream, std::vector<GameObject*
 {
    std::unordered_map<int32_t, GameObject*> idToGameObj;
    SerializedInt32 id;
-   std::ifstream stream;
 
    // Get the number of objects
    id.DeSerialize( stream );
@@ -93,6 +92,7 @@ GameObject& DeSerializeHierarchy( std::ifstream& stream, std::vector<GameObject*
 
    // Deserialize the root
    GameObject *root = new GameObject();
+   gameObjects.push_back( root );
 
    // get the id
    id.DeSerialize( stream );
@@ -107,6 +107,7 @@ GameObject& DeSerializeHierarchy( std::ifstream& stream, std::vector<GameObject*
    for (int32_t i = 1; i < numObjects; i++)
    {
       GameObject *obj = new GameObject();
+      gameObjects.push_back( obj );
 
       // get the id
       id.DeSerialize( stream );

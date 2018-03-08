@@ -31,27 +31,31 @@ static unsigned int FindIndexOfParent( std::vector<GameObject*>& objects, GameOb
 GameObject& PrefabField::Instantiate( World& world, Transform& parent )
 {
    std::vector<GameObject*> instanceHierarchy;
-   CreateInstance( parent, world, instanceHierarchy );
+   GameObject& root = CreateInstance( parent, world, instanceHierarchy );
 
    for (auto it = instanceHierarchy.begin(); it != instanceHierarchy.end(); it++)
    {
       (*it)->AwakeComponents( world );
    }
+
+   return root;
 }
 
 GameObject& PrefabField::InstantiateEdit( Editor& editor, Transform& parent )
 {
    std::vector<GameObject*> instanceHierarchy;
-   CreateInstance( parent, editor.GetWorld(), instanceHierarchy );
+   GameObject& root = CreateInstance( parent, editor.GetWorld(), instanceHierarchy );
 
    for (auto it = instanceHierarchy.begin(); it != instanceHierarchy.end(); it++)
    {
       (*it)->EditAwakeComponents( editor.GetWorld() );
-      // pass editor to special components
+      editor.OnNewHierarchy( root );
    }
+
+   return root;
 }
 
-void PrefabField::CreateInstance( Transform& parent, World& world, std::vector<GameObject*>& instanceHierarchy )
+GameObject& PrefabField::CreateInstance( Transform& parent, World& world, std::vector<GameObject*>& instanceHierarchy )
 {
    PrefabAsset* prefabAsset = world.GetAssetLoader().LoadIfNotAlreadyLoaded( Value(), PrefabAsset::CreateInstance ).PrefabValue();
 
@@ -88,4 +92,6 @@ void PrefabField::CreateInstance( Transform& parent, World& world, std::vector<G
    }
 
    instanceRoot->GetTransform().InitParent( parent );
+
+   return *instanceRoot;
 }

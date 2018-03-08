@@ -58,8 +58,8 @@ void HierarchyWindow::ContextMenu()
 
       if (active)
       {
-         m_GOCreation.OnGUI( m_Editor->GetWorld(), *active );
-         AddComponentOnGUI( m_Editor->GetWorld(), *active );
+         m_GOCreation.OnGUI( *m_Editor, *active );
+         AddComponentOnGUI( *m_Editor, *active );
          m_GORenamer.OnGUI( *active );
       }
 

@@ -1,8 +1,10 @@
-﻿  Camera.cpp
+﻿cl : Command line warning D9028: minimal rebuild failure, reverting to normal build
+  Debug.cpp
+  Mesh.cpp
+  Path.cpp
+  PrefabAsset.cpp
+  SceneLoader.cpp
+  ShaderProgram.cpp
   Generating Code...
-  Skipping... (no relevant changes detected)
-  Utils.cpp
-  GeometryRenderer.cpp
-  ComponentCreator.cpp
   GameEngine.vcxproj -> C:\Users\gg_11\Documents\Visual Studio 2015\Projects\GameEngine2\Debug\GameEngine.exe
   GameEngine.vcxproj -> C:\Users\gg_11\Documents\Visual Studio 2015\Projects\GameEngine2\Debug\GameEngine.pdb (Partial PDB)

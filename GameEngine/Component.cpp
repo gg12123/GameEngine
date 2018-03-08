@@ -5,6 +5,7 @@
 #include "Transform.h"
 #include "GeometryRenderer.h"
 #include "ComponentCreator.h"
+#include "SceneLoader.h"
 
 Component::~Component()
 {
@@ -66,6 +67,11 @@ Transform& Component::GetRootTransform()
 GeometryRenderer& Component::GetGeometryRenderer()
 {
    return m_World->GetGeometryRenderer();
+}
+
+void Component::LoadScene( std::string name )
+{
+   m_World->GetSceneLoader().PendLoadScene( name );
 }
 
 void  Component::Serialize( std::ofstream& stream )

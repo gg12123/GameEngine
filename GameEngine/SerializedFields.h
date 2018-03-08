@@ -77,7 +77,7 @@ protected:
    int32_t GetSize() override;
 private:
    std::string m_Value;
-   char m_Buffer[ MAX_SERAIALIZED_STRING_SIZE ];
+   char m_Buffer[ MAX_SERAIALIZED_STRING_SIZE ]; // having this buffer for every string is pretty wasteful so i probs need to use a selectable approach for assets (i.e. allow choice of asset by selecting from combo instead of typing in name).
 };
 
 class SerializedFloat : public FixedSizeSerializedField

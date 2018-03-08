@@ -20,3 +20,13 @@ std::string Path::GetDebugPath( std::string fileName )
 {
    return "C:\\Users\\gg_11\\Documents\\Visual Studio 2015\\Projects\\GameEngine2\\DebugOutput\\" + fileName;
 }
+
+std::string Path::GetScenePath( std::string sceneName )
+{
+   return "C:\\Users\\gg_11\\Documents\\Visual Studio 2015\\Projects\\GameEngine2\\Assets\\Scenes\\" + sceneName;
+}
+
+std::string Path::GetPrefabPath( std::string prefabName )
+{
+   return "C:\\Users\\gg_11\\Documents\\Visual Studio 2015\\Projects\\GameEngine2\\Assets\\Prefabs\\" + prefabName;
+}

@@ -23,7 +23,7 @@ void GameObjectCreationContext::OnGUI( Editor& editor, GameObject& parent )
          {
             GameObject& newObj = m_CreationFunctions[ i ].Function( vmath::vec3( 0.0f, 0.0f, 0.0f ), vmath::mat4().identity(), parent.GetTransform() );
             newObj.EditAwakeComponents( editor.GetWorld() );
-            // pass editor into any special editor components
+            editor.OnNewHierarchy( newObj );
          }
       }
 

@@ -13,8 +13,7 @@ public:
 private:
 
    bool InitWindow();
-   void InitWorld();
-   void InitEditor();
+   void InitEngine();
    void InitImGUI();
    void RunLoop();
    void SetupCallbacks();
