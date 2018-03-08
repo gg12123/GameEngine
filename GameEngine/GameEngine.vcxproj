@@ -144,6 +144,7 @@
     <ClInclude Include="MeshField.h" />
     <ClInclude Include="NullableIterator.h" />
     <ClInclude Include="ParentSetter.h" />
+    <ClInclude Include="PrefabAsset.h" />
     <ClInclude Include="PrefabField.h" />
     <ClInclude Include="SceneLoader.h" />
     <ClInclude Include="Utils.h" />
@@ -186,6 +187,7 @@
     <ClCompile Include="MeshField.cpp" />
     <ClCompile Include="ParentSetter.cpp" />
     <ClCompile Include="Path.cpp" />
+    <ClCompile Include="PrefabAsset.cpp" />
     <ClCompile Include="PrefabField.cpp" />
     <ClCompile Include="SceneLoader.cpp" />
     <ClCompile Include="SerializedFields.cpp" />

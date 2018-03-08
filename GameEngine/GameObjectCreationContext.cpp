@@ -4,6 +4,7 @@
 #include "Utils.h"
 #include "ImGUI/imgui.h"
 #include "ComponentCreator.h"
+#include "Editor.h"
 
 GameObjectCreationContext::GameObjectCreationContext()
 {
@@ -12,7 +13,7 @@ GameObjectCreationContext::GameObjectCreationContext()
    m_CreationFunctions[ 2 ].Init( "Cube", CreateCubeGameObject );
 }
 
-void GameObjectCreationContext::OnGUI( World& world, GameObject& parent )
+void GameObjectCreationContext::OnGUI( Editor& editor, GameObject& parent )
 {
    if (ImGui::BeginMenu( "New game object" ))
    {
@@ -21,7 +22,8 @@ void GameObjectCreationContext::OnGUI( World& world, GameObject& parent )
          if (ImGui::Selectable( m_CreationFunctions[ i ].Name.c_str() ))
          {
             GameObject& newObj = m_CreationFunctions[ i ].Function( vmath::vec3( 0.0f, 0.0f, 0.0f ), vmath::mat4().identity(), parent.GetTransform() );
-            newObj.AwakeComponents( world );
+            newObj.EditAwakeComponents( editor.GetWorld() );
+            // pass editor into any special editor components
          }
       }
 
@@ -29,7 +31,7 @@ void GameObjectCreationContext::OnGUI( World& world, GameObject& parent )
    }
 }
 
-void AddComponentOnGUI( World& world, GameObject& active )
+void AddComponentOnGUI( Editor& editor, GameObject& active )
 {
    if (ImGui::BeginMenu( "Add component" ))
    {
@@ -42,7 +44,8 @@ void AddComponentOnGUI( World& world, GameObject& active )
                Component* newComp = ComponentCreator::Instance().Create( i );
                
                active.AddComponent( *newComp );
-               newComp->EditAwake( world, active );
+               newComp->EditAwake( editor.GetWorld(), active );
+               // pass editor in if this is a special editor component (maybe have a get editor comp virtual method on component that will be overrided in the editor comp)
             }
          }
       }

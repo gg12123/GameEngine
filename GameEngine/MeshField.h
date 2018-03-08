@@ -6,5 +6,5 @@ class World;
 class MeshField : public SerializedString
 {
 public:
-   std::string Instantiate( const World& world ) const;
+   std::string Instantiate( World& world );
 };

@@ -38,6 +38,8 @@ public:
    virtual void FixedUpdate();
    virtual void EditUpdate();
 
+   Component& Clone();
+
 protected:
 
    virtual void Awake();
@@ -49,8 +51,8 @@ protected:
    GeometryRenderer& GetGeometryRenderer();
    Transform& GetRootTransform();
 
-   GameObject& InstantiatePrefab( const PrefabField& prefab );
-   std::string InstantiateMesh( const MeshField& mesh );
+   GameObject& InstantiatePrefab( PrefabField& prefab );
+   std::string InstantiateMesh( MeshField& mesh );
 
 private:
 

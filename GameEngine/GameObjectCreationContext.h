@@ -6,7 +6,7 @@
 
 class GameObject;
 class Transform;
-class World;
+class Editor;
 
 typedef GameObject&(*GOCreationFunctionPtr)(vmath::vec3 pos, vmath::mat4 rot, Transform& parent);
 
@@ -26,10 +26,10 @@ class GameObjectCreationContext
 {
 public:
    GameObjectCreationContext();
-   void OnGUI( World& world, GameObject& parent );
+   void OnGUI( Editor& editor, GameObject& parent );
 
 private:
    FunctionWithName m_CreationFunctions[ NUMBER_OF_CREATABLE_GAME_OBJECTS ];
 };
 
-void AddComponentOnGUI( World& world, GameObject& active );
+void AddComponentOnGUI( Editor& editor, GameObject& active );

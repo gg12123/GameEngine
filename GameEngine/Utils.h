@@ -1,6 +1,7 @@
 #pragma once
 #include <stack>
 #include <string>
+#include <vector>
 #include "MyVmath.h"
 
 class GameObject;

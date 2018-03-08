@@ -124,12 +124,31 @@ void Component::GetSerializedFields( std::unordered_map<std::string, SerializedF
 {
 }
 
-GameObject& Component::InstantiatePrefab( const PrefabField& prefab )
+Component& Component::Clone()
 {
-   return prefab.Instantiate( *m_World );
+   Component* clone = ComponentCreator::Instance().Create( GetType() );
+
+   std::unordered_map<std::string, SerializedField*> myFileds;
+   std::unordered_map<std::string, SerializedField*> cloneFields;
+
+   GetSerializedFields( myFileds );
+   clone->GetSerializedFields( cloneFields );
+
+   for (auto it = myFileds.begin(); it != myFileds.end(); it++)
+   {
+      // not sure if this will work
+      *cloneFields[ it->first ] = *it->second;
+   }
+
+   return *clone;
 }
 
-std::string Component::InstantiateMesh( const MeshField& mesh )
+GameObject& Component::InstantiatePrefab( PrefabField& prefab )
+{
+   return prefab.Instantiate( *m_World, m_World->GetRootTransform() );
+}
+
+std::string Component::InstantiateMesh( MeshField& mesh )
 {
    return mesh.Instantiate( *m_World );
 }

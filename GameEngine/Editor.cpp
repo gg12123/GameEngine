@@ -31,6 +31,8 @@ void Editor::Awake( World& w )
    AddWindow( *(new InspectorWindow()) );
 
    SetActiveGameObject( &(*m_World->GetRootTransform().ChildrenBegin())->GetGameObject() );
+
+   // pass editor to special editor components (may also need an on new scene editor event to do this when reloading the scene)
 }
 
 void Editor::AddWindow( EditorWindow& wnd )

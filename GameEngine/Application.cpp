@@ -62,7 +62,7 @@ void Application::Run()
    InitImGUI();
    SetupCallbacks();
    InitWorld();
-   InitEditor();
+   InitEditor(); // order important - must init world before editor
    RunLoop();
 }
 

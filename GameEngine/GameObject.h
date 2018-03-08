@@ -68,6 +68,8 @@ public:
    std::vector<Component*>::iterator ComponentsBegin();
    std::vector<Component*>::iterator ComponentsEnd();
 
+   GameObject& Clone();
+
 private:
 
    void CommonConstructor();

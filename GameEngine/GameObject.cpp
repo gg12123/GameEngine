@@ -278,3 +278,15 @@ std::vector<Component*>::iterator GameObject::ComponentsEnd()
 {
    return m_Components.end();
 }
+
+GameObject& GameObject::Clone()
+{
+   GameObject* clone = new GameObject( GetName() );
+
+   for (auto it = m_Components.begin(); it != m_Components.end(); it++)
+   {
+      clone->AddComponent( (*it)->Clone() );
+   }
+
+   return *clone;
+}
