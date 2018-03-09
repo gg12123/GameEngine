@@ -88,6 +88,7 @@ void EditModeSceneLoader::Init( Editor& editor )
 
 void EditModeSceneLoader::CallAwake( GameObject& rootGameObject, std::vector<GameObject*>& gameObjects )
 {
+   m_Editor->SetActiveGameObject( nullptr );
    m_Editor->GetWorld().EditAwake( *m_Editor, rootGameObject, gameObjects );
 }
 

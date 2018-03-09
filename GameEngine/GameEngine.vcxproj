@@ -141,6 +141,7 @@
     <ClInclude Include="ImGUI\stb_truetype.h" />
     <ClInclude Include="InspectorWindow.h" />
     <ClInclude Include="ISearializedFieldOwner.h" />
+    <ClInclude Include="MainToolWindow.h" />
     <ClInclude Include="MeshField.h" />
     <ClInclude Include="NullableIterator.h" />
     <ClInclude Include="ParentSetter.h" />
@@ -183,6 +184,7 @@
     <ClCompile Include="ImGUI\imgui_impl_glfw_gl3.cpp" />
     <ClCompile Include="InspectorWindow.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainToolWindow.cpp" />
     <ClCompile Include="MeshField.cpp" />
     <ClCompile Include="ParentSetter.cpp" />
     <ClCompile Include="Path.cpp" />

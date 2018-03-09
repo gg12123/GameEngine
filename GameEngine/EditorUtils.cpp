@@ -1,3 +1,5 @@
+#include <iostream>
+#include <fstream>
 #include "EditorUtils.h"
 #include "GameObject.h"
 #include "Transform.h"
@@ -6,6 +8,8 @@
 #include "ComponentCreator.h"
 #include "Editor.h"
 #include "Path.h"
+#include "World.h"
+#include "SceneLoader.h"
 
 GameObjectCreationContext::GameObjectCreationContext()
 {
@@ -31,16 +35,12 @@ void GameObjectCreationContext::OnGUI( Editor& editor, GameObject& parent )
    }
 }
 
-void PrefabSpawnContext::OnGUI( Editor& editor, GameObject& parent )
+void PrefabSpawnSaveContext::OnGUI( Editor& editor, GameObject& active )
 {
    if (ImGui::BeginMenu( "Spawn prefab" ))
    {
-      if (m_AvailablePrefabs.size() == 0)
-      {
-         GetFileNamesInDirectory( Path::Instance().GetPrefabPath( "" ), m_AvailablePrefabs );
-      }
-
-      bool selected = false;
+      m_AvailablePrefabs.clear();
+      GetFileNamesInDirectory( Path::Instance().GetPrefabPath( "" ), m_AvailablePrefabs );
 
       for (auto it = m_AvailablePrefabs.begin(); it != m_AvailablePrefabs.end(); it++)
       {
@@ -48,20 +48,39 @@ void PrefabSpawnContext::OnGUI( Editor& editor, GameObject& parent )
          {
             PrefabField prefabField;
             prefabField.SetValue( *it );
-            prefabField.InstantiateEdit( editor, parent.GetTransform() );
-
-            selected = true;
+            prefabField.InstantiateEdit( editor, active.GetTransform() );
             break;
          }
       }
 
-      if (selected)
-      {
-         m_AvailablePrefabs.clear();
-      }
-
       ImGui::EndMenu();
    }
+
+   if (ImGui::BeginMenu( "Apply to prefab" ))
+   {
+      ImGui::Text( "Are you sure?" );
+      ImGui::SameLine();
+      if (ImGui::SmallButton( "Yes" ))
+      {
+         SaveAsPrefab( editor, active );
+      }
+      ImGui::EndMenu();
+   }
+}
+
+void PrefabSpawnSaveContext::SaveAsPrefab( Editor& editor, GameObject& active )
+{
+   std::string path = Path::Instance().GetPrefabPath( active.GetName() + ".prefab" );
+
+   std::ofstream stream;
+   stream.open( path, std::ios::binary );
+
+   if (!stream.is_open())
+   {
+      throw std::exception( "unable to save prefab" );
+   }
+
+   SerializeHierarchy( editor.GetWorld().GetRootTransform().GetGameObject(), stream );
 }
 
 void GameObjectRenamer::OnGUI( GameObject& active )
@@ -92,6 +111,73 @@ void GameObjectRenamer::OnGUI( GameObject& active )
 
       ImGui::EndPopup();
    }
+}
+
+void EditorSceneManagement::OnGUI( Editor& editor )
+{
+   if (ImGui::BeginMenu( "Scenes" ))
+   {
+      if (ImGui::MenuItem( "Save current" ))
+      {
+         SaveActiveScene( editor );
+      }
+
+      if (ImGui::BeginMenu( "Load scene" ))
+      {
+         m_AvailableScenes.clear();
+         GetFileNamesInDirectory( Path::Instance().GetScenePath( "" ), m_AvailableScenes );
+
+         for (auto it = m_AvailableScenes.begin(); it != m_AvailableScenes.end(); it++)
+         {
+            if (ImGui::Selectable( it->c_str() ))
+            {
+               editor.GetWorld().GetSceneLoader().LoadScene( *it );
+               break;
+            }
+         }
+
+         if (ImGui::MenuItem( "Start new scene" ))
+         {
+            ImGui::OpenPopup( "NewScenePopup" );
+            CopyStringToBuffer( m_Buffer, "Write name here" );
+         }
+
+         if (ImGui::BeginPopupModal( "NewScenePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize ))
+         {
+            ImGui::InputText( "Name", m_Buffer, MAX_SCENE_NAME_SIZE );
+
+            if (ImGui::Button( "OK" ))
+            {
+               std::string selectedName = m_Buffer;
+               selectedName.append( ".scene" );
+
+               editor.GetWorld().GetSceneLoader().LoadCompletelyNewScene( selectedName );
+               ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::EndPopup();
+         }
+
+         ImGui::EndMenu();
+      }
+
+      ImGui::EndMenu();
+   }
+}
+
+void EditorSceneManagement::SaveActiveScene( Editor& editor )
+{
+   std::string path = Path::Instance().GetScenePath( editor.GetWorld().GetSceneLoader().GetActiveSceneName() );
+
+   std::ofstream stream;
+   stream.open( path, std::ios::binary );
+
+   if (!stream.is_open())
+   {
+      throw std::exception( "unable to save scene" );
+   }
+
+   SerializeHierarchy( editor.GetWorld().GetRootTransform().GetGameObject(), stream );
 }
 
 void AddComponentOnGUI( Editor& editor, GameObject& active )

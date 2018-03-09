@@ -1,4 +1,5 @@
 #include <unordered_map>
+#include <Windows.h>
 #include "Utils.h"
 #include "Component.h"
 #include "ComponentCreator.h"
@@ -7,7 +8,6 @@
 #include "Camera.h"
 #include "Light.h"
 #include "MeshRenderer.h"
-#include <Windows.h>
 
 EnumerableHierarchy::EnumerableHierarchy( GameObject& root )
 {

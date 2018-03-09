@@ -7,6 +7,7 @@
 #include "ImGUI/imgui_impl_glfw_gl3.h"
 #include "HierarchyWindow.h"
 #include "InspectorWindow.h"
+#include "MainToolWindow.h"
 
 bool Application::InitWindow()
 {
@@ -74,6 +75,7 @@ void Application::InitEngine()
    m_SceneLoader.Init( m_Editor );
    m_SceneLoader.LoadStartUpScene();
 
+   m_Editor.AddWindow( *(new MainToolWindow()) );
    m_Editor.AddWindow( *(new HierarchyWindow()) );
    m_Editor.AddWindow( *(new InspectorWindow()) );
 }
