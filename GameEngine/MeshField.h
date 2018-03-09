@@ -3,7 +3,7 @@
 
 class World;
 
-class MeshField : public SerializedString
+class MeshField : public TypeInString
 {
 public:
    std::string Instantiate( World& world );

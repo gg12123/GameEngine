@@ -16,6 +16,11 @@ static void CallInitGUI( std::unordered_map<std::string, SerializedField*>::iter
    it->second->InitForGUI( it->first, comp );
 }
 
+static void CallOnGUIClose( std::unordered_map<std::string, SerializedField*>::iterator it, Component& comp )
+{
+   it->second->OnGUIClose();
+}
+
 static void DrawText( std::vector<Component*>::iterator it )
 {
    ImGui::Text( (*it)->GetName().c_str() );
@@ -28,13 +33,12 @@ static void DoNothing( std::vector<Component*>::iterator it )
 InspectorWindow::InspectorWindow()
 {
    m_Editor = nullptr;
+   m_PrevActiveGO = nullptr;
 }
 
 void InspectorWindow::Awake( Editor& editor )
 {
    m_Editor = &editor;
-  
-   m_Editor->RegisterCallbackForEvent( eActiveGameObjectChanged, *m_OnNewActiveGOEvent.Init( &InspectorWindow::OnActiveGameObjectChanged, this ) );
 }
 
 void InspectorWindow::CallIntoSerializedFields( GameObject* active,
@@ -63,6 +67,8 @@ void InspectorWindow::CallIntoSerializedFields( GameObject* active,
 
 void InspectorWindow::Update()
 {
+   CheckForActiveGOChanged();
+
    GameObject* active = m_Editor->GetActiveGameObject();
 
    if (active != nullptr)
@@ -76,12 +82,22 @@ void InspectorWindow::Update()
    }
 }
 
-void InspectorWindow::OnActiveGameObjectChanged()
+void InspectorWindow::CheckForActiveGOChanged()
 {
    GameObject* active = m_Editor->GetActiveGameObject();
 
-   if (active != nullptr)
+   if (active != m_PrevActiveGO)
    {
-      CallIntoSerializedFields( active, DoNothing, CallInitGUI );
+      if (m_PrevActiveGO)
+      {
+         CallIntoSerializedFields( m_PrevActiveGO, DoNothing, CallOnGUIClose );
+      }
+
+      if (active)
+      {
+         CallIntoSerializedFields( active, DoNothing, CallInitGUI );
+      }
+
+      m_PrevActiveGO = active;
    }
 }

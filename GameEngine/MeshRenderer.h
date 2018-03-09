@@ -31,13 +31,13 @@ public:
 protected:
 
    void Awake() override;
-   void EditAwake() override;
+   void EditAwake( IEditor& editor ) override;
    virtual void ApplyUniforms();
 
 private:
 
    MeshField m_MeshName;
-   SerializedString m_ShaderName;
+   ShaderField m_ShaderName;
    NullableValue<std::list<MeshRenderer*>::iterator> m_ToThisInRenderersList;
 
    VoidEventHandler<MeshRenderer> m_OnDestroyEvent;

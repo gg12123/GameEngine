@@ -70,13 +70,13 @@ void World::Awake( GameObject& rootGameObject, std::vector<GameObject*>& gameObj
    }
 }
 
-void World::EditAwake( GameObject& rootGameObject, std::vector<GameObject*>& gameObjects )
+void World::EditAwake( Editor& editor, GameObject& rootGameObject, std::vector<GameObject*>& gameObjects )
 {
    m_Root = &rootGameObject.GetTransform();
 
    for (std::vector<GameObject*>::iterator it = gameObjects.begin(); it != gameObjects.end(); it++)
    {
-      (*it)->EditAwakeComponents( *this );
+      (*it)->EditAwakeComponents( editor );
    }
 }
 

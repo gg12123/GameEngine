@@ -4,12 +4,13 @@
 #include <unordered_map>
 #include "EditorEvents.h"
 #include "Events.h"
+#include "IEditor.h"
 
 class World;
 class GameObject;
 class EditorWindow;
 
-class Editor
+class Editor : public IEditor
 {
 public:
 
@@ -19,18 +20,15 @@ public:
    void Init( World& w );
    void Update();
 
-   void SetActiveGameObject( GameObject* active );
-   GameObject* GetActiveGameObject();
+   void SetActiveGameObject( GameObject* active ) override;
+   GameObject* GetActiveGameObject() override;
+   void RegisterCallbackForEvent( EEditorEvent eventID, EventHandler& callback ) override;
+   void UnregisterCallback( EEditorEvent eventID, EventHandler& callback ) override;
+   void InvokeEvent( EEditorEvent eventID ) override;
 
    World& GetWorld();
 
    void AddWindow( EditorWindow& wnd );
-
-   void RegisterCallbackForEvent( EEditorEvent eventID, EventHandler& callback );
-   void UnregisterCallback( EEditorEvent eventID, EventHandler& callback );
-
-   void InvokeEvent( EEditorEvent eventID );
-   void OnNewHierarchy( GameObject& root );
 
 private:
    World* m_World;

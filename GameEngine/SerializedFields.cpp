@@ -3,6 +3,7 @@
 #include "ImGUI/imgui.h"
 #include "ISearializedFieldOwner.h"
 #include "Utils.h"
+#include "Path.h"
 
 // ################ BASE #######################
 
@@ -26,6 +27,14 @@ void SerializedField::SerializeWithSize( std::ofstream& stream )
 }
 
 void SerializedField::InitForGUI( std::string fieldName, ISerializedFieldOwner& owner )
+{
+}
+
+void SerializedField::OnGUI( std::string fieldName, ISerializedFieldOwner& owner )
+{
+}
+
+void SerializedField::OnGUIClose()
 {
 }
 
@@ -222,23 +231,6 @@ int32_t SerializedFloat::GetSize()
 
 // ####################### STRING ########################### 
 
-void SerializedString::InitForGUI( std::string fieldName, ISerializedFieldOwner& owner )
-{
-   CopyStringToBuffer( m_Buffer, m_Value );
-}
-
-void SerializedString::OnGUI( std::string fieldName, ISerializedFieldOwner& owner )
-{
-   ImGui::InputText( fieldName.c_str(), m_Buffer, MAX_SERAIALIZED_STRING_SIZE );
-  
-   ImGui::SameLine();
-   if (ImGui::SmallButton( "OK" ))
-   {
-      m_Value = m_Buffer;
-      owner.OnNewSerializedFields();
-   }
-}
-
 std::string SerializedString::Value()
 {
    return m_Value;
@@ -290,6 +282,59 @@ void SerializedString::LocalDeSerialize( std::ifstream& stream )
 int32_t SerializedString::GetSize()
 {
    return m_Value.length() * sizeof( char ) + sizeof( int32_t );
+}
+
+void TypeInString::InitForGUI( std::string fieldName, ISerializedFieldOwner& owner )
+{
+   CopyStringToBuffer( m_Buffer, Value() );
+}
+
+void TypeInString::OnGUI( std::string fieldName, ISerializedFieldOwner& owner )
+{
+   ImGui::InputText( fieldName.c_str(), m_Buffer, MAX_SERAIALIZED_STRING_SIZE );
+
+   ImGui::SameLine();
+   if (ImGui::SmallButton( "OK" ))
+   {
+      SetValue( m_Buffer );
+      owner.OnNewSerializedFields();
+   }
+}
+
+void SelectableString::OnGUI( std::string fieldName, ISerializedFieldOwner& owner )
+{
+   ImGui::Text( fieldName.c_str() );
+   ImGui::SameLine();
+
+   if (ImGui::BeginMenu( Value().c_str() ))
+   {
+      for (auto it = m_Selectables.begin(); it != m_Selectables.end(); it++)
+      {
+         if (ImGui::Selectable( it->c_str() ))
+         {
+            SetValue( *it );
+            owner.OnNewSerializedFields();
+         }
+      }
+
+      ImGui::EndMenu();
+   }
+}
+
+void SelectableString::InitForGUI( std::string fieldName, ISerializedFieldOwner& owner )
+{
+   m_Selectables.clear();
+   GetFileNamesInDirectory( GetPathToSelectables(), m_Selectables );
+}
+
+void SelectableString::OnGUIClose()
+{
+   m_Selectables.clear();
+}
+
+std::string ShaderField::GetPathToSelectables()
+{
+   return Path::Instance().GetShaderPath( "" );
 }
 
 // ####################### INT32 ########################### 

@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "Light.h"
 #include "MeshRenderer.h"
+#include <Windows.h>
 
 EnumerableHierarchy::EnumerableHierarchy( GameObject& root )
 {
@@ -216,10 +217,35 @@ GameObject& HierarchyForNewProject( std::vector<GameObject*>& gameObjects )
    return *root;
 }
 
-void CopyStringToBuffer( char *buffer, std::string str )
+void CopyStringToBuffer( char *buffer, const std::string str )
 {
    for (unsigned int i = 0; i < str.size(); i++)
       buffer[ i ] = str.at( i );
 
    buffer[ str.size() ] = '\0';
+}
+
+void GetFileNamesInDirectory( const std::string directory, std::vector<std::string>& out )
+{
+   HANDLE dir;
+   WIN32_FIND_DATA file_data;
+
+   if ((dir = FindFirstFile( (directory + "/*").c_str(), &file_data )) == INVALID_HANDLE_VALUE)
+      return; /* No files found */
+
+   do {
+      const std::string file_name = file_data.cFileName;
+      const std::string full_file_name = directory + "/" + file_name;
+      const bool is_directory = (file_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
+
+      if (file_name[ 0 ] == '.')
+         continue;
+
+      if (is_directory)
+         continue;
+
+      out.push_back( file_name );
+   } while (FindNextFile( dir, &file_data ));
+
+   FindClose( dir );
 }

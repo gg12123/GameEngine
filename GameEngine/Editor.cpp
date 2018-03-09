@@ -113,8 +113,3 @@ void Editor::InvokeEvent( EEditorEvent eventID )
       }
    }
 }
-
-void Editor::OnNewHierarchy( GameObject& root )
-{
-   // pass the editor into all special editor components
-}

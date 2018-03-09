@@ -18,7 +18,7 @@ void Transform::OnDestroy()
    }
 }
 
-void Transform::EditAwake()
+void Transform::EditAwake( IEditor& editor )
 {
    Awake();
 }

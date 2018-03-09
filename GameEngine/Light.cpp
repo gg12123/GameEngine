@@ -13,7 +13,7 @@ void Light::Awake()
    GetGeometryRenderer().SetLight( *this );
 }
 
-void Light::EditAwake()
+void Light::EditAwake( IEditor& editor )
 {
    Awake();
 }

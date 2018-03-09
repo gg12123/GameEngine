@@ -128,10 +128,10 @@
     <ClInclude Include="EditorEvents.h" />
     <ClInclude Include="EditorWindow.h" />
     <ClInclude Include="Events.h" />
-    <ClInclude Include="GameObjectCreationContext.h" />
+    <ClInclude Include="EditorUtils.h" />
     <ClInclude Include="GameObjectEvents.h" />
-    <ClInclude Include="GameObjectRenamer.h" />
     <ClInclude Include="HierarchyWindow.h" />
+    <ClInclude Include="IEditor.h" />
     <ClInclude Include="ImGUI\imconfig.h" />
     <ClInclude Include="ImGUI\imgui.h" />
     <ClInclude Include="ImGUI\imgui_impl_glfw_gl3.h" />
@@ -175,8 +175,7 @@
     <ClCompile Include="ComponentCreator.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Editor.cpp" />
-    <ClCompile Include="GameObjectCreationContext.cpp" />
-    <ClCompile Include="GameObjectRenamer.cpp" />
+    <ClCompile Include="EditorUtils.cpp" />
     <ClCompile Include="HierarchyWindow.cpp" />
     <ClCompile Include="ImGUI\imgui.cpp" />
     <ClCompile Include="ImGUI\imgui_demo.cpp" />

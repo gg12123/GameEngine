@@ -30,4 +30,6 @@ GameObject& CreateCameraGameObject( vmath::vec3 pos, vmath::mat4 rot, Transform&
 
 GameObject& CreateCubeGameObject( vmath::vec3 pos, vmath::mat4 rot, Transform& parent );
 
-void CopyStringToBuffer( char *buffer, std::string str );
+void CopyStringToBuffer( char *buffer, const std::string str );
+
+void GetFileNamesInDirectory( const std::string dir, std::vector<std::string>& names );

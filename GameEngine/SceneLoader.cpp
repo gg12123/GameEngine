@@ -88,8 +88,7 @@ void EditModeSceneLoader::Init( Editor& editor )
 
 void EditModeSceneLoader::CallAwake( GameObject& rootGameObject, std::vector<GameObject*>& gameObjects )
 {
-   m_Editor->GetWorld().EditAwake( rootGameObject, gameObjects );
-   m_Editor->OnNewHierarchy( rootGameObject );
+   m_Editor->GetWorld().EditAwake( *m_Editor, rootGameObject, gameObjects );
 }
 
 void EditModeSceneLoader::ClearAll()

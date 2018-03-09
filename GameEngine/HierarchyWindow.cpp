@@ -60,7 +60,21 @@ void HierarchyWindow::ContextMenu()
       {
          m_GOCreation.OnGUI( *m_Editor, *active );
          AddComponentOnGUI( *m_Editor, *active );
+         m_PrefabSpawn.OnGUI( *m_Editor, *active );
          m_GORenamer.OnGUI( *active );
+
+         if (ImGui::BeginMenu( "Delete" ))
+         {
+            ImGui::Text( "Are you sure?" );
+            ImGui::SameLine();
+
+            if (ImGui::SmallButton( "Yes" ))
+            {
+               m_Editor->SetActiveGameObject( nullptr );
+               m_Editor->GetWorld().DestroyHierarchy( *active );
+            }
+            ImGui::EndMenu();
+         }
       }
 
       ImGui::EndPopup();

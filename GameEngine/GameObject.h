@@ -10,6 +10,7 @@
 
 class World;
 class Transform;
+class Editor;
 
 class UpdateableComponents
 {
@@ -36,7 +37,7 @@ public:
    // called by the world if this object starts in the scene. If the object is instantiated, awake
    // must be called by the instantitor.
    void AwakeComponents( World &world );
-   void EditAwakeComponents( World &world );
+   void EditAwakeComponents( Editor &editor );
 
    // called by the world before the next update
    void StartComponents();

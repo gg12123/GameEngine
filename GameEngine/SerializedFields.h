@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -15,8 +16,9 @@ public:
    void SerializeWithSize( std::ofstream& stream );
    virtual void DeSerializeWithSize( std::ifstream& stream ) = 0;
 
-   virtual void OnGUI( std::string fieldName, ISerializedFieldOwner& owner ) = 0;
+   virtual void OnGUI( std::string fieldName, ISerializedFieldOwner& owner );
    virtual void InitForGUI( std::string fieldName, ISerializedFieldOwner& owner );
+   virtual void OnGUIClose();
 protected:
    virtual void LocalSerialize( std::ofstream& stream ) = 0;
    virtual void LocalDeSerialize( std::ifstream& stream ) = 0;
@@ -68,8 +70,6 @@ class SerializedString : public SerializedField
 public:
    std::string Value();
    void SetValue( std::string value );
-   void OnGUI( std::string fieldName, ISerializedFieldOwner& owner ) override;
-   void InitForGUI( std::string fieldName, ISerializedFieldOwner& owner ) override;
 protected:
    void DeSerializeWithSize( std::ifstream& stream ) override;
    void LocalSerialize( std::ofstream& stream ) override;
@@ -77,7 +77,33 @@ protected:
    int32_t GetSize() override;
 private:
    std::string m_Value;
-   char m_Buffer[ MAX_SERAIALIZED_STRING_SIZE ]; // having this buffer for every string is pretty wasteful so i probs need to use a selectable approach for assets (i.e. allow choice of asset by selecting from combo instead of typing in name).
+};
+
+class TypeInString : public SerializedString
+{
+public:
+   void OnGUI( std::string fieldName, ISerializedFieldOwner& owner ) override;
+   void InitForGUI( std::string fieldName, ISerializedFieldOwner& owner ) override;
+private:
+   char m_Buffer[ MAX_SERAIALIZED_STRING_SIZE ];
+};
+
+class SelectableString : public SerializedString
+{
+public:
+   void OnGUI( std::string fieldName, ISerializedFieldOwner& owner ) override;
+   void InitForGUI( std::string fieldName, ISerializedFieldOwner& owner ) override;
+   void OnGUIClose() override;
+protected:
+   virtual std::string GetPathToSelectables() = 0;
+private:
+   std::vector<std::string> m_Selectables;
+};
+
+class ShaderField : public SelectableString
+{
+protected:
+   std::string GetPathToSelectables() override;
 };
 
 class SerializedFloat : public FixedSizeSerializedField

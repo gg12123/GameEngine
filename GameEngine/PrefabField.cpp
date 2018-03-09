@@ -5,6 +5,7 @@
 #include "Editor.h"
 #include "Utils.h"
 #include "Transform.h"
+#include "Path.h"
 
 static unsigned int FindIndexOfParent( std::vector<GameObject*>& objects, GameObject* obj )
 {
@@ -28,6 +29,11 @@ static unsigned int FindIndexOfParent( std::vector<GameObject*>& objects, GameOb
    return index;
 }
 
+std::string PrefabField::GetPathToSelectables()
+{
+   return Path::Instance().GetPrefabPath( "" );
+}
+
 GameObject& PrefabField::Instantiate( World& world, Transform& parent )
 {
    std::vector<GameObject*> instanceHierarchy;
@@ -48,8 +54,7 @@ GameObject& PrefabField::InstantiateEdit( Editor& editor, Transform& parent )
 
    for (auto it = instanceHierarchy.begin(); it != instanceHierarchy.end(); it++)
    {
-      (*it)->EditAwakeComponents( editor.GetWorld() );
-      editor.OnNewHierarchy( root );
+      (*it)->EditAwakeComponents( editor );
    }
 
    return root;

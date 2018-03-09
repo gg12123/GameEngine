@@ -9,5 +9,5 @@ public:
 
 protected:
    void Awake() override;
-   void EditAwake() override;
+   void EditAwake( IEditor& editor ) override;
 };

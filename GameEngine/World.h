@@ -6,6 +6,7 @@
 
 class GameObject;
 class SceneLoader;
+class Editor;
 
 class World
 {
@@ -23,7 +24,7 @@ public:
    // The vector of game objects is required becasue references between transforms and game objects is not
    // yet setup so the hierarchy cannot be iterated by the EnumerableHierarchy object.
    void Awake( GameObject& rootGameObject, std::vector<GameObject*>& gameObjects );
-   void EditAwake( GameObject& rootGameObject, std::vector<GameObject*>& gameObjects );
+   void EditAwake( Editor& editor, GameObject& rootGameObject, std::vector<GameObject*>& gameObjects );
 
    // call start on GOs to be started at the beginning of each update
    void Update();

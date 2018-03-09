@@ -150,23 +150,23 @@
     <ClInclude Include="ParentSetter.h">
       <Filter>EditorOnly</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjectCreationContext.h">
-      <Filter>EditorOnly</Filter>
-    </ClInclude>
     <ClInclude Include="GameObjectEvents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ISearializedFieldOwner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjectRenamer.h">
-      <Filter>EditorOnly</Filter>
-    </ClInclude>
     <ClInclude Include="SceneLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PrefabAsset.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IEditor.h">
+      <Filter>EditorOnly</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorUtils.h">
+      <Filter>EditorOnly</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -266,17 +266,14 @@
     <ClCompile Include="ParentSetter.cpp">
       <Filter>EditorOnly</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjectCreationContext.cpp">
-      <Filter>EditorOnly</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjectRenamer.cpp">
-      <Filter>EditorOnly</Filter>
-    </ClCompile>
     <ClCompile Include="SceneLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PrefabAsset.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorUtils.cpp">
+      <Filter>EditorOnly</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

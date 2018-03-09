@@ -6,6 +6,7 @@
 #include "GeometryRenderer.h"
 #include "ComponentCreator.h"
 #include "SceneLoader.h"
+#include "Editor.h"
 
 Component::~Component()
 {
@@ -19,12 +20,12 @@ void Component::Awake( World &world, GameObject &gameObject )
    Awake();
 }
 
-void Component::EditAwake( World &world, GameObject &gameObject )
+void Component::EditAwake( Editor& editor, GameObject &gameObject )
 {
-   m_World = &world;
+   m_World = &editor.GetWorld();
    m_GameObject = &gameObject;
 
-   EditAwake();
+   EditAwake( editor );
 }
 
 GameObject& Component::GetGameObject()
@@ -45,7 +46,7 @@ void Component::Awake()
 {
 }
 
-void Component::EditAwake()
+void Component::EditAwake( IEditor& editor )
 {
 }
 

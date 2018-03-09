@@ -18,7 +18,7 @@ void MeshRenderer::OnDestroy()
    }
 }
 
-void MeshRenderer::EditAwake()
+void MeshRenderer::EditAwake( IEditor& editor )
 {
    Awake();
 }

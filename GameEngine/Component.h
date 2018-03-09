@@ -12,6 +12,8 @@ class World;
 class TransformUpdater;
 class Transform;
 class GeometryRenderer;
+class IEditor;
+class Editor;
 
 class Component : public ISerializedFieldOwner
 {
@@ -20,7 +22,7 @@ public:
    virtual ~Component();
 
    void Awake( World &world, GameObject &gameObject );
-   void EditAwake( World &world, GameObject &gameObject );
+   void EditAwake( Editor &editor, GameObject &gameObject );
 
    virtual void Start();
 
@@ -43,7 +45,7 @@ public:
 protected:
 
    virtual void Awake();
-   virtual void EditAwake();
+   virtual void EditAwake( IEditor& editor );
 
    void RegisterForUpdate( const EUpdaterFunction eFunction );
 

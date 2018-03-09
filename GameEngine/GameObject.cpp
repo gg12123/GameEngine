@@ -3,6 +3,7 @@
 #include "World.h"
 #include "Transform.h"
 #include "Debug.h"
+#include "Editor.h"
 
 std::vector<Component*>* UpdateableComponents::Components()
 {
@@ -165,13 +166,13 @@ void GameObject::AwakeComponents( World &world )
    m_World->RegisterForStart( *this );
 }
 
-void GameObject::EditAwakeComponents( World &world )
+void GameObject::EditAwakeComponents( Editor &editor )
 {
-   m_World = &world;
+   m_World = &editor.GetWorld();
 
    for (std::vector<Component*>::iterator it = m_Components.begin(); it != m_Components.end(); it++)
    {
-      (*it)->EditAwake( world, *this );
+      (*it)->EditAwake( editor, *this );
    }
 }
 
