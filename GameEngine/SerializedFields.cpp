@@ -229,6 +229,11 @@ int32_t SerializedFloat::GetSize()
    return sizeof( float );
 }
 
+void SerializedFloat::CopyFrom( SerializedField& toCopy )
+{
+   m_Value = toCopy.FloatValue();
+}
+
 // ####################### STRING ########################### 
 
 std::string SerializedString::Value()

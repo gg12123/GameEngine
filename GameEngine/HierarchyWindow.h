@@ -2,7 +2,6 @@
 #include "EditorWindow.h"
 #include "EditorUtils.h"
 #include "ParentSetter.h"
-#include "GameObjectRenamer.h"
 
 class GameObject;
 
@@ -19,9 +18,8 @@ private:
    void ContextMenu();
 
    Editor* m_Editor;
-   GameObject* m_Root;
    ParentSetter m_ParentSetter;
    GameObjectCreationContext m_GOCreation;
-   PrefabSpawnContext m_PrefabSpawn;
+   PrefabSpawnSaveContext m_PrefabSpawn;
    GameObjectRenamer m_GORenamer;
 };

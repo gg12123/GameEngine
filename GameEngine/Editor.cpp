@@ -24,6 +24,7 @@ Editor::~Editor()
 void Editor::Init( World& w )
 {
    m_World = &w;
+   RegisterCallbackForEvent( eSceneLoad, *m_OnSceneLoadEvent.Init( &Editor::OnSceneLoad, this ) );
 }
 
 void Editor::AddWindow( EditorWindow& wnd )
@@ -112,4 +113,11 @@ void Editor::InvokeEvent( EEditorEvent eventID )
          (*it2)->Invoke();
       }
    }
+}
+
+void Editor::OnSceneLoad()
+{
+   // Dont use the set active GO function becasue i dont think that i want to invoke the onActiveGOChanged event.
+   // maybe i do though? see what happens is the future
+   m_ActiveGameObject = nullptr;
 }

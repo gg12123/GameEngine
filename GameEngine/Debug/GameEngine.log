@@ -1,4 +1,4 @@
-﻿  SerializedFields.cpp
-cl : Command line warning D9028: minimal rebuild failure, reverting to normal build
+﻿  SceneLoader.cpp
+  LINK : C:\Users\gg_11\Documents\Visual Studio 2015\Projects\GameEngine2\Debug\GameEngine.exe not found or not built by the last incremental link; performing full link
   GameEngine.vcxproj -> C:\Users\gg_11\Documents\Visual Studio 2015\Projects\GameEngine2\Debug\GameEngine.exe
   GameEngine.vcxproj -> C:\Users\gg_11\Documents\Visual Studio 2015\Projects\GameEngine2\Debug\GameEngine.pdb (Partial PDB)

@@ -1,1 +1,5 @@
 starting main loop
+Camera set twice ERROR 
+Light set twice ERROR 
+Camera set twice ERROR 
+Light set twice ERROR 

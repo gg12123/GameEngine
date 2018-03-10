@@ -36,6 +36,7 @@ void SerializeHierarchy( GameObject& root, std::ofstream& stream )
 {
    std::unordered_map<GameObject*, int32_t> gameObjToID;
    SerializedInt32 id;
+   SerializedString name;
 
    EnumerableHierarchy enumerator( root );
    int32_t currID = 0;
@@ -52,6 +53,10 @@ void SerializeHierarchy( GameObject& root, std::ofstream& stream )
    gameObjToID[ next ] = currID;
    currID++;
 
+   // name
+   name.SetValue( next->GetName() );
+   name.Serialize( stream );
+
    // components
    next->Serialize( stream );
 
@@ -65,6 +70,10 @@ void SerializeHierarchy( GameObject& root, std::ofstream& stream )
       id.Serialize( stream );
       gameObjToID[ next ] = currID;
       currID++;
+
+      // name
+      name.SetValue( next->GetName() );
+      name.Serialize( stream );
 
       // parent
       id.SetValue( gameObjToID[ &next->GetTransform().GetParent().GetGameObject() ] );
@@ -86,6 +95,7 @@ GameObject& DeSerializeHierarchy( std::ifstream& stream, std::vector<GameObject*
 {
    std::unordered_map<int32_t, GameObject*> idToGameObj;
    SerializedInt32 id;
+   SerializedString name;
 
    // Get the number of objects
    id.DeSerialize( stream );
@@ -98,6 +108,10 @@ GameObject& DeSerializeHierarchy( std::ifstream& stream, std::vector<GameObject*
    // get the id
    id.DeSerialize( stream );
    idToGameObj[ id.Value() ] = root;
+
+   // get the name
+   name.DeSerialize( stream );
+   root->SetName( name.Value() );
 
    // there is no parent id for the root
    
@@ -113,6 +127,10 @@ GameObject& DeSerializeHierarchy( std::ifstream& stream, std::vector<GameObject*
       // get the id
       id.DeSerialize( stream );
       idToGameObj[ id.Value() ] = obj;
+
+      // get the name
+      name.DeSerialize( stream );
+      obj->SetName( name.Value() );
 
       // get the parent id
       id.DeSerialize( stream );

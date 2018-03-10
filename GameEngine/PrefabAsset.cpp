@@ -24,6 +24,8 @@ void PrefabAsset::Load( std::string name )
 
    m_Hierarchy.clear(); // should be clear anyway
    m_Root = &DeSerializeHierarchy( stream, m_Hierarchy );
+
+   stream.close();
 }
 
 PrefabAsset* PrefabAsset::PrefabValue()

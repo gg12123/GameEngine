@@ -22,10 +22,13 @@ public:
    void CheckForActiveGOChanged();
 
 private:
+   void OnSceneLoaded();
+
    void CallIntoSerializedFields( GameObject* active,
                                   InspectorGUIFunctionPtr1 function1,
                                   InspectorGUIFunctionPtr2 function2 );
 
    Editor* m_Editor;
    GameObject *m_PrevActiveGO;
+   VoidEventHandler<InspectorWindow> m_OnSceneLoadedEvent;
 };

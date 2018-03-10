@@ -136,15 +136,14 @@ Component& Component::Clone()
    Component* clone = ComponentCreator::Instance().Create( GetType() );
 
    std::unordered_map<std::string, SerializedField*> myFileds;
-   std::unordered_map<std::string, SerializedField*> cloneFields;
+   std::unordered_map<std::string, SerializedField*> clonesFields;
 
    GetSerializedFields( myFileds );
-   clone->GetSerializedFields( cloneFields );
+   clone->GetSerializedFields( clonesFields );
 
    for (auto it = myFileds.begin(); it != myFileds.end(); it++)
    {
-      // not sure if this will work
-      *cloneFields[ it->first ] = *it->second;
+      clonesFields[ it->first ]->CopyFrom( *(it->second) );
    }
 
    return *clone;

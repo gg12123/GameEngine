@@ -31,8 +31,11 @@ public:
    void AddWindow( EditorWindow& wnd );
 
 private:
+   void OnSceneLoad();
+
    World* m_World;
    GameObject* m_ActiveGameObject;
    std::vector<EditorWindow*> m_CurrentWindows;
    std::unordered_map<EEditorEvent, std::vector<EventHandler*>*> m_Events;
+   VoidEventHandler<Editor> m_OnSceneLoadEvent;
 };

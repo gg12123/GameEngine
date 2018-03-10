@@ -7,14 +7,12 @@
 
 HierarchyWindow::HierarchyWindow()
 {
-   m_Root = nullptr;
    m_Editor = nullptr;
 }
 
 void HierarchyWindow::Awake( Editor& editor )
 {
    m_Editor = &editor;
-   m_Root = &editor.GetWorld().GetRootTransform().GetGameObject();
 }
 
 void HierarchyWindow::DrawTreeView( GameObject& obj, int id )
@@ -85,7 +83,7 @@ void HierarchyWindow::Update()
 {
    ImGui::Begin( "Hierarchy", 0, ImGuiWindowFlags_AlwaysAutoResize );
 
-   DrawTreeView( *m_Root, 0 );
+   DrawTreeView( m_Editor->GetWorld().GetRootTransform().GetGameObject(), 0 );
    m_ParentSetter.OnEndOfDrawing();
    ContextMenu();
 

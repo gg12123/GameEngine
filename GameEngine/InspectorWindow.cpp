@@ -39,6 +39,7 @@ InspectorWindow::InspectorWindow()
 void InspectorWindow::Awake( Editor& editor )
 {
    m_Editor = &editor;
+   m_Editor->RegisterCallbackForEvent( eSceneLoad, *m_OnSceneLoadedEvent.Init( &InspectorWindow::OnSceneLoaded, this ) );
 }
 
 void InspectorWindow::CallIntoSerializedFields( GameObject* active,
@@ -100,4 +101,9 @@ void InspectorWindow::CheckForActiveGOChanged()
 
       m_PrevActiveGO = active;
    }
+}
+
+void InspectorWindow::OnSceneLoaded()
+{
+   m_PrevActiveGO = nullptr;
 }

@@ -19,6 +19,14 @@ public:
    virtual void OnGUI( std::string fieldName, ISerializedFieldOwner& owner );
    virtual void InitForGUI( std::string fieldName, ISerializedFieldOwner& owner );
    virtual void OnGUIClose();
+
+   virtual void CopyFrom( SerializedField& toCopy ) = 0;
+
+   virtual vmath::vec3 Vector3Value();
+   virtual vmath::mat4 MatrixValue();
+   virtual std::string StringValue();
+   virtual float FloatValue();
+   virtual int32_t IntValue();
 protected:
    virtual void LocalSerialize( std::ofstream& stream ) = 0;
    virtual void LocalDeSerialize( std::ifstream& stream ) = 0;
@@ -38,6 +46,8 @@ public:
    void SetValue( vmath::vec3 value );
    void OnGUI( std::string fieldName, ISerializedFieldOwner& owner ) override;
    void InitForGUI( std::string fieldName, ISerializedFieldOwner& owner ) override;
+   vmath::vec3 Vector3Value() override;
+   void CopyFrom( SerializedField& toCopy ) override;
 protected:
    void LocalSerialize( std::ofstream& stream ) override;
    void LocalDeSerialize( std::ifstream& stream ) override;
@@ -54,6 +64,8 @@ public:
    void SetValue( vmath::mat4 value );
    void OnGUI( std::string fieldName, ISerializedFieldOwner& owner ) override;
    void InitForGUI( std::string fieldName, ISerializedFieldOwner& owner ) override;
+   vmath::mat4 MatrixValue() override;
+   void CopyFrom( SerializedField& toCopy ) override;
 protected:
    void LocalSerialize( std::ofstream& stream ) override;
    void LocalDeSerialize( std::ifstream& stream ) override;
@@ -70,6 +82,8 @@ class SerializedString : public SerializedField
 public:
    std::string Value();
    void SetValue( std::string value );
+   std::string StringValue() override;
+   void CopyFrom( SerializedField& toCopy ) override;
 protected:
    void DeSerializeWithSize( std::ifstream& stream ) override;
    void LocalSerialize( std::ofstream& stream ) override;
@@ -112,6 +126,8 @@ public:
    float Value();
    void SetValue( float value );
    void OnGUI( std::string fieldName, ISerializedFieldOwner& owner ) override;
+   float FloatValue() override;
+   void CopyFrom( SerializedField& toCopy ) override;
 protected:
    void LocalSerialize( std::ofstream& stream ) override;
    void LocalDeSerialize( std::ifstream& stream ) override;
@@ -126,6 +142,8 @@ public:
    int32_t Value();
    void SetValue( int32_t value );
    void OnGUI( std::string fieldName, ISerializedFieldOwner& owner ) override;
+   int32_t IntValue() override;
+   void CopyFrom( SerializedField& toCopy ) override;
 protected:
    void LocalSerialize( std::ofstream& stream ) override;
    void LocalDeSerialize( std::ifstream& stream ) override;

@@ -81,6 +81,8 @@ void PrefabSpawnSaveContext::SaveAsPrefab( Editor& editor, GameObject& active )
    }
 
    SerializeHierarchy( editor.GetWorld().GetRootTransform().GetGameObject(), stream );
+
+   stream.close();
 }
 
 void GameObjectRenamer::OnGUI( GameObject& active )
@@ -136,29 +138,29 @@ void EditorSceneManagement::OnGUI( Editor& editor )
             }
          }
 
-         if (ImGui::MenuItem( "Start new scene" ))
-         {
-            ImGui::OpenPopup( "NewScenePopup" );
-            CopyStringToBuffer( m_Buffer, "Write name here" );
-         }
-
-         if (ImGui::BeginPopupModal( "NewScenePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize ))
-         {
-            ImGui::InputText( "Name", m_Buffer, MAX_SCENE_NAME_SIZE );
-
-            if (ImGui::Button( "OK" ))
-            {
-               std::string selectedName = m_Buffer;
-               selectedName.append( ".scene" );
-
-               editor.GetWorld().GetSceneLoader().LoadCompletelyNewScene( selectedName );
-               ImGui::CloseCurrentPopup();
-            }
-
-            ImGui::EndPopup();
-         }
-
          ImGui::EndMenu();
+      }
+
+      if (ImGui::MenuItem( "Start new scene" ))
+      {
+         ImGui::OpenPopup( "NewScenePopup" );
+         CopyStringToBuffer( m_Buffer, "Write name here" );
+      }
+
+      if (ImGui::BeginPopupModal( "NewScenePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize ))
+      {
+         ImGui::InputText( "Name", m_Buffer, MAX_SCENE_NAME_SIZE );
+
+         if (ImGui::Button( "OK" ))
+         {
+            std::string selectedName = m_Buffer;
+            selectedName.append( ".scene" );
+
+            editor.GetWorld().GetSceneLoader().LoadCompletelyNewScene( selectedName );
+            ImGui::CloseCurrentPopup();
+         }
+
+         ImGui::EndPopup();
       }
 
       ImGui::EndMenu();
@@ -178,6 +180,8 @@ void EditorSceneManagement::SaveActiveScene( Editor& editor )
    }
 
    SerializeHierarchy( editor.GetWorld().GetRootTransform().GetGameObject(), stream );
+
+   stream.close();
 }
 
 void AddComponentOnGUI( Editor& editor, GameObject& active )
