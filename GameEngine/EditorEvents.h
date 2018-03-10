@@ -2,6 +2,5 @@
 
 enum EEditorEvent
 {
-   eActiveGameObjectChanged,
-   eSceneLoad
+   eActiveGameObjectChanged
 };

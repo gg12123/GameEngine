@@ -80,7 +80,7 @@ void PrefabSpawnSaveContext::SaveAsPrefab( Editor& editor, GameObject& active )
       throw std::exception( "unable to save prefab" );
    }
 
-   SerializeHierarchy( editor.GetWorld().GetRootTransform().GetGameObject(), stream );
+   SerializeHierarchy( active, stream );
 
    stream.close();
 }

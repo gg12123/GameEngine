@@ -38,6 +38,31 @@ void SerializedField::OnGUIClose()
 {
 }
 
+vmath::vec3 SerializedField::Vector3Value()
+{
+   throw std::exception( "Serailized field not a vector3" );
+}
+
+vmath::mat4 SerializedField::MatrixValue()
+{
+   throw std::exception( "Serailized field not a matrix" );
+}
+
+std::string SerializedField::StringValue()
+{
+   throw std::exception( "Serailized field not a string" );
+}
+
+float SerializedField::FloatValue()
+{
+   throw std::exception( "Serailized field not a float" );
+}
+
+int32_t SerializedField::IntValue()
+{
+   throw std::exception( "Serailized field not an int" );
+}
+
 // ################### FIXED SIZE ####################################
 
 void FixedSizeSerializedField::DeSerializeWithSize( std::ifstream& stream )
@@ -119,6 +144,16 @@ int32_t SerializedVector3::GetSize()
    return 3 * sizeof( float );
 }
 
+vmath::vec3 SerializedVector3::Vector3Value()
+{
+   return m_Value;
+}
+
+void SerializedVector3::CopyFrom( SerializedField& toCopy )
+{
+   m_Value = toCopy.Vector3Value();
+}
+
 // ####################### ROTATION ########################### 
 
 void SerializedRotation::InitForGUI( std::string fieldName, ISerializedFieldOwner& owner )
@@ -197,6 +232,16 @@ int32_t SerializedRotation::GetSize()
    return 16 * sizeof( float );
 }
 
+vmath::mat4 SerializedRotation::MatrixValue()
+{
+   return m_Value;
+}
+
+void SerializedRotation::CopyFrom( SerializedField& toCopy )
+{
+   m_Value = toCopy.MatrixValue();
+}
+
 // ####################### FLOAT ########################### 
 
 void SerializedFloat::OnGUI( std::string fieldName, ISerializedFieldOwner& owner )
@@ -227,6 +272,11 @@ void SerializedFloat::LocalDeSerialize( std::ifstream& stream )
 int32_t SerializedFloat::GetSize()
 {
    return sizeof( float );
+}
+
+float SerializedFloat::FloatValue()
+{
+   return m_Value;
 }
 
 void SerializedFloat::CopyFrom( SerializedField& toCopy )
@@ -287,6 +337,16 @@ void SerializedString::LocalDeSerialize( std::ifstream& stream )
 int32_t SerializedString::GetSize()
 {
    return m_Value.length() * sizeof( char ) + sizeof( int32_t );
+}
+
+std::string SerializedString::StringValue()
+{
+   return m_Value;
+}
+
+void SerializedString::CopyFrom( SerializedField& toCopy )
+{
+   m_Value = toCopy.StringValue();
 }
 
 void TypeInString::InitForGUI( std::string fieldName, ISerializedFieldOwner& owner )
@@ -372,4 +432,14 @@ void SerializedInt32::LocalDeSerialize( std::ifstream& stream )
 int32_t SerializedInt32::GetSize()
 {
    return sizeof( int32_t );
+}
+
+int32_t SerializedInt32::IntValue()
+{
+   return m_Value;
+}
+
+void SerializedInt32::CopyFrom( SerializedField& toCopy )
+{
+   m_Value = toCopy.IntValue();
 }

@@ -19,16 +19,14 @@ public:
    void Awake( Editor& editor ) override;
    void Update() override;
 
-   void CheckForActiveGOChanged();
-
 private:
-   void OnSceneLoaded();
+   void OnNewActiveGO();
 
    void CallIntoSerializedFields( GameObject* active,
                                   InspectorGUIFunctionPtr1 function1,
                                   InspectorGUIFunctionPtr2 function2 );
 
    Editor* m_Editor;
-   GameObject *m_PrevActiveGO;
-   VoidEventHandler<InspectorWindow> m_OnSceneLoadedEvent;
+   GameObject *m_ActiveGO;
+   VoidEventHandler<InspectorWindow> m_NewActiveGOEvent;
 };

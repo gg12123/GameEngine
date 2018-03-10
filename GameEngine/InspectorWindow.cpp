@@ -33,13 +33,13 @@ static void DoNothing( std::vector<Component*>::iterator it )
 InspectorWindow::InspectorWindow()
 {
    m_Editor = nullptr;
-   m_PrevActiveGO = nullptr;
+   m_ActiveGO = nullptr;
 }
 
 void InspectorWindow::Awake( Editor& editor )
 {
    m_Editor = &editor;
-   m_Editor->RegisterCallbackForEvent( eSceneLoad, *m_OnSceneLoadedEvent.Init( &InspectorWindow::OnSceneLoaded, this ) );
+   m_Editor->RegisterCallbackForEvent( eActiveGameObjectChanged, *m_NewActiveGOEvent.Init( &InspectorWindow::OnNewActiveGO, this ) );
 }
 
 void InspectorWindow::CallIntoSerializedFields( GameObject* active,
@@ -68,42 +68,28 @@ void InspectorWindow::CallIntoSerializedFields( GameObject* active,
 
 void InspectorWindow::Update()
 {
-   CheckForActiveGOChanged();
-
-   GameObject* active = m_Editor->GetActiveGameObject();
-
-   if (active != nullptr)
+   if (m_ActiveGO)
    {
       ImGui::Begin( "Inspector", 0, ImGuiWindowFlags_AlwaysAutoResize );
-      ImGui::Text( active->GetName().c_str() );
+      ImGui::Text( m_ActiveGO->GetName().c_str() );
 
-      CallIntoSerializedFields( active, DrawText, CallOnGUI );
+      CallIntoSerializedFields( m_ActiveGO, DrawText, CallOnGUI );
 
       ImGui::End();
    }
 }
 
-void InspectorWindow::CheckForActiveGOChanged()
+void InspectorWindow::OnNewActiveGO()
 {
-   GameObject* active = m_Editor->GetActiveGameObject();
-
-   if (active != m_PrevActiveGO)
+   if (m_ActiveGO)
    {
-      if (m_PrevActiveGO)
-      {
-         CallIntoSerializedFields( m_PrevActiveGO, DoNothing, CallOnGUIClose );
-      }
-
-      if (active)
-      {
-         CallIntoSerializedFields( active, DoNothing, CallInitGUI );
-      }
-
-      m_PrevActiveGO = active;
+      CallIntoSerializedFields( m_ActiveGO, DoNothing, CallOnGUIClose );
    }
-}
 
-void InspectorWindow::OnSceneLoaded()
-{
-   m_PrevActiveGO = nullptr;
+   m_ActiveGO = m_Editor->GetActiveGameObject();
+
+   if (m_ActiveGO)
+   {
+      CallIntoSerializedFields( m_ActiveGO, DoNothing, CallInitGUI );
+   }
 }

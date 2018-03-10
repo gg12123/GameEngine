@@ -21,7 +21,7 @@ void HierarchyWindow::DrawTreeView( GameObject& obj, int id )
    {
       ImGui::SameLine();
 
-      if (ImGui::SmallButton( (m_Editor->GetActiveGameObject() == &obj) ? "Active" : "Set active" ))
+      if (ImGui::SmallButton( (m_Editor->GetActiveGameObject() == &obj) ? "Active" : "Set active" ) )
       {
          m_Editor->SetActiveGameObject( &obj );
       }

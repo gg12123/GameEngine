@@ -289,5 +289,7 @@ GameObject& GameObject::Clone()
       clone->AddComponent( (*it)->Clone() );
    }
 
+   clone->CacheTransform();
+
    return *clone;
 }
