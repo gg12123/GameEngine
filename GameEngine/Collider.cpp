@@ -33,7 +33,7 @@ float Collider::CalculateMinBound( unsigned int axis )
    return m_Scale[ axis ] * m_MeshBounds->Min( axis );
 }
 
-float Collider::CalculateGetMaxBound( unsigned int axis )
+float Collider::CalculateMaxBound( unsigned int axis )
 {
    return m_Scale[ axis ] * m_MeshBounds->Max( axis );
 }

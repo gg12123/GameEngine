@@ -209,20 +209,53 @@ void Transform::ConstructLocalTransformMatrix()
                                        1.0f );
 }
 
+vec3 Transform::ToGlobalPosition( const vec3& localPos )
+{
+   ConstructTransformMatrix();
+   return extractPositionOnly( m_TransformMatrix ) + InternalToGlobalDirection( localPos );
+}
+
+vec3 Transform::ToGlobalDirection( const vec3& localDir )
+{
+   ConstructTransformMatrix();
+   return InternalToGlobalDirection( localDir );
+}
+
+vec3 Transform::InternalToGlobalDirection( const vec3& localDir )
+{
+   vec3 rightScaled = extractRightScaled( m_TransformMatrix );
+   vec3 upScaled = extractUpScaled( m_TransformMatrix );
+   vec3 forwardScaled = extractForwardScaled( m_TransformMatrix );
+
+   return localDir[ 0 ] * rightScaled + localDir[ 1 ] * upScaled + localDir[ 2 ] * forwardScaled;
+}
+
+vec3 Transform::ToLocalPosition( const vec3& globalPos )
+{
+   ConstructTransformMatrix();
+   return InternalToLocalDirection( globalPos - extractPositionOnly( m_TransformMatrix ) );
+}
+
+vec3 Transform::ToLocalDirection( const vec3& globalDir )
+{
+   ConstructTransformMatrix();
+   return InternalToLocalDirection( globalDir );
+}
+
+vec3 Transform::InternalToLocalDirection( const vec3& globalDir )
+{
+   vec3 rightScaled = extractRightScaled( m_TransformMatrix );
+   vec3 upScaled = extractUpScaled( m_TransformMatrix );
+   vec3 forwardScaled = extractForwardScaled( m_TransformMatrix );
+
+   return vec3( dot( globalDir, normalize( rightScaled ) ) / length( rightScaled ),
+                dot( globalDir, normalize( upScaled ) ) / length( upScaled ),
+                dot( globalDir, normalize( forwardScaled ) ) / length( forwardScaled ) );
+}
+
 void Transform::SetPosition( vec3 pos )
 {
-   mat4 parentsTransform = m_Parent->GetTransformMatrix();
-
-   vec3 parPos = extractPositionOnly( parentsTransform );
-   vec3 parRightScaled = extractRightOnly( parentsTransform );
-   vec3 parUpScaled = extractUpOnly( parentsTransform );
-   vec3 parForwardScaled = extractForwardOnly( parentsTransform );
-
-   vec3 parToMe = pos - parPos;
-
-   SetLocalPosition( vec3( dot( parToMe, normalize( parRightScaled ) ) / length( parRightScaled ),
-                           dot( parToMe, normalize( parUpScaled ) ) / length( parUpScaled ),
-                           dot( parToMe, normalize( parForwardScaled ) ) / length( parForwardScaled ) ) );
+   SetLocalPosition( m_Parent->ToLocalPosition( pos ) );
 }
 
 void Transform::SetRotation( mat4 rot )

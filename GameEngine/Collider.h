@@ -20,7 +20,7 @@ protected:
 
    // use mesh bounds and transform scale to find bounds for each axis
    float CalculateMinBound( unsigned int axis );
-   float CalculateGetMaxBound( unsigned int axis );
+   float CalculateMaxBound( unsigned int axis );
    void CacheScale();
 
 private:

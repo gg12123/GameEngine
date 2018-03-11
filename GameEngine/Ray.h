@@ -10,8 +10,8 @@ public:
 
    Ray InLocalSpace( Transform& transform ) const;
 
-   vmath::vec3 GetOrigin() const;
-   vmath::vec3 GetDirection() const;
+   vmath::vec3& GetOrigin() const;
+   vmath::vec3& GetDirection() const;
 
 private:
    vmath::vec3 m_Direction;

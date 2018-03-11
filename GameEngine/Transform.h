@@ -12,6 +12,11 @@ class Transform : public Component
 public:
    Transform();
 
+   vec3 ToLocalPosition( const vec3& globalPos );
+   vec3 ToLocalDirection( const vec3& globalDir );
+   vec3 ToGlobalDirection( const vec3& localDir );
+   vec3 ToGlobalPosition( const vec3& localPos );
+
    vec3 GetLocalPosition();
    vec3 GetPosition();
    mat4 GetLocalRotation();
@@ -58,6 +63,9 @@ protected:
    void EditAwake( IEditor& editor ) override;
 
 private:
+
+   vec3 InternalToLocalDirection( const vec3& globalDir );
+   vec3 InternalToGlobalDirection( const vec3& localDir );
 
    void SetDirty();
    Transform& FindCleanHierarchy();

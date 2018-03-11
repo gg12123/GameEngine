@@ -5,7 +5,8 @@ class BoxCollider : public Collider
 {
 public:
    bool IsCollidedWithRay( const Ray& ray, RayCastHit& hit ) override;
+   int32_t GetType() override;
 
 private:
-   bool RayIsCollidingAlongAxis( const unsigned int axis, const Ray& ray, RayCastHit& hit );
+   bool RayIsCollidingWithFace( const unsigned int depthAxis, const float depth, const Ray& ray, RayCastHit& hit );
 };
