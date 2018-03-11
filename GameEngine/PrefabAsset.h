@@ -8,7 +8,7 @@ public:
    PrefabAsset();
 
    void Load( std::string name ) override;
-   PrefabAsset* PrefabValue() override;
+   PrefabAsset& PrefabValue() override;
    static Asset* CreateInstance();
 
    GameObject& GetRoot();

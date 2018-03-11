@@ -1,14 +1,27 @@
 #include "Mesh.h"
 #include "Path.h"
 
+Mesh::Mesh()
+{
+   m_Vertices = nullptr;
+}
+
+Mesh::~Mesh()
+{
+   if (m_Vertices)
+   {
+      delete[] m_Vertices;
+   }
+}
+
 Asset* Mesh::CreateInstance()
 {
    return new Mesh();
 }
 
-Mesh* Mesh::MeshValue()
+Mesh& Mesh::MeshValue()
 {
-   return this;
+   return *this;
 }
 
 void Mesh::Load( std::string name )
@@ -69,6 +82,8 @@ void Mesh::Load( std::string name )
                  sizeof( indices ),
                  indices,
                  GL_STATIC_DRAW );
+
+   m_Bounds.Calculate( m_Vertices, m_NumVertices );
 }
 
 int Mesh::GetNumVertices()
@@ -89,4 +104,9 @@ GLuint Mesh::GetVertexBuffer()
 GLuint Mesh::GetIndicesBuffer()
 {
    return m_IndicesBuffer;
+}
+
+MeshBounds& Mesh::GetBounds()
+{
+   return m_Bounds;
 }

@@ -10,7 +10,7 @@ class Asset
 {
 public:
    virtual void Load( std::string name ) = 0;
-   virtual Mesh* MeshValue();
+   virtual Mesh& MeshValue();
    virtual GLuint ShaderValue();
-   virtual PrefabAsset* PrefabValue();
+   virtual PrefabAsset& PrefabValue();
 };

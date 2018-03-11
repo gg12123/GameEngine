@@ -19,6 +19,9 @@
     <Filter Include="EditorOnly">
       <UniqueIdentifier>{41700f63-1d3a-45b6-83a8-64a2531350f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{dc4ab817-a3a9-4a14-8ce9-10bb96084b35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -171,6 +174,15 @@
     <ClInclude Include="MainToolWindow.h">
       <Filter>EditorOnly</Filter>
     </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxCollider.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Ray.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -280,6 +292,12 @@
     </ClCompile>
     <ClCompile Include="MainToolWindow.cpp">
       <Filter>EditorOnly</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxCollider.cpp">
+      <Filter>Physics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

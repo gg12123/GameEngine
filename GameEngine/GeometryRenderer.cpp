@@ -96,10 +96,10 @@ std::list<MeshRenderer*>::iterator GeometryRenderer::Register( MeshRenderer& toR
    // if this is a new shader mesh combo
    if (meshNameToSlot.count( toReg.GetMeshName() ) == 0)
    {
-      Mesh* mesh = m_AssetLoader->LoadIfNotAlreadyLoaded( toReg.GetMeshName(), Mesh::CreateInstance ).MeshValue();
+      Mesh& mesh = m_AssetLoader->LoadIfNotAlreadyLoaded( toReg.GetMeshName(), Mesh::CreateInstance ).MeshValue();
       GLuint shader = m_AssetLoader->LoadIfNotAlreadyLoaded( toReg.GetShaderName(), ShaderProgram::CreateInstance ).ShaderValue();
 
-      meshNameToSlot[ toReg.GetMeshName() ] = new RenderingSlot( *mesh, shader );
+      meshNameToSlot[ toReg.GetMeshName() ] = new RenderingSlot( mesh, shader );
    }
 
    return meshNameToSlot[ toReg.GetMeshName() ]->Add( toReg );

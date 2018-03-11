@@ -53,10 +53,6 @@ void SerializeHierarchy( GameObject& root, std::ofstream& stream )
    gameObjToID[ next ] = currID;
    currID++;
 
-   // name
-   name.SetValue( next->GetName() );
-   name.Serialize( stream );
-
    // components
    next->Serialize( stream );
 
@@ -70,10 +66,6 @@ void SerializeHierarchy( GameObject& root, std::ofstream& stream )
       id.Serialize( stream );
       gameObjToID[ next ] = currID;
       currID++;
-
-      // name
-      name.SetValue( next->GetName() );
-      name.Serialize( stream );
 
       // parent
       id.SetValue( gameObjToID[ &next->GetTransform().GetParent().GetGameObject() ] );
@@ -95,7 +87,6 @@ GameObject& DeSerializeHierarchy( std::ifstream& stream, std::vector<GameObject*
 {
    std::unordered_map<int32_t, GameObject*> idToGameObj;
    SerializedInt32 id;
-   SerializedString name;
 
    // Get the number of objects
    id.DeSerialize( stream );
@@ -108,10 +99,6 @@ GameObject& DeSerializeHierarchy( std::ifstream& stream, std::vector<GameObject*
    // get the id
    id.DeSerialize( stream );
    idToGameObj[ id.Value() ] = root;
-
-   // get the name
-   name.DeSerialize( stream );
-   root->SetName( name.Value() );
 
    // there is no parent id for the root
    
@@ -127,10 +114,6 @@ GameObject& DeSerializeHierarchy( std::ifstream& stream, std::vector<GameObject*
       // get the id
       id.DeSerialize( stream );
       idToGameObj[ id.Value() ] = obj;
-
-      // get the name
-      name.DeSerialize( stream );
-      obj->SetName( name.Value() );
 
       // get the parent id
       id.DeSerialize( stream );
@@ -266,4 +249,78 @@ void GetFileNamesInDirectory( const std::string directory, std::vector<std::stri
    } while (FindNextFile( dir, &file_data ));
 
    FindClose( dir );
+}
+
+static unsigned int FindIndexOfParent( const std::vector<GameObject*>& objects, GameObject* obj )
+{
+   Transform* parent = &obj->GetTransform().GetParent();
+   unsigned int index = -1;
+
+   for (unsigned int i = 0; i < objects.size(); i++)
+   {
+      if (&objects.at( i )->GetTransform() == parent)
+      {
+         index = i;
+         break;
+      }
+   }
+
+   if (index < 0)
+   {
+      throw std::exception( "Unable to find parent during GO duplication" );
+   }
+
+   return index;
+}
+
+GameObject& DuplicateHierarchy( GameObject& root, std::vector<GameObject*>& duplicatedObjs )
+{
+   std::vector<GameObject*> gameObjectsToDup;
+
+   EnumerableHierarchy enumerator( root );
+   GameObject* next = enumerator.Next();
+
+   while (next)
+   {
+      gameObjectsToDup.push_back( next );
+      next = enumerator.Next();
+   }
+
+   return DuplicateHierarchy( root, gameObjectsToDup, duplicatedObjs );
+}
+
+// Note - this is used for prefab instantiation so it must not assume that the game objects to
+// duplicate have been awoken.
+GameObject& DuplicateHierarchy( GameObject& root, const std::vector<GameObject*>& gameObjects, std::vector<GameObject*>& duplicatedObjs )
+{
+   // Clone all the objects
+   for (auto it = gameObjects.begin(); it != gameObjects.end(); it++)
+   {
+      duplicatedObjs.push_back( &(*it)->Clone() );
+   }
+
+   // Set up the parent child relationship
+   GameObject* duplicatesRoot = nullptr;
+
+   for (unsigned int i = 0; i < gameObjects.size(); i++)
+   {
+      GameObject* obj = gameObjects.at( i );
+
+      if (obj != &root)
+      {
+         unsigned int indexOfParent = FindIndexOfParent( gameObjects, obj );
+         duplicatedObjs.at( i )->GetTransform().InitParent( duplicatedObjs.at( indexOfParent )->GetTransform() );
+      }
+      else
+      {
+         duplicatesRoot = duplicatedObjs.at( i );
+      }
+   }
+
+   if (!duplicatesRoot)
+   {
+      throw std::exception( "failed to find root during duplication" );
+   }
+
+   return *duplicatesRoot;
 }

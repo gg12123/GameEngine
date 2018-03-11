@@ -238,6 +238,10 @@ void GameObject::CacheTransform()
 void GameObject::Serialize( std::ofstream& stream )
 {
    SerializedInt32 number;
+   SerializedString name;
+
+   name.SetValue( GetName() );
+   name.Serialize( stream );
 
    number.SetValue( m_Components.size() );
    number.Serialize( stream );
@@ -254,6 +258,11 @@ void GameObject::Serialize( std::ofstream& stream )
 void GameObject::DeSerialize( std::ifstream& stream )
 {
    SerializedInt32 number;
+   SerializedString name;
+
+   name.DeSerialize( stream );
+   SetName( name.Value() );
+
    number.DeSerialize( stream );
    int32_t count = number.Value();
 

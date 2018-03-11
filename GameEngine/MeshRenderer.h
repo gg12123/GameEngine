@@ -21,12 +21,14 @@ public:
 
    std::string GetMeshName();
    std::string GetShaderName();
+   Mesh& GetMeshData();
 
    int32_t GetType() override;
 
    // At the moment, setting these will only have an effect if its done before awake.
    void SetMeshName( std::string name );
    void SetShaderName( std::string name );
+   void EnsureMeshIsNotShared();
 
 protected:
 
@@ -39,6 +41,7 @@ private:
    MeshField m_MeshName;
    ShaderField m_ShaderName;
    NullableValue<std::list<MeshRenderer*>::iterator> m_ToThisInRenderersList;
+   Mesh* m_Mesh;
 
    VoidEventHandler<MeshRenderer> m_OnDestroyEvent;
 };

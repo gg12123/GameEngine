@@ -5,9 +5,11 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "ComponentIDs.h"
+#include "AssetLoader.h"
 
 MeshRenderer::MeshRenderer()
 {
+   m_Mesh = nullptr;
 }
 
 void MeshRenderer::OnDestroy()
@@ -25,6 +27,7 @@ void MeshRenderer::EditAwake( IEditor& editor )
 
 void MeshRenderer::Awake()
 {
+   m_Mesh = &GetAssetLoader().LoadIfNotAlreadyLoaded( GetMeshName(), Mesh::CreateInstance ).MeshValue();
    m_ToThisInRenderersList.Set( GetGeometryRenderer().Register( *this ) );
    GetGameObject().RegisterForEvent( eOnDestroy, *m_OnDestroyEvent.Init( &MeshRenderer::OnDestroy, this ) );
 }
@@ -73,9 +76,27 @@ int32_t MeshRenderer::GetType()
 void MeshRenderer::SetMeshName( std::string name )
 {
    m_MeshName.SetValue( name );
+   m_Mesh = &GetAssetLoader().LoadIfNotAlreadyLoaded( name, Mesh::CreateInstance ).MeshValue();
+   // re-register
 }
 
 void MeshRenderer::SetShaderName( std::string name )
 {
    m_ShaderName.SetValue( name );
+   // re-register
+}
+
+void MeshRenderer::EnsureMeshIsNotShared()
+{
+   SetMeshName( InstantiateMesh( m_MeshName ) );
+}
+
+Mesh& MeshRenderer::GetMeshData()
+{
+   if (!m_Mesh)
+   {
+      m_Mesh = &GetAssetLoader().LoadIfNotAlreadyLoaded( GetMeshName(), Mesh::CreateInstance ).MeshValue();
+   }
+
+   return *m_Mesh;
 }

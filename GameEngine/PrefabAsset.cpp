@@ -28,9 +28,9 @@ void PrefabAsset::Load( std::string name )
    stream.close();
 }
 
-PrefabAsset* PrefabAsset::PrefabValue()
+PrefabAsset& PrefabAsset::PrefabValue()
 {
-   return this;
+   return *this;
 }
 
 Asset* PrefabAsset::CreateInstance()

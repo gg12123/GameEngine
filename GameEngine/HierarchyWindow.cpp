@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include "ImGUI/imgui.h"
 #include "GameObject.h"
+#include "Utils.h"
 
 HierarchyWindow::HierarchyWindow()
 {
@@ -72,6 +73,18 @@ void HierarchyWindow::ContextMenu()
                m_Editor->GetWorld().DestroyHierarchy( *active );
             }
             ImGui::EndMenu();
+         }
+
+         if (ImGui::MenuItem( "Duplicate" ))
+         {
+            std::vector<GameObject*> duplicatedObjs;
+            GameObject& dupRoot = DuplicateHierarchy( *active, duplicatedObjs );
+            dupRoot.GetTransform().InitParent( active->GetTransform().GetParent() );
+
+            for (auto it = duplicatedObjs.begin(); it != duplicatedObjs.end(); it++)
+            {
+               (*it)->EditAwakeComponents( *m_Editor );
+            }
          }
       }
 

@@ -119,7 +119,9 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Asset.h" />
     <ClInclude Include="AssetLoader.h" />
+    <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentCreator.h" />
     <ClInclude Include="ComponentIDs.h" />
@@ -147,6 +149,7 @@
     <ClInclude Include="ParentSetter.h" />
     <ClInclude Include="PrefabAsset.h" />
     <ClInclude Include="PrefabField.h" />
+    <ClInclude Include="Ray.h" />
     <ClInclude Include="SceneLoader.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Functions.h" />
@@ -171,7 +174,9 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Asset.cpp" />
     <ClCompile Include="AssetLoader.cpp" />
+    <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentCreator.cpp" />
     <ClCompile Include="Debug.cpp" />

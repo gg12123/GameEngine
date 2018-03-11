@@ -70,6 +70,11 @@ GeometryRenderer& Component::GetGeometryRenderer()
    return m_World->GetGeometryRenderer();
 }
 
+AssetLoader& Component::GetAssetLoader()
+{
+   return m_World->GetAssetLoader();
+}
+
 void Component::LoadScene( std::string name )
 {
    m_World->GetSceneLoader().PendLoadScene( name );

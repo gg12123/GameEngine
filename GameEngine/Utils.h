@@ -22,6 +22,10 @@ GameObject& DeSerializeHierarchy( std::ifstream& stream, std::vector<GameObject*
 
 void SerializeHierarchy( GameObject& root, std::ofstream& stream );
 
+GameObject& DuplicateHierarchy( GameObject& root, std::vector<GameObject*>& duplicatedObjs );
+
+GameObject& DuplicateHierarchy( GameObject& root, const std::vector<GameObject*>& gameObjects, std::vector<GameObject*>& duplicatedObjs );
+
 GameObject& HierarchyForNewProject( std::vector<GameObject*>& gameObjects );
 
 GameObject& CreateLightGameObject( vmath::vec3 pos, vmath::mat4 rot, Transform& parent );

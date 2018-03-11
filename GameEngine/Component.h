@@ -52,6 +52,7 @@ protected:
    TransformUpdater& GetTransformUpdater();
    GeometryRenderer& GetGeometryRenderer();
    Transform& GetRootTransform();
+   AssetLoader& GetAssetLoader();
 
    void LoadScene( std::string name );
 
