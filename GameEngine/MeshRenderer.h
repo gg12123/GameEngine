@@ -6,6 +6,8 @@
 #include "Events.h"
 #include "GameObjectEvents.h"
 
+class Mesh;
+
 class MeshRenderer : public Component
 {
 public:

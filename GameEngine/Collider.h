@@ -4,7 +4,7 @@
 
 class Ray;
 class MeshBounds;
-class RayCastHit;
+struct RayCastHit;
 
 class Collider : public Component
 {
@@ -13,17 +13,20 @@ public:
 
    virtual bool IsCollidedWithRay( const Ray& ray, RayCastHit& hit ) = 0;
 
+   void ReCalculateBounds();
+
 protected:
    // register with the physics engine
    void Awake() override;
    void EditAwake( IEditor& editor ) override;
 
    // use mesh bounds and transform scale to find bounds for each axis
-   float CalculateMinBound( unsigned int axis );
-   float CalculateMaxBound( unsigned int axis );
-   void CacheScale();
+   float MinBound( unsigned int axis );
+   float MaxBound( unsigned int axis );
 
 private:
+   void TryCacheMeshBounds();
+
    MeshBounds* m_MeshBounds;
-   vmath::vec3 m_Scale;
+   vmath::vec2 m_Bounds[ 3 ];
 };

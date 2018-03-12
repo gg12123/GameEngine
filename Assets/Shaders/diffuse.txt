@@ -19,7 +19,11 @@ out VS_OUT
 void main(void)
 {
 	vs_out.colour = colour1;
+
 	gl_Position = wvpMatrix * owMatrix * position;
+
+	vec4 normalWs = owMatrix * normal;
+	vs_out.diffuse = dot( normalWs, vec4( lightDir, 0 ) );
 }
 
 ~
@@ -36,7 +40,7 @@ in VS_OUT
 
 void main(void)
 {
-	colour = fs_in.colour;
+	colour = fs_in.diffuse * fs_in.colour;
 }
 
 ~

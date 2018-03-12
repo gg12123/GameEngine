@@ -14,6 +14,7 @@ class Transform;
 class GeometryRenderer;
 class IEditor;
 class Editor;
+class AssetLoader;
 
 class Component : public ISerializedFieldOwner
 {

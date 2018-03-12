@@ -27,7 +27,7 @@ void Camera::EditAwake( IEditor& editor )
 
 void Camera::Awake()
 {
-   m_WindowConfig = &GetGeometryRenderer().SetCamera( *this );
+   MakeActive();
 }
 
 void Camera::ApplyCameraUniforms()
@@ -81,4 +81,20 @@ void Camera::SetFarClip( float val )
 void Camera::SetFOV( float val )
 {
    m_FOVAngle.SetValue( val );
+}
+
+Camera& Camera::Active()
+{
+   return *m_Active;
+}
+
+void Camera::MakeActive()
+{
+   m_WindowConfig = &GetGeometryRenderer().SetCamera( *this );
+   m_Active = this;
+}
+
+bool Camera::IsActive() const
+{
+   return (m_Active == this);
 }

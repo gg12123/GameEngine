@@ -1,6 +1,6 @@
 #include "Asset.h"
 
-Mesh* Asset::MeshValue()
+Mesh& Asset::MeshValue()
 {
    throw std::exception("Asset is not a mesh");
 }
@@ -10,7 +10,7 @@ GLuint Asset::ShaderValue()
    throw std::exception( "Asset is not a shader" );
 }
 
-PrefabAsset* Asset::PrefabValue()
+PrefabAsset& Asset::PrefabValue()
 {
    throw std::exception( "Asset is not a prefab" );
 }

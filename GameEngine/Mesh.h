@@ -8,10 +8,10 @@
 class MeshBounds
 {
 public:
-   void Calculate( const Vertex *vertices, unsigned int count );
+   void Calculate( const Vertex *vertices, const unsigned int count );
 
-   float Min( unsigned int axis );
-   float Max( unsigned int axis );
+   float Min( const unsigned int axis ) const;
+   float Max( const unsigned int axis ) const;
 
 private:
    // 0, 1, 2 in m_Bounds for x, y, z.

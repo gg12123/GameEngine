@@ -1,6 +1,43 @@
 #include "Mesh.h"
 #include "Path.h"
 
+void MeshBounds::Calculate( const Vertex *vertices, const unsigned int count )
+{
+   for (int axis = 0; axis < 3; axis++)
+   {
+      m_Bounds[ axis ][ 0 ] = vertices[ 0 ].Position[ axis ];
+      m_Bounds[ axis ][ 1 ] = vertices[ 0 ].Position[ axis ];
+   }
+
+   for (int i = 1; i < count; i++)
+   {
+      for (int axis = 0; axis < 3; axis++)
+      {
+         // min
+         if (vertices[ i ].Position[ axis ] < m_Bounds[ axis ][ 0 ])
+         {
+            m_Bounds[ axis ][ 0 ] = vertices[ i ].Position[ axis ];
+         }
+
+         // max
+         if (vertices[ i ].Position[ axis ] > m_Bounds[ axis ][ 1 ])
+         {
+            m_Bounds[ axis ][ 1 ] = vertices[ i ].Position[ axis ];
+         }
+      }
+   }
+}
+
+float MeshBounds::Min( const unsigned int axis ) const
+{
+   return m_Bounds[ axis ][ 0 ];
+}
+
+float MeshBounds::Max( const unsigned int axis ) const
+{
+   return m_Bounds[ axis ][ 1 ];
+}
+
 Mesh::Mesh()
 {
    m_Vertices = nullptr;

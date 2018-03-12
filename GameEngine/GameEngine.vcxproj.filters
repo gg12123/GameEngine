@@ -299,5 +299,8 @@
     <ClCompile Include="BoxCollider.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
+    <ClCompile Include="Ray.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

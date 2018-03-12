@@ -195,6 +195,7 @@
     <ClCompile Include="Path.cpp" />
     <ClCompile Include="PrefabAsset.cpp" />
     <ClCompile Include="PrefabField.cpp" />
+    <ClCompile Include="Ray.cpp" />
     <ClCompile Include="SceneLoader.cpp" />
     <ClCompile Include="SerializedFields.cpp" />
     <ClCompile Include="Utils.cpp" />

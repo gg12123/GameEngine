@@ -8,5 +8,5 @@ public:
    int32_t GetType() override;
 
 private:
-   bool RayIsCollidingWithFace( const unsigned int depthAxis, const float depth, const Ray& ray, RayCastHit& hit );
+   bool RayIsCollidingWithFace( const unsigned int depthAxis, const float depth, Ray& ray, RayCastHit& hit );
 };
