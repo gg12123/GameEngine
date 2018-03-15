@@ -5,6 +5,7 @@
 #include "Transform.h"
 #include "GameObject.h"
 #include "ComponentIDs.h"
+#include "Utils.h"
 
 using namespace vmath;
 
@@ -97,4 +98,68 @@ void Camera::MakeActive()
 bool Camera::IsActive() const
 {
    return (m_Active == this);
+}
+
+Ray Camera::ScreenPointToRay( const vec2& screenPoint )
+{
+   const float w = m_WindowConfig->GetWidth() / 2.0;
+   const float h = m_WindowConfig->GetWidth() / 2.0;
+
+   TwoDimentionalSpace screenSpace( w,
+                                    h,
+                                    vec2( w, h ) );
+
+   TwoDimentionalSpace camPlaneSpace( 1.0,
+                                      1.0,
+                                      vec2( 0.0f, 0.0f ) );
+
+   vec2 pointInCamPlane = Transform2DPoint( screenSpace, camPlaneSpace, screenPoint );
+
+   mat4 cameraTransform = GetGameObject().GetTransform().GetTransformMatrixAssumingClean();
+   vec3 cameraForward = extractForwardOnly( cameraTransform );
+   vec3 cameraUp = extractUpOnly( cameraTransform );
+   vec3 cameraRight = extractRightOnly( cameraTransform );
+   vec3 cameraPos = extractPositionOnly( cameraTransform );
+
+   vec3 pointInCamPlaneGlobal = (1.0f / tanf( 0.5f * m_FOVAngle.Value() )) * cameraForward +
+      pointInCamPlane[ 0 ] * cameraRight +
+      pointInCamPlane[ 1 ] * cameraUp;
+
+   return Ray( normalize( pointInCamPlaneGlobal - cameraPos ), cameraPos );
+}
+
+vmath::vec2 Camera::ToScreenSpaceDirection( Ray& globalRay )
+{
+   vec4 origin = vec4( globalRay.GetOrigin(), 1.0f );
+   vec4 end = vec4( globalRay.GetOrigin() + globalRay.GetDirection(), 1.0f );
+
+   mat4 persp = perspective2( m_FOVAngle.Value(),
+                              m_WindowConfig->GetWidth() / m_WindowConfig->GetHeight(),
+                              m_NearClip.Value(),
+                              m_FarClip.Value() );
+
+   vec4 originP = persp * origin;
+   vec4 endP = persp * end;
+
+   for (int i = 0; i < 3; i++)
+   {
+      originP[ i ] /= originP[ 3 ];
+      endP[ i ] /= endP[ 3 ];
+   }
+
+   vec4 dirProj = endP - originP;
+   vec2 dirProj2 = vec2( dirProj[ 0 ], dirProj[ 1 ] );
+
+   const float w = m_WindowConfig->GetWidth() / 2.0;
+   const float h = m_WindowConfig->GetWidth() / 2.0;
+
+   TwoDimentionalSpace screenSpace( w,
+                                    h,
+                                    vec2( w, h ) );
+
+   TwoDimentionalSpace camPlaneSpace( 1.0,
+                                      1.0,
+                                      vec2( 0.0f, 0.0f ) );
+
+   return Transform2DDirection( camPlaneSpace, screenSpace, dirProj2 );
 }

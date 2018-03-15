@@ -32,6 +32,28 @@ GameObject* EnumerableHierarchy::Next()
    return next;
 }
 
+TwoDimentionalSpace::TwoDimentionalSpace( const float halfWidth, const float halfHeight, const vmath::vec2 centre )
+{
+   m_HalfWidth = halfWidth;
+   m_HalfHeight = halfHeight;
+   m_Centre = centre;
+}
+
+float TwoDimentionalSpace::HalfWidth() const
+{
+   return m_HalfWidth;
+}
+
+float TwoDimentionalSpace::HalthHeight() const
+{
+   return m_HalfHeight;
+}
+
+vmath::vec2 TwoDimentionalSpace::Centre() const
+{
+   return m_Centre;
+}
+
 void SerializeHierarchy( GameObject& root, std::ofstream& stream )
 {
    std::unordered_map<GameObject*, int32_t> gameObjToID;
@@ -323,4 +345,23 @@ GameObject& DuplicateHierarchy( GameObject& root, const std::vector<GameObject*>
    }
 
    return *duplicatesRoot;
+}
+
+vmath::vec2 Transform2DPoint( const TwoDimentionalSpace& sourceSpace,
+                              const TwoDimentionalSpace& destSpace,
+                              const vmath::vec2& sourcePoint )
+{
+   vmath::vec2 x = Transform2DDirection( sourceSpace, destSpace, sourcePoint - sourceSpace.Centre() );
+
+   return (destSpace.Centre() + x);
+}
+
+vmath::vec2 Transform2DDirection( const TwoDimentionalSpace& sourceSpace,
+                                  const TwoDimentionalSpace& destSpace,
+                                  const vmath::vec2& sourceDir )
+{
+   const float pW = sourceDir[ 0 ] / sourceSpace.HalfWidth();
+   const float pH = sourceDir[ 1 ] / sourceSpace.HalfWidth();
+
+   return vmath::vec2( pW * destSpace.HalfWidth(), pH * destSpace.HalthHeight() );
 }

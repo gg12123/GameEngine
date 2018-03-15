@@ -22,8 +22,8 @@ public:
    void MakeActive();
    bool IsActive() const;
 
-   vmath::vec2 ToScreenSpaceDirection( const vmath::vec3& globalDir ) const;
-   Ray ScreenPointToRay( const vmath::vec2& screenPoint ) const;
+   vmath::vec2 ToScreenSpaceDirection( Ray& globalRay );
+   Ray ScreenPointToRay( const vmath::vec2& screenPoint );
 
 protected:
 
