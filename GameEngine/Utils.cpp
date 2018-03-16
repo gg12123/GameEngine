@@ -169,7 +169,7 @@ GameObject& CreateCubeGameObject( vmath::vec3 pos, vmath::mat4 rot, Transform& p
    cube->GetTransform().InitParent( parent );
    InitTransformState( cube->GetTransform(), pos, rot );
 
-   cube->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_MESHRENDERER )) );
+   cube->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_DIFFUSEMESHRENDERER )) );
 
    std::unordered_map<std::string, SerializedField*> fields;
    cube->GetComponent<MeshRenderer>()->GetSerializedFields(fields);
@@ -235,7 +235,7 @@ GameObject& HierarchyForNewProject( std::vector<GameObject*>& gameObjects )
    gameObjects.push_back( &CreateCameraGameObject( vmath::vec3( 0.0f, 0.0f, 10.0f ), vmath::rotate( 0.0f, 180.0f, 0.0f ), root->GetTransform() ) );
 
    // light
-   gameObjects.push_back( &CreateLightGameObject( vmath::vec3( 0.0f, 0.0f, 10.0f ), vmath::rotate( 0.0f, 180.0f, 0.0f ), root->GetTransform() ) );
+   gameObjects.push_back( &CreateLightGameObject( vmath::vec3( 0.0f, 0.0f, 10.0f ), vmath::eulerToMatrix( 180.0f, 45.0f, 0.0f ), root->GetTransform() ) );
 
    return *root;
 }

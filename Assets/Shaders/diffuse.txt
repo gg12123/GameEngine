@@ -23,7 +23,7 @@ void main(void)
 	gl_Position = wvpMatrix * owMatrix * position;
 
 	vec4 normalWs = owMatrix * normal;
-	vs_out.diffuse = dot( normalWs, vec4( lightDir, 0 ) );
+	vs_out.diffuse = dot( normalWs, vec4( -lightDir, 0 ) );
 }
 
 ~

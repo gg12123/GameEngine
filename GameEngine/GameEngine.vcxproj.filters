@@ -183,6 +183,9 @@
     <ClInclude Include="Ray.h">
       <Filter>Physics</Filter>
     </ClInclude>
+    <ClInclude Include="DiffuseMeshRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -301,6 +304,9 @@
     </ClCompile>
     <ClCompile Include="Ray.cpp">
       <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="DiffuseMeshRenderer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

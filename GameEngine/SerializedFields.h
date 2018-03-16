@@ -25,6 +25,7 @@ public:
    virtual vmath::vec3 Vector3Value();
    virtual vmath::mat4 MatrixValue();
    virtual std::string StringValue();
+   virtual vmath::vec4 Vector4Value();
    virtual float FloatValue();
    virtual int32_t IntValue();
 protected:
@@ -45,7 +46,6 @@ public:
    vmath::vec3 Value();
    void SetValue( vmath::vec3 value );
    void OnGUI( std::string fieldName, ISerializedFieldOwner& owner ) override;
-   void InitForGUI( std::string fieldName, ISerializedFieldOwner& owner ) override;
    vmath::vec3 Vector3Value() override;
    void CopyFrom( SerializedField& toCopy ) override;
 protected:
@@ -54,7 +54,22 @@ protected:
    int32_t GetSize() override;
 private:
    vmath::vec3 m_Value;
-   std::string m_ElementNames[ 3 ];
+};
+
+class SerializedVector4 : public FixedSizeSerializedField
+{
+public:
+   vmath::vec4 Value();
+   void SetValue( vmath::vec4 value );
+   void OnGUI( std::string fieldName, ISerializedFieldOwner& owner ) override;
+   vmath::vec4 Vector4Value() override;
+   void CopyFrom( SerializedField& toCopy ) override;
+protected:
+   void LocalSerialize( std::ofstream& stream ) override;
+   void LocalDeSerialize( std::ifstream& stream ) override;
+   int32_t GetSize() override;
+private:
+   vmath::vec4 m_Value;
 };
 
 class SerializedRotation : public FixedSizeSerializedField

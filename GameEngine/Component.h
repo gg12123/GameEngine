@@ -15,6 +15,7 @@ class GeometryRenderer;
 class IEditor;
 class Editor;
 class AssetLoader;
+class Camera;
 
 class Component : public ISerializedFieldOwner
 {
@@ -54,6 +55,7 @@ protected:
    GeometryRenderer& GetGeometryRenderer();
    Transform& GetRootTransform();
    AssetLoader& GetAssetLoader();
+   Camera& GetActiveCamera();
 
    void LoadScene( std::string name );
 

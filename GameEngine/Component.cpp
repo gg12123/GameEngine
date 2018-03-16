@@ -80,6 +80,11 @@ void Component::LoadScene( std::string name )
    m_World->GetSceneLoader().PendLoadScene( name );
 }
 
+Camera& Component::GetActiveCamera()
+{
+   return m_World->GetGeometryRenderer().ActiveCamera();
+}
+
 void  Component::Serialize( std::ofstream& stream )
 {
    SerializedInt32 number;

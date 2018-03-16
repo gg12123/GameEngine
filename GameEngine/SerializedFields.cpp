@@ -43,6 +43,11 @@ vmath::vec3 SerializedField::Vector3Value()
    throw std::exception( "Serailized field not a vector3" );
 }
 
+vmath::vec4 SerializedField::Vector4Value()
+{
+   throw std::exception( "Serailized field not a vector4" );
+}
+
 vmath::mat4 SerializedField::MatrixValue()
 {
    throw std::exception( "Serailized field not a matrix" );
@@ -80,28 +85,21 @@ void FixedSizeSerializedField::DeSerializeWithSize( std::ifstream& stream )
 
 // ####################### VECTOR3 ########################### 
 
-void SerializedVector3::InitForGUI( std::string fieldName, ISerializedFieldOwner& owner )
-{
-   m_ElementNames[ 0 ] = fieldName + " X";
-   m_ElementNames[ 1 ] = fieldName + " Y";
-   m_ElementNames[ 2 ] = fieldName + " Z";
-}
-
 void SerializedVector3::OnGUI( std::string fieldName, ISerializedFieldOwner& owner )
 {
    ImGui::Text( fieldName.c_str() );
 
-   if (ImGui::InputFloat( m_ElementNames[ 0 ].c_str(), &m_Value[ 0 ] ))
+   if (ImGui::InputFloat( (fieldName + " X").c_str(), &m_Value[ 0 ] ))
    {
       owner.OnNewSerializedFields();
    }
 
-   if (ImGui::InputFloat( m_ElementNames[ 1 ].c_str(), &m_Value[ 1 ] ))
+   if (ImGui::InputFloat( (fieldName + " Y").c_str(), &m_Value[ 1 ] ))
    {
       owner.OnNewSerializedFields();
    }
 
-   if (ImGui::InputFloat( m_ElementNames[ 2 ].c_str(), &m_Value[ 2 ] ))
+   if (ImGui::InputFloat( (fieldName + " Z").c_str(), &m_Value[ 2 ] ))
    {
       owner.OnNewSerializedFields();
    }
@@ -152,6 +150,80 @@ vmath::vec3 SerializedVector3::Vector3Value()
 void SerializedVector3::CopyFrom( SerializedField& toCopy )
 {
    m_Value = toCopy.Vector3Value();
+}
+
+// ####################### VECTOR4 ########################### 
+
+vmath::vec4 SerializedVector4::Value()
+{
+   return m_Value;
+}
+
+void SerializedVector4::SetValue( vmath::vec4 value )
+{
+   m_Value = value;
+}
+
+vmath::vec4 SerializedVector4::Vector4Value()
+{
+   return m_Value;
+}
+
+void SerializedVector4::CopyFrom( SerializedField& toCopy )
+{
+   m_Value = toCopy.Vector4Value();
+}
+
+void SerializedVector4::OnGUI( std::string fieldName, ISerializedFieldOwner& owner )
+{
+   ImGui::Text( fieldName.c_str() );
+
+   if (ImGui::InputFloat( (fieldName + " R").c_str(), &m_Value[ 0 ] ))
+   {
+      owner.OnNewSerializedFields();
+   }
+
+   if (ImGui::InputFloat( (fieldName + " G").c_str(), &m_Value[ 1 ] ))
+   {
+      owner.OnNewSerializedFields();
+   }
+
+   if (ImGui::InputFloat( (fieldName + " B").c_str(), &m_Value[ 2 ] ))
+   {
+      owner.OnNewSerializedFields();
+   }
+
+   if (ImGui::InputFloat( (fieldName + " A").c_str(), &m_Value[ 3 ] ))
+   {
+      owner.OnNewSerializedFields();
+   }
+}
+
+void SerializedVector4::LocalSerialize( std::ofstream& stream )
+{
+   SerializedFloat f;
+
+   for (int i = 0; i < 4; i++)
+   {
+      f.SetValue( m_Value[ i ] );
+      f.Serialize( stream );
+   }
+}
+
+void SerializedVector4::LocalDeSerialize( std::ifstream& stream )
+{
+   SerializedFloat f;
+
+   for (int i = 0; i < 4; i++)
+   {
+      f.DeSerialize( stream );
+      m_Value[ i ] = f.Value();
+   }
+}
+
+int32_t SerializedVector4::GetSize()
+{
+   return 4 * sizeof( float );
 }
 
 // ####################### ROTATION ########################### 

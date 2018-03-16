@@ -1,13 +1,14 @@
 #include "ComponentCreator.h"
-#include "MeshRenderer.h"
+#include "DiffuseMeshRenderer.h"
 #include "Camera.h"
 #include "Light.h"
 #include "Transform.h"
+#include "BoxCollider.h"
 
 // ###################
-static Component* CreateMeshRenderer()
+static Component* CreateDiffuseMeshRenderer()
 {
-   return new MeshRenderer();
+   return new DiffuseMeshRenderer();
 }
 
 // ###################
@@ -28,12 +29,19 @@ static Component* CreateLight()
    return new Light();
 }
 
+// ###################
+static Component* CreateBoxCollider()
+{
+   return new BoxCollider();
+}
+
 ComponentCreator::ComponentCreator()
 {
    m_ComponentInfo[ COMPONENT_ID_CAMERA ].Init( "Camera", CreateCamera );
    m_ComponentInfo[ COMPONENT_ID_LIGHT ].Init( "Light", CreateLight );
    m_ComponentInfo[ COMPONENT_ID_TRANSFORM ].Init( "Transform", CreateTransform );
-   m_ComponentInfo[ COMPONENT_ID_MESHRENDERER ].Init( "Mesh renderer", CreateMeshRenderer );
+   m_ComponentInfo[ COMPONENT_ID_DIFFUSEMESHRENDERER ].Init( "Diffuse mesh renderer", CreateDiffuseMeshRenderer );
+   m_ComponentInfo[ COMPONENT_ID_BOXCOLLIDER ].Init( "Box collider", CreateBoxCollider );
 }
 
 bool ComponentCreator::ComponentIDIsValid( int32_t id )

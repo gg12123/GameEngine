@@ -18,14 +18,11 @@ public:
 
    void OnDestroy();
 
-   // this will need to be virtual
-   void Render(const int count);
+   void Render( const int count );
 
    std::string GetMeshName();
    std::string GetShaderName();
    Mesh& GetMeshData();
-
-   int32_t GetType() override;
 
    // At the moment, setting these will only have an effect if its done before awake.
    void SetMeshName( std::string name );
@@ -36,7 +33,7 @@ protected:
 
    void Awake() override;
    void EditAwake( IEditor& editor ) override;
-   virtual void ApplyUniforms();
+   virtual void ApplyUniforms() = 0;
 
 private:
 

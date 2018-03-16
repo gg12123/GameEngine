@@ -29,6 +29,8 @@ public:
    IWindowConfiguration& SetCamera( Camera& cam );
    void SetLight( Light& light );
 
+   Camera& ActiveCamera();
+
 private:
 
    GLuint m_Vao;

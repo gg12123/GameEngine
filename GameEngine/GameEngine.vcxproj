@@ -126,6 +126,7 @@
     <ClInclude Include="ComponentCreator.h" />
     <ClInclude Include="ComponentIDs.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="DiffuseMeshRenderer.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="EditorEvents.h" />
     <ClInclude Include="EditorWindow.h" />
@@ -180,6 +181,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentCreator.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="DiffuseMeshRenderer.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="EditorUtils.cpp" />
     <ClCompile Include="HierarchyWindow.cpp" />

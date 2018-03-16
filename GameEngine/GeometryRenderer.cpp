@@ -148,6 +148,11 @@ void GeometryRenderer::SetLight( Light& light )
    m_Light = &light;
 }
 
+Camera& GeometryRenderer::ActiveCamera()
+{
+   return *m_Camera;
+}
+
 void GeometryRenderer::Render()
 {
    // Clear background and depth

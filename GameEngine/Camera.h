@@ -18,12 +18,14 @@ public:
    void SetFarClip( float val );
    void SetFOV( float val );
 
-   static Camera& Active();
    void MakeActive();
-   bool IsActive() const;
+   bool IsActive();
 
    vmath::vec2 ToScreenSpaceDirection( Ray& globalRay );
    Ray ScreenPointToRay( const vmath::vec2& screenPoint );
+
+   vmath::mat4 ConstructWorldToView( const vmath::mat4& cameraTransform );
+   vmath::mat4 ConstructPerspectiveProj();
 
 protected:
 
@@ -31,12 +33,11 @@ protected:
    void EditAwake( IEditor& editor ) override;
 
 private:
+   bool m_IsActive;
 
    // will need to pull aspect ratio in from world
    SerializedFloat m_NearClip;
    SerializedFloat m_FarClip;
    SerializedFloat m_FOVAngle;
    IWindowConfiguration *m_WindowConfig;
-
-   static Camera* m_Active;
 };

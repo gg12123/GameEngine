@@ -31,10 +31,8 @@ void Camera::Awake()
    MakeActive();
 }
 
-void Camera::ApplyCameraUniforms()
+mat4 Camera::ConstructWorldToView( const mat4& cameraTransform )
 {
-   mat4 cameraTransform = GetGameObject().GetTransform().GetTransformMatrixAssumingClean();
-
    vec3 cameraForward = extractForwardOnly( cameraTransform );
    vec3 cameraUp = extractUpOnly( cameraTransform );
    vec3 cameraRight = extractRightOnly( cameraTransform );
@@ -47,16 +45,28 @@ void Camera::ApplyCameraUniforms()
    worldToView[ 2 ] = vec4( cameraRight[ 2 ], cameraUp[ 2 ], cameraForward[ 2 ], 0.0f );
    worldToView[ 3 ] = vec4( -dot( cameraPos, cameraRight ), -dot( cameraPos, cameraUp ), -dot( cameraPos, cameraForward ), 1.0f );
 
+   return worldToView;
+}
+
+mat4 Camera::ConstructPerspectiveProj()
+{
    mat4 persp = perspective2( m_FOVAngle.Value(),
                               m_WindowConfig->GetWidth() / m_WindowConfig->GetHeight(),
                               m_NearClip.Value(),
                               m_FarClip.Value() );
 
-   mat4 wvp = persp * worldToView;
+   return persp;
+}
+
+void Camera::ApplyCameraUniforms()
+{
+   mat4 cameraTransform = GetGameObject().GetTransform().GetTransformMatrixAssumingClean();
+
+   mat4 wvp = ConstructPerspectiveProj() * ConstructWorldToView( cameraTransform );
 
    glUniform3fv( CAMERA_DIRECTION_LOCATION,
                  1,
-                 cameraForward );
+                 extractForwardOnly( cameraTransform ) );
 
    glUniformMatrix4fv( WVP_MATRIX_LOCATION,
                        1,
@@ -84,46 +94,38 @@ void Camera::SetFOV( float val )
    m_FOVAngle.SetValue( val );
 }
 
-Camera& Camera::Active()
-{
-   return *m_Active;
-}
-
 void Camera::MakeActive()
 {
    m_WindowConfig = &GetGeometryRenderer().SetCamera( *this );
-   m_Active = this;
 }
 
-bool Camera::IsActive() const
+bool Camera::IsActive()
 {
-   return (m_Active == this);
+   return (&GetActiveCamera() == this);
 }
 
 Ray Camera::ScreenPointToRay( const vec2& screenPoint )
 {
-   const float w = m_WindowConfig->GetWidth() / 2.0;
-   const float h = m_WindowConfig->GetWidth() / 2.0;
+   const float w = m_WindowConfig->GetWidth() / 2.0f;
+   const float h = m_WindowConfig->GetWidth() / 2.0f;
 
    TwoDimentionalSpace screenSpace( w,
                                     h,
                                     vec2( w, h ) );
 
-   TwoDimentionalSpace camPlaneSpace( 1.0,
-                                      1.0,
+   TwoDimentionalSpace camPlaneSpace( 1.0f,
+                                      1.0f,
                                       vec2( 0.0f, 0.0f ) );
 
    vec2 pointInCamPlane = Transform2DPoint( screenSpace, camPlaneSpace, screenPoint );
 
-   mat4 cameraTransform = GetGameObject().GetTransform().GetTransformMatrixAssumingClean();
-   vec3 cameraForward = extractForwardOnly( cameraTransform );
-   vec3 cameraUp = extractUpOnly( cameraTransform );
-   vec3 cameraRight = extractRightOnly( cameraTransform );
-   vec3 cameraPos = extractPositionOnly( cameraTransform );
+   mat4 cameraTransform = GetGameObject().GetTransform().GetTransformMatrix();
 
-   vec3 pointInCamPlaneGlobal = (1.0f / tanf( 0.5f * m_FOVAngle.Value() )) * cameraForward +
-      pointInCamPlane[ 0 ] * cameraRight +
-      pointInCamPlane[ 1 ] * cameraUp;
+   vec3 pointInCamPlaneGlobal = (1.0f / tanf( 0.5f * m_FOVAngle.Value() )) * extractForwardOnly( cameraTransform ) +
+      pointInCamPlane[ 0 ] * extractRightOnly( cameraTransform ) +
+      pointInCamPlane[ 1 ] * extractUpOnly( cameraTransform );
+
+   vec3 cameraPos = extractPositionOnly( cameraTransform );
 
    return Ray( normalize( pointInCamPlaneGlobal - cameraPos ), cameraPos );
 }
@@ -133,13 +135,10 @@ vmath::vec2 Camera::ToScreenSpaceDirection( Ray& globalRay )
    vec4 origin = vec4( globalRay.GetOrigin(), 1.0f );
    vec4 end = vec4( globalRay.GetOrigin() + globalRay.GetDirection(), 1.0f );
 
-   mat4 persp = perspective2( m_FOVAngle.Value(),
-                              m_WindowConfig->GetWidth() / m_WindowConfig->GetHeight(),
-                              m_NearClip.Value(),
-                              m_FarClip.Value() );
+   mat4 wvp = ConstructPerspectiveProj() * ConstructWorldToView( GetGameObject().GetTransform().GetTransformMatrix() );
 
-   vec4 originP = persp * origin;
-   vec4 endP = persp * end;
+   vec4 originP = wvp * origin;
+   vec4 endP = wvp * end;
 
    for (int i = 0; i < 3; i++)
    {
@@ -150,15 +149,15 @@ vmath::vec2 Camera::ToScreenSpaceDirection( Ray& globalRay )
    vec4 dirProj = endP - originP;
    vec2 dirProj2 = vec2( dirProj[ 0 ], dirProj[ 1 ] );
 
-   const float w = m_WindowConfig->GetWidth() / 2.0;
-   const float h = m_WindowConfig->GetWidth() / 2.0;
+   const float w = m_WindowConfig->GetWidth() / 2.0f;
+   const float h = m_WindowConfig->GetWidth() / 2.0f;
 
    TwoDimentionalSpace screenSpace( w,
                                     h,
                                     vec2( w, h ) );
 
-   TwoDimentionalSpace camPlaneSpace( 1.0,
-                                      1.0,
+   TwoDimentionalSpace camPlaneSpace( 1.0f,
+                                      1.0f,
                                       vec2( 0.0f, 0.0f ) );
 
    return Transform2DDirection( camPlaneSpace, screenSpace, dirProj2 );

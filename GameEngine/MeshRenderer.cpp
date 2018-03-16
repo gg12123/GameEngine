@@ -38,22 +38,14 @@ void MeshRenderer::GetSerializedFields( std::unordered_map<std::string, Serializ
    fields[ "meshName" ] = &m_MeshName;
 }
 
-void MeshRenderer::ApplyUniforms()
+void MeshRenderer::Render(const int count)
 {
+   ApplyUniforms();
+
    glUniformMatrix4fv( OW_MATRIX_LOCATION,
                        1,
                        GL_FALSE,
                        GetGameObject().GetTransform().GetTransformMatrixAssumingClean() );
-
-   // Should set this in a derived class
-   glUniform4fv( COLOUR1_LOCATION,
-                 1,
-                 vec4(0.0f, 1.0f, 0.0f, 1.0f) );
-}
-
-void MeshRenderer::Render(const int count)
-{
-   ApplyUniforms();
 
    glDrawElements( GL_TRIANGLES, count, GL_UNSIGNED_SHORT, 0 );
 }
@@ -66,11 +58,6 @@ std::string MeshRenderer::GetMeshName()
 std::string MeshRenderer::GetShaderName()
 {
    return m_ShaderName.Value();
-}
-
-int32_t MeshRenderer::GetType()
-{
-   return COMPONENT_ID_MESHRENDERER;
 }
 
 void MeshRenderer::SetMeshName( std::string name )

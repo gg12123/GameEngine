@@ -101,7 +101,10 @@ void Mesh::Load( std::string name )
 
    for (int i = 0; i < m_NumVertices; i++)
    {
-      m_Vertices[ i ].Position = vmath::vec4( positions[ index ], positions[ index + 1 ], positions[ index + 2 ], 1.0f );
+      vmath::vec3 pos = vmath::vec3( positions[ index ], positions[ index + 1 ], positions[ index + 2 ] );
+
+      m_Vertices[ i ].Position = vmath::vec4( pos, 1.0f );
+      m_Vertices[ i ].Normal = vmath::vec4( vmath::normalize( pos ), 0.0f );
 
       index += 3;
    }
