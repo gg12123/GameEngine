@@ -34,6 +34,7 @@ World::World()
 {
    m_Root = nullptr;
    m_SceneLoader = nullptr;
+   m_Input = nullptr;
 }
 
 void World::ClearAll()
@@ -54,10 +55,11 @@ void World::ClearAll()
    }
 }
 
-void World::Init( IWindowConfiguration& windowConfig, SceneLoader& loader )
+void World::Init( IWindowConfiguration& windowConfig, SceneLoader& loader, IInput& input )
 {
    m_GeometryRenderer.Init( windowConfig, m_AssetLoader );
    m_SceneLoader = &loader;
+   m_Input = &input;
 }
 
 void World::Awake( GameObject& rootGameObject, std::vector<GameObject*>& gameObjects )
@@ -183,4 +185,9 @@ AssetLoader& World::GetAssetLoader()
 SceneLoader& World::GetSceneLoader()
 {
    return *m_SceneLoader;
+}
+
+IInput& World::GetInput()
+{
+   return *m_Input;
 }

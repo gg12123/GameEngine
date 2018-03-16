@@ -6,6 +6,7 @@
 #include "PrefabField.h"
 #include "MeshField.h"
 #include "ISearializedFieldOwner.h"
+#include "IInput.h"
 
 class GameObject;
 class World;
@@ -56,6 +57,7 @@ protected:
    Transform& GetRootTransform();
    AssetLoader& GetAssetLoader();
    Camera& GetActiveCamera();
+   IInput& GetInput();
 
    void LoadScene( std::string name );
 

@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include "TransformUpdater.h"
 #include "GeometryRenderer.h"
+#include "IInput.h"
 
 class GameObject;
 class SceneLoader;
@@ -15,7 +16,7 @@ public:
    ~World();
    World();
 
-   void Init( IWindowConfiguration& windowConfig, SceneLoader& sceneLoader );
+   void Init( IWindowConfiguration& windowConfig, SceneLoader& sceneLoader, IInput& input );
 
    void DestroyHierarchy( GameObject& root ) const;
    void ClearAll();
@@ -40,6 +41,7 @@ public:
    GeometryRenderer& GetGeometryRenderer();
    AssetLoader& GetAssetLoader();
    SceneLoader& GetSceneLoader();
+   IInput& GetInput();
 
 private:
 
@@ -53,4 +55,5 @@ private:
    AssetLoader m_AssetLoader;
    SceneLoader* m_SceneLoader;
    Transform *m_Root;
+   IInput *m_Input;
 };

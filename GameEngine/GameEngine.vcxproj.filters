@@ -22,6 +22,9 @@
     <Filter Include="Physics">
       <UniqueIdentifier>{dc4ab817-a3a9-4a14-8ce9-10bb96084b35}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{65e53fba-980b-439b-a71e-490a9e3b0695}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -186,6 +189,21 @@
     <ClInclude Include="DiffuseMeshRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="InputTrigger.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="MemberFunctionPtrs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="IInput.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="InputTriggerActions.h">
+      <Filter>Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -307,6 +325,15 @@
     </ClCompile>
     <ClCompile Include="DiffuseMeshRenderer.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputTrigger.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="InputTriggerActions.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

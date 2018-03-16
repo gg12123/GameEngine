@@ -135,6 +135,7 @@
     <ClInclude Include="GameObjectEvents.h" />
     <ClInclude Include="HierarchyWindow.h" />
     <ClInclude Include="IEditor.h" />
+    <ClInclude Include="IInput.h" />
     <ClInclude Include="ImGUI\imconfig.h" />
     <ClInclude Include="ImGUI\imgui.h" />
     <ClInclude Include="ImGUI\imgui_impl_glfw_gl3.h" />
@@ -142,9 +143,13 @@
     <ClInclude Include="ImGUI\stb_rect_pack.h" />
     <ClInclude Include="ImGUI\stb_textedit.h" />
     <ClInclude Include="ImGUI\stb_truetype.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="InputTrigger.h" />
+    <ClInclude Include="InputTriggerActions.h" />
     <ClInclude Include="InspectorWindow.h" />
     <ClInclude Include="ISearializedFieldOwner.h" />
     <ClInclude Include="MainToolWindow.h" />
+    <ClInclude Include="MemberFunctionPtrs.h" />
     <ClInclude Include="MeshField.h" />
     <ClInclude Include="NullableIterator.h" />
     <ClInclude Include="ParentSetter.h" />
@@ -189,6 +194,9 @@
     <ClCompile Include="ImGUI\imgui_demo.cpp" />
     <ClCompile Include="ImGUI\imgui_draw.cpp" />
     <ClCompile Include="ImGUI\imgui_impl_glfw_gl3.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="InputTrigger.cpp" />
+    <ClCompile Include="InputTriggerActions.cpp" />
     <ClCompile Include="InspectorWindow.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainToolWindow.cpp" />

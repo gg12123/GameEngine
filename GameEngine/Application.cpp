@@ -9,6 +9,16 @@
 #include "InspectorWindow.h"
 #include "MainToolWindow.h"
 
+Application::Application()
+{
+   m_ThisApp = this;
+}
+
+Input& Application::GetInput()
+{
+   return m_Input;
+}
+
 bool Application::InitWindow()
 {
    bool ok = false;
@@ -43,13 +53,16 @@ bool Application::InitWindow()
 
 void Application::SetupCallbacks()
 {
-
+   glfwSetMouseButtonCallback( m_Window, MouseCallback );
+   glfwSetScrollCallback( m_Window, ScrollCallback );
+   glfwSetKeyCallback( m_Window, KeyCallback );
+   glfwSetCharCallback( m_Window, CharCallback );
 }
 
 void Application::InitImGUI()
 {
    ImGui::CreateContext();
-   ImGui_ImplGlfwGL3_Init( m_Window, true );
+   ImGui_ImplGlfwGL3_Init( m_Window, false );
    ImGui::StyleColorsDark();
 }
 
@@ -69,7 +82,7 @@ void Application::Run()
 
 void Application::InitEngine()
 {
-   m_World.Init( m_WindowConfig, m_SceneLoader );
+   m_World.Init( m_WindowConfig, m_SceneLoader, m_Input );
    m_Editor.Init( m_World );
 
    m_SceneLoader.Init( m_Editor );
@@ -94,6 +107,8 @@ void Application::RunLoop()
       m_World.EditUpdate();
       m_Editor.Update();
 
+      m_Input.FinalUpdate();
+
       ImGui::Render();
       ImGui_ImplGlfwGL3_RenderDrawData( ImGui::GetDrawData() );
 
@@ -103,4 +118,36 @@ void Application::RunLoop()
       running &= (glfwWindowShouldClose( m_Window ) != GL_TRUE);
 
    } while (running);
+}
+
+void Application::MouseCallback( GLFWwindow* window, int button, int action, int mods )
+{
+   ImGui_ImplGlfw_MouseButtonCallback( window, button, action, mods );
+
+   if (!ImGui::GetIO().WantCaptureMouse)
+   {
+      if (GLFW_PRESS == action)
+      {
+         m_ThisApp->GetInput().OnMouseButtonDown( button );
+      }
+      else if (GLFW_RELEASE == action)
+      {
+         m_ThisApp->GetInput().OnMouseButtonUp( button );
+      }
+   }
+}
+
+void Application::ScrollCallback( GLFWwindow* w, double xoffset, double yoffset )
+{
+   ImGui_ImplGlfw_ScrollCallback( w, xoffset, yoffset );
+}
+
+void Application::KeyCallback( GLFWwindow* w, int key, int s, int action, int mods )
+{
+   ImGui_ImplGlfw_KeyCallback( w, key, s, action, mods );
+}
+
+void Application::CharCallback( GLFWwindow* w, unsigned int c )
+{
+   ImGui_ImplGlfw_CharCallback( w, c );
 }

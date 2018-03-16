@@ -80,6 +80,11 @@ void Component::LoadScene( std::string name )
    m_World->GetSceneLoader().PendLoadScene( name );
 }
 
+IInput& Component::GetInput()
+{
+   return m_World->GetInput();
+}
+
 Camera& Component::GetActiveCamera()
 {
    return m_World->GetGeometryRenderer().ActiveCamera();
