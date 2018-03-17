@@ -25,6 +25,9 @@
     <Filter Include="Input">
       <UniqueIdentifier>{65e53fba-980b-439b-a71e-490a9e3b0695}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TestComponents">
+      <UniqueIdentifier>{f0762977-17cf-4e57-b3be-c0bf53882a7f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -204,6 +207,12 @@
     <ClInclude Include="InputTriggerActions.h">
       <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="ColourOnRayHit.h">
+      <Filter>TestComponents</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -334,6 +343,12 @@
     </ClCompile>
     <ClCompile Include="InputTriggerActions.cpp">
       <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="ColourOnRayHit.cpp">
+      <Filter>TestComponents</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

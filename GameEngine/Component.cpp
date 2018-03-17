@@ -65,6 +65,11 @@ Transform& Component::GetRootTransform()
    return m_World->GetRootTransform();
 }
 
+Physics& Component::GetPhysics()
+{
+   return m_World->GetPhysics();
+}
+
 GeometryRenderer& Component::GetGeometryRenderer()
 {
    return m_World->GetGeometryRenderer();

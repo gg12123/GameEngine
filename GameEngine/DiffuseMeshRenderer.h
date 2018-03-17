@@ -8,8 +8,8 @@ public:
    DiffuseMeshRenderer();
 
    void GetSerializedFields( std::unordered_map<std::string, SerializedField*>& fields ) override;
-
    int32_t GetType() override;
+   void SetColour( vmath::vec4 colur ) override;
 
 protected:
    virtual void ApplyUniforms() override;

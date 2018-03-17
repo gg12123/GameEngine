@@ -71,6 +71,7 @@ bool BoxCollider::IsCollidedWithRay( const Ray& ray, RayCastHit& hit )
    if (collided)
    {
       hit.CollisionPoint = GetGameObject().GetTransform().ToGlobalPosition( hit.CollisionPoint );
+      hit.HitCollider = this;
    }
 
    return collided;

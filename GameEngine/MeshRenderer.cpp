@@ -17,6 +17,7 @@ void MeshRenderer::OnDestroy()
    if (!m_ToThisInRenderersList.IsNull())
    {
       GetGeometryRenderer().UnRegister( *this, m_ToThisInRenderersList.Get() );
+      m_ToThisInRenderersList.Clear();
    }
 }
 

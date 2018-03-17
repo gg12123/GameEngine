@@ -17,6 +17,7 @@ class IEditor;
 class Editor;
 class AssetLoader;
 class Camera;
+class Physics;
 
 class Component : public ISerializedFieldOwner
 {
@@ -58,6 +59,7 @@ protected:
    AssetLoader& GetAssetLoader();
    Camera& GetActiveCamera();
    IInput& GetInput();
+   Physics& GetPhysics();
 
    void LoadScene( std::string name );
 

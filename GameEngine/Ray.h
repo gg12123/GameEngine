@@ -2,6 +2,7 @@
 #include "MyVmath.h"
 
 class Transform;
+class Collider;
 
 class Ray
 {
@@ -24,4 +25,5 @@ struct RayCastHit
 {
    float Distance;
    vmath::vec3 CollisionPoint;
+   Collider* HitCollider;
 };

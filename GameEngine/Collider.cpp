@@ -4,10 +4,20 @@
 #include "Mesh.h"
 #include "Transform.h"
 #include "Debug.h"
+#include "Physics.h"
 
 Collider::Collider()
 {
    m_MeshBounds = nullptr;
+}
+
+void Collider::OnDestroy()
+{
+   if (!m_ToThisInPhysics.IsNull())
+   {
+      GetPhysics().UnRegisterCollider( m_ToThisInPhysics.Get() );
+      m_ToThisInPhysics.Clear();
+   }
 }
 
 void Collider::TryCacheMeshBounds()
@@ -49,7 +59,8 @@ void Collider::Awake()
 {
    TryCacheMeshBounds();
    ReCalculateBounds();
-   // register
+   m_ToThisInPhysics.Set( GetPhysics().RegisterCollider( *this ) );
+   GetGameObject().RegisterForEvent( eOnDestroy, *m_OnDestroyEvent.Init( &Collider::OnDestroy, this ) );
 }
 
 void Collider::EditAwake( IEditor& editor )

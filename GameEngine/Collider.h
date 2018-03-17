@@ -1,6 +1,8 @@
 #pragma once
 #include "Component.h"
 #include "MyVmath.h"
+#include "NullableIterator.h"
+#include "Events.h"
 
 class Ray;
 class MeshBounds;
@@ -25,8 +27,13 @@ protected:
    float MaxBound( unsigned int axis );
 
 private:
+   void OnDestroy();
    void TryCacheMeshBounds();
 
    MeshBounds* m_MeshBounds;
    vmath::vec2 m_Bounds[ 3 ];
+
+   NullableValue<std::list<Collider*>::iterator> m_ToThisInPhysics;
+
+   VoidEventHandler<Collider> m_OnDestroyEvent;
 };

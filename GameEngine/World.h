@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include "TransformUpdater.h"
 #include "GeometryRenderer.h"
+#include "Physics.h"
 #include "IInput.h"
 
 class GameObject;
@@ -42,6 +43,7 @@ public:
    AssetLoader& GetAssetLoader();
    SceneLoader& GetSceneLoader();
    IInput& GetInput();
+   Physics& GetPhysics();
 
 private:
 
@@ -53,6 +55,7 @@ private:
    TransformUpdater m_TransformUpdater;
    GeometryRenderer m_GeometryRenderer;
    AssetLoader m_AssetLoader;
+   Physics m_Physics;
    SceneLoader* m_SceneLoader;
    Transform *m_Root;
    IInput *m_Input;

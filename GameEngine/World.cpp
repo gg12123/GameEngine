@@ -133,18 +133,8 @@ void World::RegisterForStart( GameObject &toRegister )
 
 std::list<GameObject*>::iterator World::RegisterToUpdateFunction( EUpdaterFunction updateFunction, GameObject& gameObject )
 {
-   std::list<GameObject*>* l = &m_UpdatableGameObjects[ updateFunction ];
-
-   auto it = std::find( l->begin(), l->end(), &gameObject );
-
-   if (it != l->end())
-   {
-      Debug::Instance().LogError( "Game object registerd twice for update" );
-   }
-
-   l->push_front( &gameObject );
-
-   return l->begin();
+   m_UpdatableGameObjects[ updateFunction ].push_front( &gameObject );
+   return m_UpdatableGameObjects[ updateFunction ].begin();
 }
 
 void World::UnRegisterToUpdateFunction( EUpdaterFunction updateFunction, std::list<GameObject*>::iterator it )
@@ -190,4 +180,9 @@ SceneLoader& World::GetSceneLoader()
 IInput& World::GetInput()
 {
    return *m_Input;
+}
+
+Physics& World::GetPhysics()
+{
+   return m_Physics;
 }

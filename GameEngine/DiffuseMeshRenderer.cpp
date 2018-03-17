@@ -14,6 +14,11 @@ void DiffuseMeshRenderer::GetSerializedFields( std::unordered_map<std::string, S
    fields[ "colour" ] = &m_Colour;
 }
 
+void DiffuseMeshRenderer::SetColour( vmath::vec4 colur )
+{
+   m_Colour.SetValue( colur );
+}
+
 void DiffuseMeshRenderer::ApplyUniforms()
 {
    glUniform4fv( COLOUR1_LOCATION,

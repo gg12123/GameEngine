@@ -29,6 +29,8 @@ public:
    void SetShaderName( std::string name );
    void EnsureMeshIsNotShared();
 
+   virtual void SetColour( vmath::vec4 colur ) {}
+
 protected:
 
    void Awake() override;

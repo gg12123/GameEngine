@@ -122,6 +122,7 @@
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="ColourOnRayHit.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentCreator.h" />
     <ClInclude Include="ComponentIDs.h" />
@@ -153,6 +154,7 @@
     <ClInclude Include="MeshField.h" />
     <ClInclude Include="NullableIterator.h" />
     <ClInclude Include="ParentSetter.h" />
+    <ClInclude Include="Physics.h" />
     <ClInclude Include="PrefabAsset.h" />
     <ClInclude Include="PrefabField.h" />
     <ClInclude Include="Ray.h" />
@@ -183,6 +185,7 @@
     <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="ColourOnRayHit.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentCreator.cpp" />
     <ClCompile Include="Debug.cpp" />
@@ -203,6 +206,7 @@
     <ClCompile Include="MeshField.cpp" />
     <ClCompile Include="ParentSetter.cpp" />
     <ClCompile Include="Path.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PrefabAsset.cpp" />
     <ClCompile Include="PrefabField.cpp" />
     <ClCompile Include="Ray.cpp" />
