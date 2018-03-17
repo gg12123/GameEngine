@@ -3,7 +3,7 @@
 #include <vector>
 #include <unordered_map>
 #include "EditorEvents.h"
-#include "Events.h"
+#include "EventManager.h"
 #include "IEditor.h"
 
 class World;
@@ -22,8 +22,8 @@ public:
 
    void SetActiveGameObject( GameObject* active ) override;
    GameObject* GetActiveGameObject() override;
+
    void RegisterCallbackForEvent( EEditorEvent eventID, EventHandler& callback ) override;
-   void UnregisterCallback( EEditorEvent eventID, EventHandler& callback ) override;
    void InvokeEvent( EEditorEvent eventID ) override;
 
    World& GetWorld();
@@ -31,9 +31,12 @@ public:
    void AddWindow( EditorWindow& wnd );
 
 private:
+   void OnHierarchyBeingDestroyed( GameObject& root );
 
    World* m_World;
    GameObject* m_ActiveGameObject;
    std::vector<EditorWindow*> m_CurrentWindows;
-   std::unordered_map<EEditorEvent, std::vector<EventHandler*>*> m_Events;
+   EventManager<EEditorEvent, NUMBER_OF_EDITOR_EVENTS> m_Events;
+
+   GOEventHandler<Editor> m_OnHierarchyBeingDestroyedEvent;
 };

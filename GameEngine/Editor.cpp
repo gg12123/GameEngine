@@ -24,6 +24,7 @@ Editor::~Editor()
 void Editor::Init( World& w )
 {
    m_World = &w;
+   m_World->RegisterToEvent( eOnHierarchyBeingDestroyed, *m_OnHierarchyBeingDestroyedEvent.Init( &Editor::OnHierarchyBeingDestroyed, this ) );
 }
 
 void Editor::AddWindow( EditorWindow& wnd )
@@ -58,58 +59,18 @@ World& Editor::GetWorld()
 
 void Editor::RegisterCallbackForEvent( EEditorEvent eventID, EventHandler& callback )
 {
-   auto it = m_Events.find( eventID );
-   std::vector<EventHandler*>* v;
-
-   if (it != m_Events.end())
-   {
-      v = it->second;
-   }
-   else
-   {
-      v = new std::vector<EventHandler*>();
-      m_Events[ eventID ] = v;
-   }
-
-   v->push_back( &callback );
-}
-
-void Editor::UnregisterCallback( EEditorEvent eventID, EventHandler& callback )
-{
-   auto it = m_Events.find( eventID );
-
-   if (it != m_Events.end())
-   {
-      std::vector<EventHandler*>* v = it->second;
-
-      auto it2 = std::find( v->begin(), v->end(), &callback );
-
-      if (it2 != v->end())
-      {
-         v->erase( it2 );
-      }
-      else
-      {
-         Debug::Instance().LogError( "Unable to find callback to un reg event" );
-      }
-   }
-   else
-   {
-      Debug::Instance().LogError( "Unable to event ID to un reg event" );
-   }
+   m_Events.Register( eventID, callback );
 }
 
 void Editor::InvokeEvent( EEditorEvent eventID )
 {
-   auto it = m_Events.find( eventID );
+   m_Events.Invoke( eventID );
+}
 
-   if (it != m_Events.end())
+void Editor::OnHierarchyBeingDestroyed( GameObject& root )
+{
+   if (m_ActiveGameObject && m_ActiveGameObject->IsPartOfHierarchy( root ))
    {
-      std::vector<EventHandler*>* v = it->second;
-
-      for (auto it2 = v->begin(); it2 != v->end(); it2++)
-      {
-         (*it2)->Invoke();
-      }
+      SetActiveGameObject( nullptr );
    }
 }

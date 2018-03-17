@@ -93,7 +93,6 @@ void EditModeSceneLoader::CallAwake( GameObject& rootGameObject, std::vector<Gam
 
 void EditModeSceneLoader::ClearAll()
 {
-   m_Editor->SetActiveGameObject( nullptr );
    m_Editor->GetWorld().ClearAll();
 }
 

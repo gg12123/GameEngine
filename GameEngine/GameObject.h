@@ -5,7 +5,7 @@
 #include "Component.h"
 #include "SerializedFields.h"
 #include "NullableIterator.h"
-#include "Events.h"
+#include "EventManager.h"
 #include "GameObjectEvents.h"
 
 class World;
@@ -71,6 +71,8 @@ public:
 
    GameObject& Clone();
 
+   bool IsPartOfHierarchy( GameObject& root ) const;
+
 private:
 
    void CommonConstructor();
@@ -78,7 +80,7 @@ private:
    UpdateableComponents* m_UpdateableComponents[ NUMBER_OF_UPDATE_FUNCTIONS ];
    std::vector<Component*> m_Components;
 
-   std::vector<EventHandler*>* m_Events[ NUMBER_OF_GAME_OBJECT_EVENTS ];
+   EventManager<EGameObjectEvent, NUMBER_OF_GAME_OBJECT_EVENTS> m_Events;
 
    World *m_World;
    Transform *m_Transform;

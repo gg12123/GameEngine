@@ -131,6 +131,7 @@
     <ClInclude Include="Editor.h" />
     <ClInclude Include="EditorEvents.h" />
     <ClInclude Include="EditorWindow.h" />
+    <ClInclude Include="EventManager.h" />
     <ClInclude Include="Events.h" />
     <ClInclude Include="EditorUtils.h" />
     <ClInclude Include="GameObjectEvents.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="WindowConfiguration.h" />
     <ClInclude Include="World.h" />
+    <ClInclude Include="WorldEvents.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />

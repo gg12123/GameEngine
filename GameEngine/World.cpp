@@ -15,6 +15,8 @@ void World::DestroyHierarchy( GameObject& root ) const
    EnumerableHierarchy enumerator( root );
    std::vector<GameObject*> toDestroy;
 
+   InvokeEvent( eOnHierarchyBeingDestroyed, root );
+
    GameObject* next = enumerator.Next();
 
    while (next)
@@ -140,6 +142,16 @@ std::list<GameObject*>::iterator World::RegisterToUpdateFunction( EUpdaterFuncti
 void World::UnRegisterToUpdateFunction( EUpdaterFunction updateFunction, std::list<GameObject*>::iterator it )
 {
    m_UpdatableGameObjects[ updateFunction ].erase( it );
+}
+
+void World::RegisterToEvent( const EWorldEvent eventID, EventHandler& handler )
+{
+   m_EventManager.Register( eventID, handler );
+}
+
+void World::InvokeEvent( const EWorldEvent eventID, GameObject& param ) const
+{
+   m_EventManager.Invoke<GameObject&>( eventID, param );
 }
 
 void World::StartGameObjects()

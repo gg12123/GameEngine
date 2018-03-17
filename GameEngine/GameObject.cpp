@@ -30,14 +30,6 @@ GameObject::~GameObject()
       }
    }
 
-   for (int i = 0; i < NUMBER_OF_GAME_OBJECT_EVENTS; i++)
-   {
-      if (m_Events[ i ])
-      {
-         delete m_Events[ i ];
-      }
-   }
-
    m_Transform = nullptr;
    m_World = nullptr;
 }
@@ -89,11 +81,6 @@ void GameObject::CommonConstructor()
    for (int i = 0; i < NUMBER_OF_UPDATE_FUNCTIONS; i++)
    {
       m_UpdateableComponents[ i ] = nullptr;
-   }
-
-   for (int i = 0; i < NUMBER_OF_GAME_OBJECT_EVENTS; i++)
-   {
-      m_Events[ i ] = nullptr;
    }
 }
 
@@ -209,25 +196,12 @@ void GameObject::RegisterComponentForUpdate( const EUpdaterFunction updateFuncti
 
 void GameObject::InvokeEvent( EGameObjectEvent eventID )
 {
-   auto v = m_Events[ eventID ];
-
-   if (v)
-   {
-      for (auto it = v->begin(); it != v->end(); it++)
-      {
-         (*it)->Invoke();
-      }
-   }
+   m_Events.Invoke( eventID );
 }
 
 void GameObject::RegisterForEvent( EGameObjectEvent eventID, EventHandler& handler )
 {
-   if (!m_Events[ eventID ])
-   {
-      m_Events[ eventID ] = new std::vector<EventHandler*>();
-   }
-
-   m_Events[ eventID ]->push_back( &handler );
+   m_Events.Register( eventID, handler );
 }
 
 void GameObject::CacheTransform()
@@ -301,4 +275,18 @@ GameObject& GameObject::Clone()
    clone->CacheTransform();
 
    return *clone;
+}
+
+bool GameObject::IsPartOfHierarchy( GameObject& root ) const
+{
+   Transform* t = m_Transform;
+   Transform* rootsTransform = &root.GetTransform();
+   Transform* worldsRoot = &m_World->GetRootTransform();
+
+   while ((t != worldsRoot) && (t != rootsTransform))
+   {
+      t = &t->GetParent();
+   }
+
+   return (t == rootsTransform);
 }

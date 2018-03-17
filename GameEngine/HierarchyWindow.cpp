@@ -69,7 +69,6 @@ void HierarchyWindow::ContextMenu()
 
             if (ImGui::SmallButton( "Yes" ))
             {
-               m_Editor->SetActiveGameObject( nullptr );
                m_Editor->GetWorld().DestroyHierarchy( *active );
             }
             ImGui::EndMenu();

@@ -10,6 +10,7 @@ public:
    bool MouseButton( eMouseButton button ) override;
    bool MouseButtonDown( eMouseButton button ) override;
    bool MouseButtonUp( eMouseButton button ) override;
+   vmath::vec2 MousePosition() override;
 
    void OnMouseButtonUp( int button );
    void OnMouseButtonDown( int button );

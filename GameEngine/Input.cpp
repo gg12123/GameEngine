@@ -15,6 +15,11 @@ bool Input::MouseButtonUp( eMouseButton button )
    return m_MouseInputs[ button ].IsTriggeredUp();
 }
 
+vmath::vec2 Input::MousePosition()
+{
+   return vmath::vec2( 0.0f );
+}
+
 void Input::OnMouseButtonUp( int button )
 {
    InputTrigger* x = &(m_MouseInputs[ button ]);

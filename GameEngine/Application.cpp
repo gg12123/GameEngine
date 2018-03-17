@@ -120,6 +120,9 @@ void Application::RunLoop()
       running &= (glfwWindowShouldClose( m_Window ) != GL_TRUE);
 
    } while (running);
+
+   // Must clear here, otherwise an event gets invoked in the worlds destructor, which causes bad things to happen.
+   m_World.ClearAll();
 }
 
 void Application::MouseCallback( GLFWwindow* window, int button, int action, int mods )

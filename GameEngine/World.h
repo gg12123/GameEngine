@@ -5,6 +5,8 @@
 #include "GeometryRenderer.h"
 #include "Physics.h"
 #include "IInput.h"
+#include "WorldEvents.h"
+#include "EventManager.h"
 
 class GameObject;
 class SceneLoader;
@@ -37,6 +39,8 @@ public:
    std::list<GameObject*>::iterator RegisterToUpdateFunction( EUpdaterFunction updateFunction, GameObject& gameObject );
    void UnRegisterToUpdateFunction( EUpdaterFunction updateFunction, std::list<GameObject*>::iterator it );
 
+   void RegisterToEvent( const EWorldEvent eventID, EventHandler& handler );
+
    Transform& GetRootTransform();
    TransformUpdater& GetTransformUpdater();
    GeometryRenderer& GetGeometryRenderer();
@@ -46,11 +50,13 @@ public:
    Physics& GetPhysics();
 
 private:
-
    void StartGameObjects();
+   void InvokeEvent( const EWorldEvent eventID, GameObject& param ) const;
 
    std::list<GameObject*> m_UpdatableGameObjects[ NUMBER_OF_UPDATE_FUNCTIONS ];
    std::list<GameObject*> m_GameObjectsToBeStarted;
+
+   EventManager<EWorldEvent, NUMBER_OF_WORLD_EVENTS> m_EventManager;
 
    TransformUpdater m_TransformUpdater;
    GeometryRenderer m_GeometryRenderer;
