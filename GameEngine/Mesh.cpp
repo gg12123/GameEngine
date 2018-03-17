@@ -9,7 +9,7 @@ void MeshBounds::Calculate( const Vertex *vertices, const unsigned int count )
       m_Bounds[ axis ][ 1 ] = vertices[ 0 ].Position[ axis ];
    }
 
-   for (int i = 1; i < count; i++)
+   for (unsigned int i = 1; i < count; i++)
    {
       for (int axis = 0; axis < 3; axis++)
       {

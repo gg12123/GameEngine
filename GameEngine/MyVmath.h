@@ -1371,7 +1371,16 @@ static inline vecN<T,N> operator*(const vecN<T,M>& vec, const matNM<T,N,M>& mat)
 
 static inline vec4 operator*( const mat4& mat, const vec4& vec )
 {
-   return vec * mat;
+   vec4 result( 0.0f );
+
+   for (int i = 0; i < 4; i++)
+   {
+      for (int j = 0; j < 4; j++)
+      {
+         result[ i ] += mat[ j ][ i ] * vec[ j ];
+      }
+   }
+   return result;
 }
 
 template <typename T, const int N>
@@ -1484,8 +1493,17 @@ static inline vec3 matrixToEuler( const mat4& m )
    if (rz2Plusrx2 > 0.00001)
    {
       pR[ 1 ] = 0.0f;
-      pR[ 2 ] = sqrtf( pow2( r[ 0 ] ) / rz2Plusrx2 );
-      pR[ 0 ] = sqrtf( 1.0f - pow2( pR[ 2 ] ) );
+
+      if (fabs( r[ 0 ] ) > fabs( r[ 2 ] ))
+      {
+         pR[ 2 ] = sqrtf( pow2( r[ 0 ] ) / rz2Plusrx2 );
+         pR[ 0 ] = -(r[ 2 ] * pR[ 2 ]) / r[ 0 ];
+      }
+      else
+      {
+         pR[ 0 ] = sqrtf( pow2( r[ 2 ] ) / rz2Plusrx2 );
+         pR[ 2 ] = -(r[ 0 ] * pR[ 0 ]) / r[ 2 ];
+      }
 
       R = signedAngle( pR, p, r );
    }
@@ -1498,7 +1516,7 @@ static inline vec3 matrixToEuler( const mat4& m )
    // Pitch
    vec3 yR = rotateVector( y, -degrees( R ), r );
 
-   P = signedAngle( vectorUp(), yR, p );
+   P = signedAngle( vectorUp(), yR, pR );
 
    // Yaw
    Y = signedAngle( vectorRight(), pR, vectorUp() );

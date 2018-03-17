@@ -214,17 +214,23 @@ void SerializedRotation::OnGUI( std::string fieldName, ISerializedFieldOwner& ow
 
    bool inputDone = false;
 
-   if (ImGui::InputFloat( "Y (yaw)", &m_Euler[ 1 ] ))
+   if (ImGui::Button( "Reset" ))
+   {
+      m_Euler = vmath::vec3( 0.0f, 0.0f, 0.0f );
+      inputDone = true;
+   }
+
+   if (ImGui::SliderFloat( "Y (yaw)", &m_Euler[ 1 ], -180.0f, 180.0f ))
    {
       inputDone = true;
    }
 
-   if (ImGui::InputFloat( "X (pitch)", &m_Euler[ 0 ] ))
+   if (ImGui::SliderFloat( "X (pitch)", &m_Euler[ 0 ], -180.0f, 180.0f ))
    {
       inputDone = true;
    }
 
-   if (ImGui::InputFloat( "Z (roll)", &m_Euler[ 2 ] ))
+   if (ImGui::SliderFloat( "Z (roll)", &m_Euler[ 2 ], -180.0f, 180.0f ))
    {
       inputDone = true;
    }
