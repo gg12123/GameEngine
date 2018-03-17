@@ -3,7 +3,7 @@
 #include <vector>
 #include "MyVmath.h"
 
-#define NUMBER_OF_CREATABLE_GAME_OBJECTS 3
+#define NUMBER_OF_CREATABLE_GAME_OBJECTS 4
 
 class GameObject;
 class Transform;

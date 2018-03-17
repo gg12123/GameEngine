@@ -1,5 +1,9 @@
 #include "Asset.h"
 
+Asset::~Asset()
+{
+}
+
 Mesh& Asset::MeshValue()
 {
    throw std::exception("Asset is not a mesh");

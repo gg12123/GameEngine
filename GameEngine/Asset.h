@@ -9,6 +9,8 @@ class GameObject;
 class Asset
 {
 public:
+   virtual ~Asset();
+
    virtual void Load( std::string name ) = 0;
    virtual Mesh& MeshValue();
    virtual GLuint ShaderValue();

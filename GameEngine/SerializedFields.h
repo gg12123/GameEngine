@@ -40,34 +40,45 @@ public:
    void DeSerializeWithSize( std::ifstream& stream ) override;
 };
 
-class SerializedVector3 : public FixedSizeSerializedField
+class SerializedVector : public FixedSizeSerializedField
+{
+public:
+   void OnGUI( std::string fieldName, ISerializedFieldOwner& owner ) override;
+protected:
+   void LocalSerialize( std::ofstream& stream ) override;
+   void LocalDeSerialize( std::ifstream& stream ) override;
+   int32_t GetSize() override;
+   virtual int GetCount() = 0;
+   virtual std::string GetNameAt( int i ) = 0;
+   virtual float* GetPtrAt( int i ) = 0;
+};
+
+class SerializedVector3 : public SerializedVector
 {
 public:
    vmath::vec3 Value();
    void SetValue( vmath::vec3 value );
-   void OnGUI( std::string fieldName, ISerializedFieldOwner& owner ) override;
    vmath::vec3 Vector3Value() override;
    void CopyFrom( SerializedField& toCopy ) override;
 protected:
-   void LocalSerialize( std::ofstream& stream ) override;
-   void LocalDeSerialize( std::ifstream& stream ) override;
-   int32_t GetSize() override;
+   int GetCount() override;
+   std::string GetNameAt( int i ) override;
+   float* GetPtrAt( int i ) override;
 private:
    vmath::vec3 m_Value;
 };
 
-class SerializedVector4 : public FixedSizeSerializedField
+class SerializedVector4 : public SerializedVector
 {
 public:
    vmath::vec4 Value();
    void SetValue( vmath::vec4 value );
-   void OnGUI( std::string fieldName, ISerializedFieldOwner& owner ) override;
    vmath::vec4 Vector4Value() override;
    void CopyFrom( SerializedField& toCopy ) override;
 protected:
-   void LocalSerialize( std::ofstream& stream ) override;
-   void LocalDeSerialize( std::ifstream& stream ) override;
-   int32_t GetSize() override;
+   int GetCount() override;
+   std::string GetNameAt( int i ) override;
+   float* GetPtrAt( int i ) override;
 private:
    vmath::vec4 m_Value;
 };

@@ -16,6 +16,7 @@ GameObjectCreationContext::GameObjectCreationContext()
    m_CreationFunctions[ 0 ].Init( "Light", CreateLightGameObject );
    m_CreationFunctions[ 1 ].Init( "Camera", CreateCameraGameObject );
    m_CreationFunctions[ 2 ].Init( "Cube", CreateCubeGameObject );
+   m_CreationFunctions[ 3 ].Init( "Empty", CreateEmptyGameObject );
 }
 
 void GameObjectCreationContext::OnGUI( Editor& editor, GameObject& parent )

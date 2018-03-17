@@ -38,6 +38,143 @@ float MeshBounds::Max( const unsigned int axis ) const
    return m_Bounds[ axis ][ 1 ];
 }
 
+
+static void CalculateUnitCube(Vertex* vertices, GLushort* indicies)
+{
+   int index = 0;
+
+   // x y plane
+   vertices[ index ].Position = vmath::vec4( 1.0f, 1.0f, 1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, 0.0f, 1.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( -1.0f, 1.0f, 1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, 0.0f, 1.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( 1.0f, -1.0f, 1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, 0.0f, 1.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( -1.0f, 1.0f, 1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, 0.0f, 1.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( 1.0f, -1.0f, 1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, 0.0f, 1.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( -1.0f, -1.0f, 1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, 0.0f, 1.0f, 0.0f );
+   index++;
+   
+   
+   // x y plane
+   vertices[ index ].Position = vmath::vec4( 1.0f, 1.0f, -1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, 0.0f, -1.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( -1.0f, 1.0f, -1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, 0.0f, -1.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( 1.0f, -1.0f, -1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, 0.0f, -1.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( -1.0f, 1.0f, -1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, 0.0f, -1.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( 1.0f, -1.0f, -1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, 0.0f, -1.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( -1.0f, -1.0f, -1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, 0.0f, -1.0f, 0.0f );
+   index++;
+   
+   // x z plane
+   vertices[ index ].Position = vmath::vec4( 1.0f, 1.0f, 1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, 1.0f, 0.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( -1.0f, 1.0f, 1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, 1.0f, 0.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( 1.0f, 1.0f, -1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, 1.0f, 0.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( -1.0f, 1.0f, 1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, 1.0f, 0.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( 1.0f, 1.0f, -1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, 1.0f, 0.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( -1.0f, 1.0f, -1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, 1.0f, 0.0f, 0.0f );
+   index++;
+   
+   // x z plane
+   vertices[ index ].Position = vmath::vec4( 1.0f, -1.0f, 1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, -1.0f, 0.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( -1.0f, -1.0f, 1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, -1.0f, 0.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( 1.0f, -1.0f, -1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, -1.0f, 0.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( -1.0f, -1.0f, 1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, -1.0f, 0.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( 1.0f, -1.0f, -1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, -1.0f, 0.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( -1.0f, -1.0f, -1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 0.0f, -1.0f, 0.0f, 0.0f );
+   index++;
+   
+   // y z plane
+   vertices[ index ].Position = vmath::vec4( 1.0f, 1.0f, 1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 1.0f, 0.0f, 0.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( 1.0f, -1.0f, 1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 1.0f, 0.0f, 0.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( 1.0f, 1.0f, -1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 1.0f, 0.0f, 0.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( 1.0f, -1.0f, 1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 1.0f, 0.0f, 0.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( 1.0f, 1.0f, -1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 1.0f, 0.0f, 0.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( 1.0f, -1.0f, -1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( 1.0f, 0.0f, 0.0f, 0.0f );
+   index++;
+   
+   // y z plane
+   vertices[ index ].Position = vmath::vec4( -1.0f, 1.0f, 1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( -1.0f, 0.0f, 0.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( -1.0f, -1.0f, 1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( -1.0f, 0.0f, 0.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( -1.0f, 1.0f, -1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( -1.0f, 0.0f, 0.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( -1.0f, -1.0f, 1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( -1.0f, 0.0f, 0.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( -1.0f, 1.0f, -1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( -1.0f, 0.0f, 0.0f, 0.0f );
+   index++;
+   vertices[ index ].Position = vmath::vec4( -1.0f, -1.0f, -1.0f, 1.0f );
+   vertices[ index ].Normal = vmath::vec4( -1.0f, 0.0f, 0.0f, 0.0f );
+   index++;
+   
+   vmath::mat4 scaleMat = vmath::scale( 0.5f, 0.5f, 0.5f );
+   
+   // scale to unit size
+   for (unsigned int i = 0; i < 36; i++)
+   {
+      vertices[ i ].Position = scaleMat * vertices[ i ].Position;
+      indicies[ i ] = i;
+   }
+}
+
+
 Mesh::Mesh()
 {
    m_Vertices = nullptr;
@@ -63,51 +200,16 @@ Mesh& Mesh::MeshValue()
 
 void Mesh::Load( std::string name )
 {
+   // will load from path in the final version but not for now.
    std::string path = Path::Instance().GetMeshPath( name );
 
-   static const GLfloat positions[] =
-   {
-      -0.25f, -0.25f, -0.25f,
-      -0.25f,  0.25f, -0.25f,
-       0.25f, -0.25f, -0.25f,
-       0.25f,  0.25f, -0.25f,
-       0.25f, -0.25f,  0.25f,
-       0.25f,  0.25f,  0.25f,
-      -0.25f, -0.25f,  0.25f,
-      -0.25f,  0.25f,  0.25f,
-   };
-
-   static const GLushort indices[] =
-   {
-      0, 1, 2,
-      2, 1, 3,
-      2, 3, 4,
-      4, 3, 5,
-      4, 5, 6,
-      6, 5, 7,
-      6, 7, 0,
-      0, 7, 1,
-      6, 0, 2,
-      2, 4, 6,
-      7, 5, 3,
-      7, 3, 1
-   };
-
-   m_NumVertices = 8;
+   m_NumVertices = 36;
    m_NumIndices = 36;
 
    m_Vertices = new Vertex[ m_NumVertices ];
-   int index = 0;
+   GLushort* indices = new GLushort[ m_NumIndices ];
 
-   for (int i = 0; i < m_NumVertices; i++)
-   {
-      vmath::vec3 pos = vmath::vec3( positions[ index ], positions[ index + 1 ], positions[ index + 2 ] );
-
-      m_Vertices[ i ].Position = vmath::vec4( pos, 1.0f );
-      m_Vertices[ i ].Normal = vmath::vec4( vmath::normalize( pos ), 0.0f );
-
-      index += 3;
-   }
+   CalculateUnitCube( m_Vertices, indices );
 
    glGenBuffers( 1, &m_VertexBuffer );
    glBindBuffer( GL_ARRAY_BUFFER, m_VertexBuffer );
@@ -119,11 +221,13 @@ void Mesh::Load( std::string name )
    glGenBuffers( 1, &m_IndicesBuffer );
    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_IndicesBuffer );
    glBufferData( GL_ELEMENT_ARRAY_BUFFER,
-                 sizeof( indices ),
+                 m_NumIndices * sizeof( GLushort ),
                  indices,
                  GL_STATIC_DRAW );
 
    m_Bounds.Calculate( m_Vertices, m_NumVertices );
+
+   delete[] indices;
 }
 
 int Mesh::GetNumVertices()

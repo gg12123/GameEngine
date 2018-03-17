@@ -212,6 +212,18 @@ GameObject& CreateLightGameObject( vmath::vec3 pos, vmath::mat4 rot, Transform& 
    return *light;
 }
 
+GameObject& CreateEmptyGameObject( vmath::vec3 pos, vmath::mat4 rot, Transform& parent )
+{
+   GameObject* empty = new GameObject( "Empty" );
+
+   empty->AddComponent( *(ComponentCreator::Instance().Create( COMPONENT_ID_TRANSFORM )) );
+   empty->CacheTransform();
+   empty->GetTransform().InitParent( parent );
+   InitTransformState( empty->GetTransform(), pos, rot );
+
+   return *empty;
+}
+
 // In this function, the created components cannot interact with the world so be
 // carefull what functions you call on them.
 GameObject& HierarchyForNewProject( std::vector<GameObject*>& gameObjects )
@@ -235,7 +247,7 @@ GameObject& HierarchyForNewProject( std::vector<GameObject*>& gameObjects )
    gameObjects.push_back( &CreateCameraGameObject( vmath::vec3( 0.0f, 0.0f, 10.0f ), vmath::rotate( 0.0f, 180.0f, 0.0f ), root->GetTransform() ) );
 
    // light
-   gameObjects.push_back( &CreateLightGameObject( vmath::vec3( 0.0f, 0.0f, 10.0f ), vmath::eulerToMatrix( 180.0f, 45.0f, 0.0f ), root->GetTransform() ) );
+   gameObjects.push_back( &CreateLightGameObject( vmath::vec3( 0.0f, 0.0f, 10.0f ), vmath::eulerToMatrix( 145.0f, 45.0f, 0.0f ), root->GetTransform() ) );
 
    return *root;
 }

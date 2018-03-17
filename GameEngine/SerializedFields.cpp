@@ -83,27 +83,49 @@ void FixedSizeSerializedField::DeSerializeWithSize( std::ifstream& stream )
    LocalDeSerialize( stream );
 }
 
-// ####################### VECTOR3 ########################### 
+// ####################### VECTOR ########################### 
 
-void SerializedVector3::OnGUI( std::string fieldName, ISerializedFieldOwner& owner )
+void SerializedVector::OnGUI( std::string fieldName, ISerializedFieldOwner& owner )
 {
    ImGui::Text( fieldName.c_str() );
 
-   if (ImGui::InputFloat( (fieldName + " X").c_str(), &m_Value[ 0 ] ))
+   for (int i = 0; i < GetCount(); i++)
    {
-      owner.OnNewSerializedFields();
-   }
-
-   if (ImGui::InputFloat( (fieldName + " Y").c_str(), &m_Value[ 1 ] ))
-   {
-      owner.OnNewSerializedFields();
-   }
-
-   if (ImGui::InputFloat( (fieldName + " Z").c_str(), &m_Value[ 2 ] ))
-   {
-      owner.OnNewSerializedFields();
+      if (ImGui::InputFloat( (fieldName + GetNameAt( i )).c_str(), GetPtrAt( i ) ))
+      {
+         owner.OnNewSerializedFields();
+      }
    }
 }
+
+void SerializedVector::LocalSerialize( std::ofstream& stream )
+{
+   SerializedFloat f;
+
+   for (int i = 0; i < GetCount(); i++)
+   {
+      f.SetValue( *GetPtrAt( i ) );
+      f.Serialize( stream );
+   }
+}
+
+void SerializedVector::LocalDeSerialize( std::ifstream& stream )
+{
+   SerializedFloat f;
+
+   for (int i = 0; i < GetCount(); i++)
+   {
+      f.DeSerialize( stream );
+      *GetPtrAt( i ) = f.Value();
+   }
+}
+
+int32_t SerializedVector::GetSize()
+{
+   return GetCount() * sizeof( float );
+}
+
+// ####################### VECTOR3 ########################### 
 
 vmath::vec3 SerializedVector3::Value()
 {
@@ -115,33 +137,6 @@ void SerializedVector3::SetValue( vmath::vec3 value )
    m_Value = value;
 }
 
-void SerializedVector3::LocalSerialize( std::ofstream& stream )
-{
-   SerializedFloat f;
-
-   for (int i = 0; i < 3; i++)
-   {
-      f.SetValue( m_Value[ i ] );
-      f.Serialize( stream );
-   }
-}
-
-void SerializedVector3::LocalDeSerialize( std::ifstream& stream )
-{
-   SerializedFloat f;
-
-   for (int i = 0; i < 3; i++)
-   {
-      f.DeSerialize( stream );
-      m_Value[ i ] = f.Value();
-   }
-}
-
-int32_t SerializedVector3::GetSize()
-{
-   return 3 * sizeof( float );
-}
-
 vmath::vec3 SerializedVector3::Vector3Value()
 {
    return m_Value;
@@ -150,6 +145,22 @@ vmath::vec3 SerializedVector3::Vector3Value()
 void SerializedVector3::CopyFrom( SerializedField& toCopy )
 {
    m_Value = toCopy.Vector3Value();
+}
+
+int SerializedVector3::GetCount()
+{
+   return 3;
+}
+
+std::string SerializedVector3::GetNameAt( int i )
+{
+   static std::string names[] = { " X", " Y", " Z" };
+   return names[ i ];
+}
+
+float* SerializedVector3::GetPtrAt( int i )
+{
+   return &m_Value[ i ];
 }
 
 // ####################### VECTOR4 ########################### 
@@ -174,56 +185,20 @@ void SerializedVector4::CopyFrom( SerializedField& toCopy )
    m_Value = toCopy.Vector4Value();
 }
 
-void SerializedVector4::OnGUI( std::string fieldName, ISerializedFieldOwner& owner )
+int SerializedVector4::GetCount()
 {
-   ImGui::Text( fieldName.c_str() );
-
-   if (ImGui::InputFloat( (fieldName + " R").c_str(), &m_Value[ 0 ] ))
-   {
-      owner.OnNewSerializedFields();
-   }
-
-   if (ImGui::InputFloat( (fieldName + " G").c_str(), &m_Value[ 1 ] ))
-   {
-      owner.OnNewSerializedFields();
-   }
-
-   if (ImGui::InputFloat( (fieldName + " B").c_str(), &m_Value[ 2 ] ))
-   {
-      owner.OnNewSerializedFields();
-   }
-
-   if (ImGui::InputFloat( (fieldName + " A").c_str(), &m_Value[ 3 ] ))
-   {
-      owner.OnNewSerializedFields();
-   }
+   return 4;
 }
 
-void SerializedVector4::LocalSerialize( std::ofstream& stream )
+std::string SerializedVector4::GetNameAt( int i )
 {
-   SerializedFloat f;
-
-   for (int i = 0; i < 4; i++)
-   {
-      f.SetValue( m_Value[ i ] );
-      f.Serialize( stream );
-   }
+   static std::string names[] = { " R", " G", " B", " A" };
+   return names[ i ];
 }
 
-void SerializedVector4::LocalDeSerialize( std::ifstream& stream )
+float* SerializedVector4::GetPtrAt( int i )
 {
-   SerializedFloat f;
-
-   for (int i = 0; i < 4; i++)
-   {
-      f.DeSerialize( stream );
-      m_Value[ i ] = f.Value();
-   }
-}
-
-int32_t SerializedVector4::GetSize()
-{
-   return 4 * sizeof( float );
+   return &m_Value[ i ];
 }
 
 // ####################### ROTATION ########################### 

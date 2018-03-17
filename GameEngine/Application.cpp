@@ -9,6 +9,8 @@
 #include "InspectorWindow.h"
 #include "MainToolWindow.h"
 
+Application* Application::m_ThisApp;
+
 Application::Application()
 {
    m_ThisApp = this;
