@@ -27,6 +27,8 @@ private:
    void RunLoop();
    void SetupCallbacks();
 
+   vmath::vec2 GetCurrentMousePosition();
+
    GLFWwindow* m_Window;
    World m_World;
    WindowConfiguration m_WindowConfig;

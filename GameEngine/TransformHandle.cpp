@@ -4,6 +4,8 @@
 #include "Debug.h"
 #include "ComponentIDs.h"
 #include "Collider.h"
+#include "Ray.h"
+#include "Camera.h"
 
 TransformHandle::TransformHandle()
 {
@@ -47,6 +49,8 @@ void TransformHandle::EditAwake( IEditor& editor )
 
    if (!m_Collider)
       Debug::Instance().LogError( "No collider attached to transform handle" );
+
+   RegisterForUpdate( eUpdateInEditMode );
 }
 
 void TransformHandle::EditUpdate()
@@ -61,7 +65,21 @@ int32_t TransformHandle::GetType()
 
 void TransformHandle::ApplyPositionalMovement()
 {
-   // move target in the direction of my forward.
+   vec3 myPos = GetGameObject().GetTransform().GetPosition();
+   vec3 myDir = GetGameObject().GetTransform().Forward();
+
+   Ray r( myDir, myPos );
+
+   vec2 inScreenSpace = normalize( GetActiveCamera().ToScreenSpaceDirection( r ) );
+   vec2 mouseDelta = GetInput().MouseDelta();
+
+   const float movement = dot( mouseDelta, inScreenSpace );
+
+   Transform& parent = GetGameObject().GetTransform().GetParent();
+   vec3 newPos = parent.GetPosition() + movement * myDir;
+
+   parent.SetPosition( newPos );
+   m_Target->SetPosition( newPos );
 }
 
 void TransformHandle::ApplyRotationalMovement()
@@ -76,5 +94,4 @@ void TransformHandle::ApplyScaleMovement()
 
 void TransformHandle::ApplyNoMovement()
 {
-
 }

@@ -51,7 +51,7 @@ mat4 Camera::ConstructWorldToView( const mat4& cameraTransform )
 mat4 Camera::ConstructPerspectiveProj()
 {
    mat4 persp = perspective2( m_FOVAngle.Value(),
-                              m_WindowConfig->GetWidth() / m_WindowConfig->GetHeight(),
+                              Aspect(),
                               m_NearClip.Value(),
                               m_FarClip.Value() );
 
@@ -104,10 +104,15 @@ bool Camera::IsActive()
    return (&GetActiveCamera() == this);
 }
 
+float Camera::Aspect()
+{
+   return (m_WindowConfig->GetWidth() / m_WindowConfig->GetHeight());
+}
+
 Ray Camera::ScreenPointToRay( const vec2& screenPoint )
 {
    const float w = m_WindowConfig->GetWidth() / 2.0f;
-   const float h = m_WindowConfig->GetWidth() / 2.0f;
+   const float h = m_WindowConfig->GetHeight() / 2.0f;
 
    TwoDimentionalSpace screenSpace( w,
                                     h,
@@ -119,15 +124,17 @@ Ray Camera::ScreenPointToRay( const vec2& screenPoint )
 
    vec2 pointInCamPlane = Transform2DPoint( screenSpace, camPlaneSpace, screenPoint );
 
+   const float q = 1.0f / tanf( radians( 0.5f * m_FOVAngle.Value() ) );
+   const float A = q / Aspect();
+
+   const float x = pointInCamPlane[ 0 ] / A;
+   const float y = pointInCamPlane[ 1 ] / A; // TODO: not sure why I dont need to divide by q here - something maybe wrong so needs looking into. Or maybe its because I didnt take aspect into account during Transform2DPoint()???.
+
    mat4 cameraTransform = GetGameObject().GetTransform().GetTransformMatrix();
 
-   vec3 pointInCamPlaneGlobal = (1.0f / tanf( 0.5f * m_FOVAngle.Value() )) * extractForwardOnly( cameraTransform ) +
-      pointInCamPlane[ 0 ] * extractRightOnly( cameraTransform ) +
-      pointInCamPlane[ 1 ] * extractUpOnly( cameraTransform );
+   vec3 rayDir = extractForwardOnly( cameraTransform ) + (x * extractRightOnly( cameraTransform )) + (y * extractUpOnly( cameraTransform ));
 
-   vec3 cameraPos = extractPositionOnly( cameraTransform );
-
-   return Ray( normalize( pointInCamPlaneGlobal - cameraPos ), cameraPos );
+   return Ray( normalize( rayDir ), extractPositionOnly( cameraTransform ) );
 }
 
 vmath::vec2 Camera::ToScreenSpaceDirection( Ray& globalRay )
@@ -150,7 +157,7 @@ vmath::vec2 Camera::ToScreenSpaceDirection( Ray& globalRay )
    vec2 dirProj2 = vec2( dirProj[ 0 ], dirProj[ 1 ] );
 
    const float w = m_WindowConfig->GetWidth() / 2.0f;
-   const float h = m_WindowConfig->GetWidth() / 2.0f;
+   const float h = m_WindowConfig->GetHeight() / 2.0f;
 
    TwoDimentionalSpace screenSpace( w,
                                     h,

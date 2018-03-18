@@ -45,8 +45,8 @@ void Collider::ReCalculateBounds()
 
       for (int i = 0; i < 3; i++)
       {
-         m_Bounds[ i ][ 0 ] = scale[ 0 ] * m_MeshBounds->Min( i );
-         m_Bounds[ i ][ 1 ] = scale[ 0 ] * m_MeshBounds->Max( i );
+         m_Bounds[ i ][ 0 ] = scale[ i ] * m_MeshBounds->Min( i );
+         m_Bounds[ i ][ 1 ] = scale[ i ] * m_MeshBounds->Max( i );
       }
    }
    else

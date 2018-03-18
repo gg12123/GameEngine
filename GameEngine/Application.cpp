@@ -34,10 +34,10 @@ bool Application::InitWindow()
       glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
       glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE );
 
-      m_WindowConfig.Set( 1000, 800 );
+      m_WindowConfig.Set( 1000.0f, 800.0f );
 
-      m_Window = glfwCreateWindow( m_WindowConfig.GetWidth(),
-                                   m_WindowConfig.GetHeight(),
+      m_Window = glfwCreateWindow( static_cast<int>(m_WindowConfig.GetWidth()),
+                                   static_cast<int>(m_WindowConfig.GetHeight()),
                                    "Engine",
                                    NULL,
                                    NULL );
@@ -95,6 +95,13 @@ void Application::InitEngine()
    m_Editor.AddWindow( *(new InspectorWindow()) );
 }
 
+vmath::vec2 Application::GetCurrentMousePosition()
+{
+   double dx, dy;
+   glfwGetCursorPos( m_Window, &dx, &dy );
+   return vmath::vec2( static_cast<float>(dx), m_WindowConfig.GetHeight() - static_cast<float>(dy) );
+}
+
 void Application::RunLoop()
 {
    bool running = true;
@@ -105,6 +112,8 @@ void Application::RunLoop()
    {
       glfwPollEvents();
       ImGui_ImplGlfwGL3_NewFrame();
+
+      m_Input.PreUpdate( GetCurrentMousePosition() );
 
       m_World.EditUpdate();
       m_Editor.Update();

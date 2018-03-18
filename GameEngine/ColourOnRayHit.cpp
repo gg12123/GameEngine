@@ -3,6 +3,12 @@
 #include "Camera.h"
 #include "Physics.h"
 #include "GameObject.h"
+#include "Transform.h"
+
+void ColourOnRayHit::GetSerializedFields( std::unordered_map<std::string, SerializedField*>& fields )
+{
+   fields[ "spawnable" ] = &m_SpawnPrefab;
+}
 
 ColourOnRayHit::ColourOnRayHit()
 {
@@ -27,6 +33,9 @@ void ColourOnRayHit::EditUpdate()
             m_NextColour = (m_NextColour + 1) % NUM_COLOURS;
          }
       }
+
+      GameObject& spawned = InstantiatePrefab( m_SpawnPrefab );
+      spawned.GetTransform().SetPosition( ray.GetOrigin() + 10.0f * ray.GetDirection() );
    }
 }
 
@@ -39,4 +48,5 @@ void ColourOnRayHit::EditAwake( IEditor& editor )
 {
    m_MyCollider = GetGameObject().GetComponent<Collider>();
    m_MyMeshRen = GetGameObject().GetComponent<MeshRenderer>();
+   RegisterForUpdate( eUpdateInEditMode );
 }

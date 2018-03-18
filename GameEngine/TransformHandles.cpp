@@ -8,6 +8,7 @@
 #include "Collider.h"
 #include "IEditor.h"
 #include "Transform.h"
+#include "EditorEvents.h"
 
 TransformHandles::TransformHandles()
 {
@@ -23,25 +24,56 @@ void TransformHandles::EditAwake( IEditor& editor )
    {
       Debug::Instance().LogError( "wrong number of transform handles" );
    }
+
+   RegisterForUpdate( eUpdateInEditMode );
+   m_Editor->RegisterCallbackForEvent( eActiveGameObjectChanged, *m_OnActiveGOChangedEvent.Init( &TransformHandles::OnNewActiveGO, this ) );
+}
+
+bool TransformHandles::IsHandle( GameObject& obj )
+{
+   bool handle = false;
+
+   for (auto it = m_Handles.begin(); it != m_Handles.end(); it++)
+   {
+      if (&(*it)->GetGameObject() == &obj)
+      {
+         handle = true;
+         break;
+      }
+   }
+   return handle;
+}
+
+void TransformHandles::TryToStartMovement( GameObject& active )
+{
+   Ray ray = GetActiveCamera().ScreenPointToRay( GetInput().MousePosition() );
+   RayCastHit hit;
+
+   if (GetPhysics().RayCast( ray, hit ))
+   {
+      for (auto it = m_Handles.begin(); it != m_Handles.end(); it++)
+      {
+         if (&(*it)->AttachedCollider() == hit.HitCollider)
+         {
+            m_ActiveHandle = *it;
+            m_ActiveHandle->StartPositionalMovement( active.GetTransform() );
+         }
+      }
+   }
 }
 
 void TransformHandles::EditUpdate()
 {
-   if (GetInput().MouseButtonDown( eLeftMouseButton ))
-   {
-      Ray ray = GetActiveCamera().ScreenPointToRay( GetInput().MousePosition() );
-      RayCastHit hit;
+   GameObject *active = m_Editor->GetActiveGameObject();
 
-      if (GetPhysics().RayCast( ray, hit ))
+   if (active && !IsHandle( *active ))
+   {
+      GetGameObject().GetTransform().SetPosition( active->GetTransform().GetPosition() );
+      GetGameObject().GetTransform().SetRotation( active->GetTransform().GetRotation() );
+
+      if (GetInput().MouseButtonDown( eLeftMouseButton ))
       {
-         for (auto it = m_Handles.begin(); it != m_Handles.end(); it++)
-         {
-            if (&(*it)->AttachedCollider() == hit.HitCollider)
-            {
-               m_ActiveHandle = *it;
-               m_ActiveHandle->StartPositionalMovement( hit.HitCollider->GetGameObject().GetTransform() );
-            }
-         }
+         TryToStartMovement( *active );
       }
    }
 
@@ -68,12 +100,4 @@ void TransformHandles::OnNewActiveGO()
       m_ActiveHandle->StopMovement();
    }
    m_ActiveHandle = nullptr;
-
-   GameObject *active = m_Editor->GetActiveGameObject();
-
-   if (active)
-   {
-      GetGameObject().GetTransform().SetPosition( active->GetTransform().GetPosition() );
-      GetGameObject().GetTransform().SetRotation( active->GetTransform().GetRotation() );
-   }
 }

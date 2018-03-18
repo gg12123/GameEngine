@@ -16,6 +16,8 @@ protected:
 
 private:
    void OnNewActiveGO();
+   bool IsHandle( GameObject& obj );
+   void TryToStartMovement( GameObject& active );
 
    std::vector<TransformHandle*> m_Handles;
    TransformHandle* m_ActiveHandle;

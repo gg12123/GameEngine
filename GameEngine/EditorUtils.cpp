@@ -201,10 +201,9 @@ void AddComponentOnGUI( Editor& editor, GameObject& active )
             {
                Component* newComp = ComponentCreator::Instance().Create( i );
                
+               // the scene must be reloaded in order to awake the component.
+               // this is to deal with components being added that are dependent on one another.
                active.AddComponent( *newComp );
-
-               newComp->PreAwake( active );
-               newComp->EditAwake( editor );
             }
          }
       }

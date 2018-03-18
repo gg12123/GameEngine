@@ -33,7 +33,7 @@ protected:
    void EditAwake( IEditor& editor ) override;
 
 private:
-   bool m_IsActive;
+   float Aspect();
 
    // will need to pull aspect ratio in from world
    SerializedFloat m_NearClip;
