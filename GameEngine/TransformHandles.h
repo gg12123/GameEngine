@@ -15,13 +15,11 @@ protected:
    void EditAwake( IEditor& editor ) override;
 
 private:
-   void OnNewActiveGO();
    bool IsHandle( GameObject& obj );
-   void TryToStartMovement( GameObject& active );
+   bool TryGetHandle();
 
    std::vector<TransformHandle*> m_Handles;
    TransformHandle* m_ActiveHandle;
-   VoidEventHandler<TransformHandles> m_OnActiveGOChangedEvent;
    IEditor* m_Editor;
 };
 

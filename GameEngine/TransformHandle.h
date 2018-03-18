@@ -28,6 +28,8 @@ private:
    void ApplyScaleMovement();
    void ApplyNoMovement();
 
+   float CalculateInputMouseMovement();
+
    Transform* m_Target;
    Collider* m_Collider;
 

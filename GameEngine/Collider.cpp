@@ -41,12 +41,11 @@ void Collider::ReCalculateBounds()
 {
    if (m_MeshBounds)
    {
-      vmath::vec3 scale = GetGameObject().GetTransform().GetScale();
-
       for (int i = 0; i < 3; i++)
       {
-         m_Bounds[ i ][ 0 ] = scale[ i ] * m_MeshBounds->Min( i );
-         m_Bounds[ i ][ 1 ] = scale[ i ] * m_MeshBounds->Max( i );
+         // dont need to multiply by scale here becasue collision detection is done in local space
+         m_Bounds[ i ][ 0 ] = m_MeshBounds->Min( i );
+         m_Bounds[ i ][ 1 ] = m_MeshBounds->Max( i );
       }
    }
    else

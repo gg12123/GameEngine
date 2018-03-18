@@ -26,28 +26,36 @@ void TransformHandles::EditAwake( IEditor& editor )
    }
 
    RegisterForUpdate( eUpdateInEditMode );
-   m_Editor->RegisterCallbackForEvent( eActiveGameObjectChanged, *m_OnActiveGOChangedEvent.Init( &TransformHandles::OnNewActiveGO, this ) );
 }
 
 bool TransformHandles::IsHandle( GameObject& obj )
 {
    bool handle = false;
 
-   for (auto it = m_Handles.begin(); it != m_Handles.end(); it++)
+   if (&GetGameObject() == &obj)
    {
-      if (&(*it)->GetGameObject() == &obj)
+      handle = true;
+   }
+   else
+   {
+      for (auto it = m_Handles.begin(); it != m_Handles.end(); it++)
       {
-         handle = true;
-         break;
+         if (&(*it)->GetGameObject() == &obj)
+         {
+            handle = true;
+            break;
+         }
       }
    }
+
    return handle;
 }
 
-void TransformHandles::TryToStartMovement( GameObject& active )
+bool TransformHandles::TryGetHandle()
 {
    Ray ray = GetActiveCamera().ScreenPointToRay( GetInput().MousePosition() );
    RayCastHit hit;
+   bool handleFound = false;
 
    if (GetPhysics().RayCast( ray, hit ))
    {
@@ -56,10 +64,12 @@ void TransformHandles::TryToStartMovement( GameObject& active )
          if (&(*it)->AttachedCollider() == hit.HitCollider)
          {
             m_ActiveHandle = *it;
-            m_ActiveHandle->StartPositionalMovement( active.GetTransform() );
+            handleFound = true;
+            break;
          }
       }
    }
+   return handleFound;
 }
 
 void TransformHandles::EditUpdate()
@@ -70,14 +80,20 @@ void TransformHandles::EditUpdate()
    {
       GetGameObject().GetTransform().SetPosition( active->GetTransform().GetPosition() );
       GetGameObject().GetTransform().SetRotation( active->GetTransform().GetRotation() );
+      GetGameObject().GetTransform().SetScale( active->GetTransform().GetScale() );
 
-      if (GetInput().MouseButtonDown( eLeftMouseButton ))
+      if (GetInput().MouseButtonDown( eLeftMouseButton ) && TryGetHandle())
       {
-         TryToStartMovement( *active );
+         m_ActiveHandle->StartPositionalMovement( active->GetTransform() );
+      }
+
+      if (GetInput().MouseButtonDown( eRightMouseButton ) && TryGetHandle())
+      {
+         m_ActiveHandle->StartScaleMovement( active->GetTransform() );
       }
    }
 
-   if (GetInput().MouseButtonUp( eLeftMouseButton ))
+   if (GetInput().MouseButtonUp( eLeftMouseButton ) || GetInput().MouseButtonUp( eRightMouseButton ))
    {
       if (m_ActiveHandle)
       {
@@ -90,14 +106,4 @@ void TransformHandles::EditUpdate()
 int32_t TransformHandles::GetType()
 {
    return COMPONENT_ID_TRANSFORMHANDLES;
-}
-
-void TransformHandles::OnNewActiveGO()
-{
-   if (m_ActiveHandle)
-   {
-      Debug::Instance().LogError( "Active GO changed whilst trasform handle is active " );
-      m_ActiveHandle->StopMovement();
-   }
-   m_ActiveHandle = nullptr;
 }

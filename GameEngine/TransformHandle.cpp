@@ -63,7 +63,7 @@ int32_t TransformHandle::GetType()
    return COMPONENT_ID_TRANSFORMHANDLE;
 }
 
-void TransformHandle::ApplyPositionalMovement()
+float TransformHandle::CalculateInputMouseMovement()
 {
    vec3 myPos = GetGameObject().GetTransform().GetPosition();
    vec3 myDir = GetGameObject().GetTransform().Forward();
@@ -73,13 +73,16 @@ void TransformHandle::ApplyPositionalMovement()
    vec2 inScreenSpace = normalize( GetActiveCamera().ToScreenSpaceDirection( r ) );
    vec2 mouseDelta = GetInput().MouseDelta();
 
-   const float movement = dot( mouseDelta, inScreenSpace );
+   return (dot( mouseDelta, inScreenSpace ) * 0.01f);
+}
+
+void TransformHandle::ApplyPositionalMovement()
+{
+   const float movement = CalculateInputMouseMovement();
 
    Transform& parent = GetGameObject().GetTransform().GetParent();
-   vec3 newPos = parent.GetPosition() + movement * myDir;
 
-   parent.SetPosition( newPos );
-   m_Target->SetPosition( newPos );
+   m_Target->SetPosition( parent.GetPosition() + movement * GetGameObject().GetTransform().Forward() );
 }
 
 void TransformHandle::ApplyRotationalMovement()
@@ -89,7 +92,24 @@ void TransformHandle::ApplyRotationalMovement()
 
 void TransformHandle::ApplyScaleMovement()
 {
-   // scale target in the direction of my forward.
+   const float movement = CalculateInputMouseMovement();
+   vec3 myDir = GetGameObject().GetTransform().Forward();
+
+   int requiredDirection = 0;
+
+   if (fabs( dot( m_Target->Forward(), myDir ) ) > 0.9f)
+   {
+      requiredDirection = 2;
+   }
+   else if (fabs( dot( m_Target->Up(), myDir ) ) > 0.9f)
+   {
+      requiredDirection = 1;
+   }
+
+   vec3 currScale = m_Target->GetScale();
+   currScale[ requiredDirection ] += movement;
+
+   m_Target->SetScale( currScale );
 }
 
 void TransformHandle::ApplyNoMovement()

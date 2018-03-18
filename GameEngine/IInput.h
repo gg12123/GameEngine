@@ -4,8 +4,8 @@
 enum eMouseButton
 {
    eLeftMouseButton,
-   eMiddleMouseButton,
-   eRightMouseButton
+   eRightMouseButton,
+   eMiddleMouseButton
 };
 
 class IInput
