@@ -5,6 +5,8 @@
 #include "Transform.h"
 #include "BoxCollider.h"
 #include "ColourOnRayHit.h"
+#include "TransformHandle.h"
+#include "TransformHandles.h"
 
 // ###################
 static Component* CreateDiffuseMeshRenderer()
@@ -42,6 +44,18 @@ static Component* CreateColourOnRay()
    return new ColourOnRayHit();
 }
 
+// ###################
+static Component* CreateTransformHandle()
+{
+   return new TransformHandle();
+}
+
+// ###################
+static Component* CreateTransformHandles()
+{
+   return new TransformHandles();
+}
+
 ComponentCreator::ComponentCreator()
 {
    m_ComponentInfo[ COMPONENT_ID_CAMERA ].Init( "Camera", CreateCamera );
@@ -50,6 +64,8 @@ ComponentCreator::ComponentCreator()
    m_ComponentInfo[ COMPONENT_ID_DIFFUSEMESHRENDERER ].Init( "Diffuse mesh renderer", CreateDiffuseMeshRenderer );
    m_ComponentInfo[ COMPONENT_ID_BOXCOLLIDER ].Init( "Box collider", CreateBoxCollider );
    m_ComponentInfo[ COMPONENT_ID_COLURRAYHIT ].Init( "Change colour on click", CreateColourOnRay );
+   m_ComponentInfo[ COMPONENT_ID_TRANSFORMHANDLE ].Init( "Transform handle", CreateTransformHandle );
+   m_ComponentInfo[ COMPONENT_ID_TRANSFORMHANDLES ].Init( "Transform handles", CreateTransformHandles );
 }
 
 bool ComponentCreator::ComponentIDIsValid( int32_t id )

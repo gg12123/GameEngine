@@ -64,24 +64,44 @@ void World::Init( IWindowConfiguration& windowConfig, SceneLoader& loader, IInpu
    m_Input = &input;
 }
 
-void World::Awake( GameObject& rootGameObject, std::vector<GameObject*>& gameObjects )
+void World::AwakeHierarchy( std::vector<GameObject*>& gameObjects )
 {
-   m_Root = &rootGameObject.GetTransform();
+   for (auto it = gameObjects.begin(); it != gameObjects.end(); it++)
+   {
+      // Calling pre-awake allows components to iterate over the hierarchy during awake.
+      (*it)->PreAwake();
+   }
 
-   for (std::vector<GameObject*>::iterator it = gameObjects.begin(); it != gameObjects.end(); it++)
+   for (auto it = gameObjects.begin(); it != gameObjects.end(); it++)
    {
       (*it)->AwakeComponents( *this );
    }
 }
 
-void World::EditAwake( Editor& editor, GameObject& rootGameObject, std::vector<GameObject*>& gameObjects )
+void World::EditAwakeHierarchy( Editor& editor, std::vector<GameObject*>& gameObjects )
 {
-   m_Root = &rootGameObject.GetTransform();
+   for (auto it = gameObjects.begin(); it != gameObjects.end(); it++)
+   {
+      // Calling pre-awake allows components to iterate over the hierarchy during awake.
+      (*it)->PreAwake();
+   }
 
-   for (std::vector<GameObject*>::iterator it = gameObjects.begin(); it != gameObjects.end(); it++)
+   for (auto it = gameObjects.begin(); it != gameObjects.end(); it++)
    {
       (*it)->EditAwakeComponents( editor );
    }
+}
+
+void World::Awake( GameObject& rootGameObject, std::vector<GameObject*>& gameObjects )
+{
+   m_Root = &rootGameObject.GetTransform();
+   AwakeHierarchy( gameObjects );
+}
+
+void World::EditAwake( Editor& editor, GameObject& rootGameObject, std::vector<GameObject*>& gameObjects )
+{
+   m_Root = &rootGameObject.GetTransform();
+   EditAwakeHierarchy( editor, gameObjects );
 }
 
 // call start on GOs to be started at the beginning of each update

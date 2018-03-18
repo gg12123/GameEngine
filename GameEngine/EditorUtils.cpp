@@ -28,7 +28,11 @@ void GameObjectCreationContext::OnGUI( Editor& editor, GameObject& parent )
          if (ImGui::Selectable( m_CreationFunctions[ i ].Name.c_str() ))
          {
             GameObject& newObj = m_CreationFunctions[ i ].Function( vmath::vec3( 0.0f, 0.0f, 0.0f ), vmath::mat4().identity(), parent.GetTransform() );
-            newObj.EditAwakeComponents( editor );
+
+            std::vector<GameObject*> hierarchy;
+            hierarchy.push_back( &newObj );
+
+            editor.GetWorld().EditAwakeHierarchy( editor, hierarchy );
          }
       }
 
@@ -198,7 +202,9 @@ void AddComponentOnGUI( Editor& editor, GameObject& active )
                Component* newComp = ComponentCreator::Instance().Create( i );
                
                active.AddComponent( *newComp );
-               newComp->EditAwake( editor, active );
+
+               newComp->PreAwake( active );
+               newComp->EditAwake( editor );
             }
          }
       }

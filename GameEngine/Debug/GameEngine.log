@@ -1,4 +1,39 @@
-﻿  Application.cpp
+﻿  EditorUtils.cpp
+  Component.cpp
+  Generating Code...
+  Compiling...
+  main.cpp
+  World.cpp
+  Utils.cpp
+  TransformHandles.cpp
+  TransformHandle.cpp
+  Transform.cpp
+  SceneLoader.cpp
+  RenderingSlot.cpp
+  PrefabField.cpp
+  MeshRenderer.cpp
+  MeshField.cpp
+  Light.cpp
+  HierarchyWindow.cpp
+  GeometryRenderer.cpp
+  GameObject.cpp
+  Editor.cpp
+  DiffuseMeshRenderer.cpp
+  ComponentCreator.cpp
+  ColourOnRayHit.cpp
+  Collider.cpp
+  Generating Code...
+  Compiling...
+  Camera.cpp
+  Application.cpp
 c:\users\gg_11\documents\visual studio 2015\projects\gameengine2\gameengine\application.cpp(43): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  TransformUpdater.cpp
+  Ray.cpp
+  Physics.cpp
+  ParentSetter.cpp
+  InspectorWindow.cpp
+  BoxCollider.cpp
   GameEngine.vcxproj -> C:\Users\gg_11\Documents\Visual Studio 2015\Projects\GameEngine2\Debug\GameEngine.exe
   GameEngine.vcxproj -> C:\Users\gg_11\Documents\Visual Studio 2015\Projects\GameEngine2\Debug\GameEngine.pdb (Partial PDB)

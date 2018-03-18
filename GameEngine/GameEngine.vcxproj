@@ -160,6 +160,8 @@
     <ClInclude Include="PrefabField.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="SceneLoader.h" />
+    <ClInclude Include="TransformHandle.h" />
+    <ClInclude Include="TransformHandles.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="GameObject.h" />
@@ -214,6 +216,8 @@
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="SceneLoader.cpp" />
     <ClCompile Include="SerializedFields.cpp" />
+    <ClCompile Include="TransformHandle.cpp" />
+    <ClCompile Include="TransformHandles.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GeometryRenderer.cpp" />

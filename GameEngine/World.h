@@ -30,6 +30,11 @@ public:
    void Awake( GameObject& rootGameObject, std::vector<GameObject*>& gameObjects );
    void EditAwake( Editor& editor, GameObject& rootGameObject, std::vector<GameObject*>& gameObjects );
 
+   // This is the only way that you should awake a hierarchy!!!
+   // The hierarchy's parent must be set up correctly beforehand.
+   void AwakeHierarchy( std::vector<GameObject*>& gameObjects );
+   void EditAwakeHierarchy( Editor& editor, std::vector<GameObject*>& gameObjects );
+
    // call start on GOs to be started at the beginning of each update
    void Update();
    void FixedUpdate();

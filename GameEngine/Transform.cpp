@@ -278,6 +278,24 @@ void Transform::SetScale( vec3 s )
                         s[ 2 ] / length( unscaledTransform[ 2 ] ) ) );
 }
 
+vec3 Transform::Forward()
+{
+   ConstructTransformMatrix();
+   return extractForwardOnly( m_TransformMatrix );
+}
+
+vec3 Transform::Right()
+{
+   ConstructTransformMatrix();
+   return extractRightOnly( m_TransformMatrix );
+}
+
+vec3 Transform::Up()
+{
+   ConstructTransformMatrix();
+   return extractUpOnly( m_TransformMatrix );
+}
+
 vec3 Transform::GetPosition()
 {
    ConstructTransformMatrix();

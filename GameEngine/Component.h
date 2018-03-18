@@ -22,11 +22,12 @@ class Physics;
 class Component : public ISerializedFieldOwner
 {
 public:
-
+   Component();
    virtual ~Component();
 
-   void Awake( World &world, GameObject &gameObject );
-   void EditAwake( Editor &editor, GameObject &gameObject );
+   void PreAwake( GameObject& gameObject );
+   void Awake( World &world );
+   void EditAwake( Editor &editor );
 
    virtual void Start();
 

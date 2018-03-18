@@ -17,10 +17,7 @@ GameObject& PrefabField::Instantiate( World& world, Transform& parent )
    std::vector<GameObject*> instanceHierarchy;
    GameObject& root = CreateInstance( parent, world, instanceHierarchy );
 
-   for (auto it = instanceHierarchy.begin(); it != instanceHierarchy.end(); it++)
-   {
-      (*it)->AwakeComponents( world );
-   }
+   world.AwakeHierarchy( instanceHierarchy );
 
    return root;
 }
@@ -30,10 +27,7 @@ GameObject& PrefabField::InstantiateEdit( Editor& editor, Transform& parent )
    std::vector<GameObject*> instanceHierarchy;
    GameObject& root = CreateInstance( parent, editor.GetWorld(), instanceHierarchy );
 
-   for (auto it = instanceHierarchy.begin(); it != instanceHierarchy.end(); it++)
-   {
-      (*it)->EditAwakeComponents( editor );
-   }
+   editor.GetWorld().EditAwakeHierarchy( editor, instanceHierarchy );
 
    return root;
 }

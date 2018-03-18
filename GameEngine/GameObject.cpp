@@ -140,13 +140,21 @@ void GameObject::EditUpdate()
    }
 }
 
+void GameObject::PreAwake()
+{
+   for (auto it = m_Components.begin(); it != m_Components.end(); it++)
+   {
+      (*it)->PreAwake( *this );
+   }
+}
+
 void GameObject::AwakeComponents( World &world )
 {
    m_World = &world;
 
    for (std::vector<Component*>::iterator it = m_Components.begin(); it != m_Components.end(); it++)
    {
-      (*it)->Awake( world, *this );
+      (*it)->Awake( world );
    }
 
    // this will make the world call start
@@ -159,7 +167,7 @@ void GameObject::EditAwakeComponents( Editor &editor )
 
    for (std::vector<Component*>::iterator it = m_Components.begin(); it != m_Components.end(); it++)
    {
-      (*it)->EditAwake( editor, *this );
+      (*it)->EditAwake( editor );
    }
 }
 

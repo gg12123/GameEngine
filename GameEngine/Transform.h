@@ -24,6 +24,10 @@ public:
    vec3 GetLocalScale();
    vec3 GetScale();
 
+   vec3 Forward();
+   vec3 Right();
+   vec3 Up();
+
    void SetLocalPosition( vec3 pos );
    void SetPosition( vec3 pos );
    void SetLocalRotation( mat4 rot );

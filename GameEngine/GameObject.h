@@ -7,6 +7,7 @@
 #include "NullableIterator.h"
 #include "EventManager.h"
 #include "GameObjectEvents.h"
+#include "Utils.h"
 
 class World;
 class Transform;
@@ -34,8 +35,7 @@ public:
    std::string GetName();
    void SetName( std::string name );
 
-   // called by the world if this object starts in the scene. If the object is instantiated, awake
-   // must be called by the instantitor.
+   void PreAwake();
    void AwakeComponents( World &world );
    void EditAwakeComponents( Editor &editor );
 
@@ -65,6 +65,8 @@ public:
 
    template <class T>
    T* GetComponent();
+   template<class T>
+   void GetComponentsInChildren( std::vector<T*>& components );
 
    std::vector<Component*>::iterator ComponentsBegin();
    std::vector<Component*>::iterator ComponentsEnd();
@@ -74,12 +76,10 @@ public:
    bool IsPartOfHierarchy( GameObject& root ) const;
 
 private:
-
    void CommonConstructor();
 
    UpdateableComponents* m_UpdateableComponents[ NUMBER_OF_UPDATE_FUNCTIONS ];
    std::vector<Component*> m_Components;
-
    EventManager<EGameObjectEvent, NUMBER_OF_GAME_OBJECT_EVENTS> m_Events;
 
    World *m_World;
@@ -102,5 +102,23 @@ T* GameObject::GetComponent()
    }
 
    return comp;
+}
+
+template <class T>
+void GameObject::GetComponentsInChildren( std::vector<T*>& components )
+{
+   EnumerableHierarchy enumerator( *this );
+
+   GameObject* next = enumerator.Next();
+
+   while (next)
+   {
+      T* comp = next->GetComponent<T>();
+
+      if (comp)
+         components.push_back( comp );
+
+      next = enumerator.Next();
+   }
 }
 

@@ -79,11 +79,7 @@ void HierarchyWindow::ContextMenu()
             std::vector<GameObject*> duplicatedObjs;
             GameObject& dupRoot = DuplicateHierarchy( *active, duplicatedObjs );
             dupRoot.GetTransform().InitParent( active->GetTransform().GetParent() );
-
-            for (auto it = duplicatedObjs.begin(); it != duplicatedObjs.end(); it++)
-            {
-               (*it)->EditAwakeComponents( *m_Editor );
-            }
+            m_Editor->GetWorld().EditAwakeHierarchy( *m_Editor, duplicatedObjs );
          }
       }
 

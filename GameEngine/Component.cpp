@@ -8,24 +8,31 @@
 #include "SceneLoader.h"
 #include "Editor.h"
 
+Component::Component()
+{
+   m_GameObject = nullptr;
+   m_World = nullptr;
+}
+
 Component::~Component()
 {
 }
 
-void Component::Awake( World &world, GameObject &gameObject )
+void Component::PreAwake( GameObject& gameObject )
+{
+   m_GameObject = &gameObject;
+}
+
+void Component::Awake( World &world )
 {
    m_World = &world;
-   m_GameObject = &gameObject;
-
    Awake();
 }
 
-void Component::EditAwake( Editor& editor, GameObject &gameObject )
+void Component::EditAwake( Editor& editor )
 {
    m_World = &editor.GetWorld();
-   m_GameObject = &gameObject;
-
-   EditAwake( editor );
+   EditAwake( static_cast<IEditor&>(editor) );
 }
 
 GameObject& Component::GetGameObject()

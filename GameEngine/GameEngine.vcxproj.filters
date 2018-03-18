@@ -16,9 +16,6 @@
     <Filter Include="ImGUI">
       <UniqueIdentifier>{2ccb5291-5f4a-4cef-b33f-0843a320e83c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EditorOnly">
-      <UniqueIdentifier>{41700f63-1d3a-45b6-83a8-64a2531350f4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Physics">
       <UniqueIdentifier>{dc4ab817-a3a9-4a14-8ce9-10bb96084b35}</UniqueIdentifier>
     </Filter>
@@ -27,6 +24,9 @@
     </Filter>
     <Filter Include="TestComponents">
       <UniqueIdentifier>{f0762977-17cf-4e57-b3be-c0bf53882a7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorStuff">
+      <UniqueIdentifier>{41700f63-1d3a-45b6-83a8-64a2531350f4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -136,19 +136,19 @@
       <Filter>ImGUI</Filter>
     </ClInclude>
     <ClInclude Include="InspectorWindow.h">
-      <Filter>EditorOnly</Filter>
+      <Filter>EditorStuff</Filter>
     </ClInclude>
     <ClInclude Include="Editor.h">
-      <Filter>EditorOnly</Filter>
+      <Filter>EditorStuff</Filter>
     </ClInclude>
     <ClInclude Include="HierarchyWindow.h">
-      <Filter>EditorOnly</Filter>
+      <Filter>EditorStuff</Filter>
     </ClInclude>
     <ClInclude Include="EditorWindow.h">
-      <Filter>EditorOnly</Filter>
+      <Filter>EditorStuff</Filter>
     </ClInclude>
     <ClInclude Include="EditorEvents.h">
-      <Filter>EditorOnly</Filter>
+      <Filter>EditorStuff</Filter>
     </ClInclude>
     <ClInclude Include="Events.h">
       <Filter>Header Files</Filter>
@@ -157,7 +157,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ParentSetter.h">
-      <Filter>EditorOnly</Filter>
+      <Filter>EditorStuff</Filter>
     </ClInclude>
     <ClInclude Include="GameObjectEvents.h">
       <Filter>Header Files</Filter>
@@ -172,13 +172,13 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IEditor.h">
-      <Filter>EditorOnly</Filter>
+      <Filter>EditorStuff</Filter>
     </ClInclude>
     <ClInclude Include="EditorUtils.h">
-      <Filter>EditorOnly</Filter>
+      <Filter>EditorStuff</Filter>
     </ClInclude>
     <ClInclude Include="MainToolWindow.h">
-      <Filter>EditorOnly</Filter>
+      <Filter>EditorStuff</Filter>
     </ClInclude>
     <ClInclude Include="Collider.h">
       <Filter>Physics</Filter>
@@ -218,6 +218,12 @@
     </ClInclude>
     <ClInclude Include="EventManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformHandle.h">
+      <Filter>EditorStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformHandles.h">
+      <Filter>EditorStuff</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -306,16 +312,16 @@
       <Filter>ImGUI</Filter>
     </ClCompile>
     <ClCompile Include="InspectorWindow.cpp">
-      <Filter>EditorOnly</Filter>
+      <Filter>EditorStuff</Filter>
     </ClCompile>
     <ClCompile Include="Editor.cpp">
-      <Filter>EditorOnly</Filter>
+      <Filter>EditorStuff</Filter>
     </ClCompile>
     <ClCompile Include="HierarchyWindow.cpp">
-      <Filter>EditorOnly</Filter>
+      <Filter>EditorStuff</Filter>
     </ClCompile>
     <ClCompile Include="ParentSetter.cpp">
-      <Filter>EditorOnly</Filter>
+      <Filter>EditorStuff</Filter>
     </ClCompile>
     <ClCompile Include="SceneLoader.cpp">
       <Filter>Source Files</Filter>
@@ -324,10 +330,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EditorUtils.cpp">
-      <Filter>EditorOnly</Filter>
+      <Filter>EditorStuff</Filter>
     </ClCompile>
     <ClCompile Include="MainToolWindow.cpp">
-      <Filter>EditorOnly</Filter>
+      <Filter>EditorStuff</Filter>
     </ClCompile>
     <ClCompile Include="Collider.cpp">
       <Filter>Physics</Filter>
@@ -355,6 +361,12 @@
     </ClCompile>
     <ClCompile Include="ColourOnRayHit.cpp">
       <Filter>TestComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformHandle.cpp">
+      <Filter>EditorStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformHandles.cpp">
+      <Filter>EditorStuff</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
