@@ -38,6 +38,7 @@ public:
    void OnNewSerializedFields() override;
 
    GameObject& GetGameObject();
+   Transform& GetTransform();
 
    virtual int32_t GetType() = 0;
 
@@ -48,7 +49,7 @@ public:
    Component& Clone();
 
 protected:
-
+   virtual void SetWorld( World &world );
    virtual void Awake();
    virtual void EditAwake( IEditor& editor );
 

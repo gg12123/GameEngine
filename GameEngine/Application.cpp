@@ -14,11 +14,18 @@ Application* Application::m_ThisApp;
 Application::Application()
 {
    m_ThisApp = this;
+
+   m_KeyMap[ GLFW_KEY_SPACE ] = eSpaceBar;
 }
 
 Input& Application::GetInput()
 {
    return m_Input;
+}
+
+std::unordered_map<int, eInputKey>& Application::GetKeyMap()
+{
+   return m_KeyMap;
 }
 
 bool Application::InitWindow()
@@ -154,11 +161,33 @@ void Application::MouseCallback( GLFWwindow* window, int button, int action, int
 void Application::ScrollCallback( GLFWwindow* w, double xoffset, double yoffset )
 {
    ImGui_ImplGlfw_ScrollCallback( w, xoffset, yoffset );
+
+   if (!ImGui::GetIO().WantCaptureMouse)
+   {
+      m_ThisApp->GetInput().OnScroll( (float)yoffset );
+   }
 }
 
 void Application::KeyCallback( GLFWwindow* w, int key, int s, int action, int mods )
 {
    ImGui_ImplGlfw_KeyCallback( w, key, s, action, mods );
+
+   if (!ImGui::GetIO().WantCaptureKeyboard)
+   {
+      auto it = m_ThisApp->GetKeyMap().find( key );
+
+      if (it != m_ThisApp->GetKeyMap().end())
+      {
+         if (GLFW_PRESS == action)
+         {
+            m_ThisApp->GetInput().OnKeyDown( it->second );
+         }
+         else if (GLFW_RELEASE == action)
+         {
+            m_ThisApp->GetInput().OnKeyUp( it->second );
+         }
+      }
+   }
 }
 
 void Application::CharCallback( GLFWwindow* w, unsigned int c )

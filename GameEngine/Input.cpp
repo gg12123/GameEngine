@@ -1,5 +1,11 @@
 #include "Input.h"
 
+Input::Input()
+{
+   m_CurrentScrollOffset = 0.0f;
+   m_CurrentScrollDelta = 0.0f;
+}
+
 bool Input::MouseButton( eMouseButton button )
 {
    return m_MouseInputs[ button ].IsTriggerd();
@@ -15,6 +21,21 @@ bool Input::MouseButtonUp( eMouseButton button )
    return m_MouseInputs[ button ].IsTriggeredUp();
 }
 
+bool Input::Key( eInputKey key )
+{
+   return m_KeyInputs[ key ].IsTriggerd();
+}
+
+bool Input::KeyDown( eInputKey key )
+{
+   return m_KeyInputs[ key ].IsTriggerdDown();
+}
+
+bool Input::KeyUp( eInputKey key )
+{
+   return m_KeyInputs[ key ].IsTriggeredUp();
+}
+
 vmath::vec2 Input::MousePosition()
 {
    return m_CurrentMousePosition;
@@ -23,6 +44,11 @@ vmath::vec2 Input::MousePosition()
 vmath::vec2 Input::MouseDelta()
 {
    return m_CurrentMouseDelta;
+}
+
+float Input::MouseScroll()
+{
+   return m_CurrentScrollDelta;
 }
 
 void Input::OnMouseButtonUp( int button )
@@ -37,6 +63,25 @@ void Input::OnMouseButtonDown( int button )
    InputTrigger* x = &(m_MouseInputs[ button ]);
    x->OnDown();
    m_InputsToClear.push_back( x );
+}
+
+void Input::OnKeyUp( eInputKey key )
+{
+   InputTrigger* x = &(m_KeyInputs[ key ]);
+   x->OnUp();
+   m_InputsToClear.push_back( x );
+}
+
+void Input::OnKeyDown( eInputKey key )
+{
+   InputTrigger* x = &(m_KeyInputs[ key ]);
+   x->OnDown();
+   m_InputsToClear.push_back( x );
+}
+
+void Input::OnScroll( float offset )
+{
+   m_CurrentScrollDelta = offset - m_CurrentScrollOffset;
 }
 
 void Input::PreUpdate( vmath::vec2 mousePos )
@@ -54,4 +99,5 @@ void Input::FinalUpdate()
    }
 
    m_InputsToClear.clear();
+   m_CurrentScrollDelta = 0.0;
 }

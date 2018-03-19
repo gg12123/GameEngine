@@ -65,8 +65,8 @@ int32_t TransformHandle::GetType()
 
 float TransformHandle::CalculateInputMouseMovement()
 {
-   vec3 myPos = GetGameObject().GetTransform().GetPosition();
-   vec3 myDir = GetGameObject().GetTransform().Forward();
+   vec3 myPos = GetTransform().GetPosition();
+   vec3 myDir = GetTransform().Forward();
 
    Ray r( myDir, myPos );
 
@@ -82,12 +82,15 @@ void TransformHandle::ApplyPositionalMovement()
 
    Transform& parent = GetGameObject().GetTransform().GetParent();
 
-   m_Target->SetPosition( parent.GetPosition() + movement * GetGameObject().GetTransform().Forward() );
+   m_Target->SetPosition( parent.GetPosition() + movement * GetTransform().Forward() );
 }
 
 void TransformHandle::ApplyRotationalMovement()
 {
-   // rotate target about my forward.
+   const float sensitivity = 1.0;
+   mat4 rot = rotate( GetInput().MouseScroll() * sensitivity, GetTransform().Forward() );
+
+   m_Target->SetRotation( rot * m_Target->GetRotation() );
 }
 
 void TransformHandle::ApplyScaleMovement()

@@ -78,9 +78,9 @@ void TransformHandles::EditUpdate()
 
    if (active && !IsHandle( *active ))
    {
-      GetGameObject().GetTransform().SetPosition( active->GetTransform().GetPosition() );
-      GetGameObject().GetTransform().SetRotation( active->GetTransform().GetRotation() );
-      GetGameObject().GetTransform().SetScale( active->GetTransform().GetScale() );
+      GetTransform().SetPosition( active->GetTransform().GetPosition() );
+      GetTransform().SetRotation( active->GetTransform().GetRotation() );
+      GetTransform().SetScale( active->GetTransform().GetScale() );
 
       if (GetInput().MouseButtonDown( eLeftMouseButton ) && TryGetHandle())
       {
@@ -91,9 +91,16 @@ void TransformHandles::EditUpdate()
       {
          m_ActiveHandle->StartScaleMovement( active->GetTransform() );
       }
+
+      if (GetInput().KeyDown( eSpaceBar ) && TryGetHandle())
+      {
+         m_ActiveHandle->StartRotationalMovement( active->GetTransform() );
+      }
    }
 
-   if (GetInput().MouseButtonUp( eLeftMouseButton ) || GetInput().MouseButtonUp( eRightMouseButton ))
+   if (GetInput().MouseButtonUp( eLeftMouseButton ) ||
+       GetInput().MouseButtonUp( eRightMouseButton ) ||
+       GetInput().KeyUp( eSpaceBar ))
    {
       if (m_ActiveHandle)
       {

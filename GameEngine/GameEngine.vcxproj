@@ -119,6 +119,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Asset.h" />
     <ClInclude Include="AssetLoader.h" />
+    <ClInclude Include="BehaviourComponent.h" />
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
@@ -131,6 +132,7 @@
     <ClInclude Include="Editor.h" />
     <ClInclude Include="EditorEvents.h" />
     <ClInclude Include="EditorWindow.h" />
+    <ClInclude Include="EngineComponent.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="Events.h" />
     <ClInclude Include="EditorUtils.h" />

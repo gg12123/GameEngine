@@ -1,9 +1,9 @@
 #pragma once
-#include "Component.h"
+#include "BehaviourComponent.h"
 #include "TransformHandle.h"
 #include "Events.h"
 
-class TransformHandles : public Component
+class TransformHandles : public BehaviourComponent
 {
 public:
    TransformHandles();

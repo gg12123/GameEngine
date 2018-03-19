@@ -26,18 +26,25 @@ void Component::PreAwake( GameObject& gameObject )
 void Component::Awake( World &world )
 {
    m_World = &world;
+   SetWorld( world );
    Awake();
 }
 
 void Component::EditAwake( Editor& editor )
 {
    m_World = &editor.GetWorld();
+   SetWorld( *m_World );
    EditAwake( static_cast<IEditor&>(editor) );
 }
 
 GameObject& Component::GetGameObject()
 {
    return *m_GameObject;
+}
+
+Transform& Component::GetTransform()
+{
+   return m_GameObject->GetTransform();
 }
 
 void Component::RegisterForUpdate( const EUpdaterFunction eFunction )

@@ -13,6 +13,7 @@ public:
    void Run();
 
    Input& GetInput();
+   std::unordered_map<int, eInputKey>& GetKeyMap();
 
 private:
 
@@ -35,6 +36,7 @@ private:
    EditModeSceneLoader m_SceneLoader; // this is the edit mode application
    Editor m_Editor;
    Input m_Input;
+   std::unordered_map<int, eInputKey> m_KeyMap;
 
    static Application* m_ThisApp;
 };
