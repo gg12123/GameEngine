@@ -1,13 +1,13 @@
 #pragma once
 #include "MyVmath.h"
-#include "Component.h"
+#include "EngineComponent.h"
 #include "SerializedFields.h"
 #include "Events.h"
 #include "GameObjectEvents.h"
 
 using namespace vmath;
 
-class Transform : public Component
+class Transform : public EngineComponent
 {
 public:
    Transform();

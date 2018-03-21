@@ -1,10 +1,10 @@
 #pragma once
-#include "Component.h"
+#include "BehaviourComponent.h"
 #include "MemberFunctionPtrs.h"
 
 class Collider;
 
-class TransformHandle : public Component
+class TransformHandle : public BehaviourComponent
 {
 public:
    TransformHandle();

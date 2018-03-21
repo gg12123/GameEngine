@@ -188,6 +188,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Asset.cpp" />
     <ClCompile Include="AssetLoader.cpp" />
+    <ClCompile Include="BehaviourComponent.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
@@ -198,6 +199,7 @@
     <ClCompile Include="DiffuseMeshRenderer.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="EditorUtils.cpp" />
+    <ClCompile Include="EngineComponent.cpp" />
     <ClCompile Include="HierarchyWindow.cpp" />
     <ClCompile Include="ImGUI\imgui.cpp" />
     <ClCompile Include="ImGUI\imgui_demo.cpp" />

@@ -1,12 +1,12 @@
 #pragma once
-#include "Component.h"
+#include "EngineComponent.h"
 #include "MyVmath.h"
 #include "Collider.h"
 #include "MeshRenderer.h"
 
 #define NUM_COLOURS 3
 
-class ColourOnRayHit : public Component
+class ColourOnRayHit : public EngineComponent
 {
 public:
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "Component.h"
+#include "EngineComponent.h"
 #include "SerializedFields.h"
 #include "MeshField.h"
 #include "NullableIterator.h"
@@ -8,7 +8,7 @@
 
 class Mesh;
 
-class MeshRenderer : public Component
+class MeshRenderer : public EngineComponent
 {
 public:
 

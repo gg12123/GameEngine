@@ -10,14 +10,10 @@
 
 class GameObject;
 class World;
-class TransformUpdater;
 class Transform;
-class GeometryRenderer;
 class IEditor;
 class Editor;
-class AssetLoader;
 class Camera;
-class Physics;
 
 class Component : public ISerializedFieldOwner
 {
@@ -49,19 +45,14 @@ public:
    Component& Clone();
 
 protected:
-   virtual void SetWorld( World &world );
+   virtual void SetWorld( World &world ) = 0;
    virtual void Awake();
    virtual void EditAwake( IEditor& editor );
 
    void RegisterForUpdate( const EUpdaterFunction eFunction );
 
-   TransformUpdater& GetTransformUpdater();
-   GeometryRenderer& GetGeometryRenderer();
-   Transform& GetRootTransform();
-   AssetLoader& GetAssetLoader();
    Camera& GetActiveCamera();
    IInput& GetInput();
-   Physics& GetPhysics();
 
    void LoadScene( std::string name );
 

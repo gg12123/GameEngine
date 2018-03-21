@@ -1,9 +1,9 @@
 #pragma once
-#include "Component.h"
+#include "EngineComponent.h"
 #include "WindowConfiguration.h"
 #include "Ray.h"
 
-class Camera : public Component
+class Camera : public EngineComponent
 {
 public:
 

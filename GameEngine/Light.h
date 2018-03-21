@@ -1,7 +1,7 @@
 #pragma once
-#include "Component.h"
+#include "EngineComponent.h"
 
-class Light : public Component
+class Light : public EngineComponent
 {
 public:
    void ApplyLightUniforms();

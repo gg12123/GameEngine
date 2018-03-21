@@ -1,3 +1,10 @@
-﻿  TransformHandle.cpp
+﻿  Light.cpp
+  ComponentCreator.cpp
+  ColourOnRayHit.cpp
+  Generating Code...
+  Compiling...
+  Utils.cpp
+  GeometryRenderer.cpp
+  Generating Code...
   GameEngine.vcxproj -> C:\Users\gg_11\Documents\Visual Studio 2015\Projects\GameEngine2\Debug\GameEngine.exe
   GameEngine.vcxproj -> C:\Users\gg_11\Documents\Visual Studio 2015\Projects\GameEngine2\Debug\GameEngine.pdb (Partial PDB)

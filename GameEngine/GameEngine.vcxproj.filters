@@ -374,5 +374,11 @@
     <ClCompile Include="TransformHandles.cpp">
       <Filter>EditorStuff</Filter>
     </ClCompile>
+    <ClCompile Include="EngineComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviourComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

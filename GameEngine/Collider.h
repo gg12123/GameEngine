@@ -1,5 +1,5 @@
 #pragma once
-#include "Component.h"
+#include "EngineComponent.h"
 #include "MyVmath.h"
 #include "NullableIterator.h"
 #include "Events.h"
@@ -8,7 +8,7 @@ class Ray;
 class MeshBounds;
 struct RayCastHit;
 
-class Collider : public Component
+class Collider : public EngineComponent
 {
 public:
    Collider();
